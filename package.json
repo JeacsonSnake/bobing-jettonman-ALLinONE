@@ -6,6 +6,11 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
+  },
   "dependencies": {
     "core-js": "^3.8.3",
     "vue": "^2.6.14",
