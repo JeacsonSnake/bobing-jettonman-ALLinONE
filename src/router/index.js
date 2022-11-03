@@ -24,4 +24,15 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+
+    if(Vue.prototype.$httpRequestList.length>0){     // 检查是否有需要中断的请求
+      Vue.prototype.$httpRequestList.forEach(item=>{ // 遍历,执行中断方法并传入中断信息
+          item('interrupt')
+      })
+    }
+
+    next()
+})
+
 export default router
