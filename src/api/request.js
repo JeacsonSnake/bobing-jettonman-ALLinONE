@@ -5,7 +5,7 @@ const requests = axios.create({
     // 基础路径
     baseURL: "/",
     // 请求超时时间： 5s
-    // timeout: 5000,
+    timeout: 5000
     // headers: headers
 })
 //请求拦截器

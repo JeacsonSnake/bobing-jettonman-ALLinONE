@@ -13,6 +13,8 @@ export default {
         foo() {
             fooo().then((res) => {
                 console.log(`res`, res.data);
+            }).catch((err) => {
+                console.log(`err`, err);
             })
         }
     }
