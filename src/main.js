@@ -2,6 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import {
+    Button,
+    Dialog
+} from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 // import fonts
 import './assets/fonts/index.css'
@@ -11,6 +16,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 // use axois & vue-axios
 Vue.use(VueAxios, axios)
+
+Vue.use(Button)
+Vue.use(Dialog)
 
 Vue.prototype.$httpRequestList = [];    //管理所有请求中断方法的集合
 
