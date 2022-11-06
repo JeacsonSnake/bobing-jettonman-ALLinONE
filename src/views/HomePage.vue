@@ -28,12 +28,16 @@
       title="How to Play?"
       :visible.sync="rulesVisible"
       class="rulesLayer"
+      center
     >
       <div class="ruleSection">
         <span class="ruleIntro">
-            For example, in a multiplayer game, after selecting the number of players and deciding the order of player, click the button to roll the dice. If player match the points in the table below, the player will win a prize.
+          For example, in a multiplayer game, after selecting the number of
+          players and deciding the order of player, click the button to roll the
+          dice. If player match the points in the table below, the player will
+          win a prize.
         </span>
-        <img src="../../public/image/rule.png" alt="">
+        <img src="../../public/image/rule.png" alt="" class="ruleImg" />
       </div>
     </el-dialog>
 
@@ -65,7 +69,7 @@ export default {
   data() {
     return {
       aboutVisible: false,
-      rulesVisible: false
+      rulesVisible: false,
     };
   },
   methods: {},
@@ -130,6 +134,11 @@ export default {
     ::v-deep .el-dialog__header {
       padding: 0;
       padding-top: calc(var(--heightRate) * 100);
+      .el-dialog__headerbtn:focus .el-dialog__close,
+      .el-dialog__headerbtn:hover .el-dialog__close {
+        color: #de5757;
+      }
+
       .el-dialog__title {
         font-family: "HarmonyOS_Sans_SC_Black";
         font-size: calc(var(--heightRate) * 72);
@@ -172,7 +181,7 @@ export default {
   .rulesLayer {
     ::v-deep .el-dialog {
       width: calc(var(--widthRate) * 1280);
-      height: calc(var(--heightRate) * 960);
+      height: calc(var(--heightRate) * 1300);
       margin-top: calc(var(--heightRate) * 60) !important;
       margin-bottom: calc(var(--heightRate) * 60) !important;
       margin-left: calc(var(--widthRate) * 320);
@@ -184,16 +193,49 @@ export default {
     ::v-deep .el-dialog__header {
       padding: 0;
       padding-top: calc(var(--heightRate) * 100);
+
+      .el-dialog__headerbtn:focus .el-dialog__close,
+      .el-dialog__headerbtn:hover .el-dialog__close {
+        color: #de5757;
+      }
+
       .el-dialog__title {
         font-family: "HarmonyOS_Sans_SC_Bold";
         font-size: calc(var(--heightRate) * 60);
-        color: #757575
+        color: #757575;
       }
     }
 
     ::v-deep .el-dialog__body {
       padding: 0;
-      padding-top: calc(var(--heightRate) * 193);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      padding-top: calc(var(--heightRate) * 20);
+    }
+
+    .ruleSection {
+      padding: 0;
+      margin: 0;
+      width: calc(var(--widthRate) * 1110);
+      height: calc(var(--heightRate) * 1090);
+      border-radius: calc(var(--heightRate) * 20);
+      border: 2px solid rgba(77, 71, 71, 1);
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+
+      .ruleIntro {
+        padding: calc(var(--heightRate) * 10) 0;
+        word-wrap: break-word;
+        word-break: normal;
+      }
+
+      .ruleImg {
+        width: calc(var(--widthRate) * 1053);
+        height: calc(var(--heightRate) * 923);
+      }
     }
 
     ::v-deep .el-dialog__footer {

@@ -18,7 +18,7 @@ export const createPlayer = (params) => {
 export const fooo = () => {
     // send request
     return requests({
-        url: 'http://192.168.0.103:8080/game/result',
+        url: 'http://192.168.0.104:8080/game/result',
         method: 'get',
     })
 }
