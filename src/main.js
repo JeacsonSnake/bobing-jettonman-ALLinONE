@@ -6,7 +6,12 @@ import {
     Button,
     Dialog,
     Table,
-    TableColumn
+    TableColumn,
+    Select,
+    Option,
+    Message,
+    MessageBox,
+    Loading
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
@@ -23,6 +28,13 @@ Vue.use(Button)
 Vue.use(Dialog)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Select)
+Vue.use(Option)
+Vue.prototype.$loading = Loading
+Vue.prototype.$message = Message
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt
 
 Vue.prototype.$httpRequestList = [];    //管理所有请求中断方法的集合
 

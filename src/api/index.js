@@ -34,6 +34,14 @@ export const getRank = (value) => {
     })
 }
 
+export const getClear = () => {
+    // send request
+    return requests({
+        url: 'http://192.168.0.104:8080/user/clear',
+        method: 'get',
+    })
+}
+
 // request sending example:
 // __________________________________________________________________________
 // export const foo = (params) => {

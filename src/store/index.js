@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getRank } from '../api'
+import { getRank, getClear } from '../api'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
         playerRank: [],
+        playerNow: 1,
         playerAmount: 0,
         prizeRealName: [
             "yi XIU",
@@ -25,7 +26,13 @@ export default new Vuex.Store({
   },
   getters: {
   },
-  mutations: {
+    mutations: {
+        changePlayerAmount(state, playerNum) {
+            state.playerAmount = playerNum
+        },
+        changePlayerNow(state, playerNum) {
+            state.playerNow = playerNum
+      }
   },
     actions: {
         getRan({ commit, state}, amount) {
@@ -47,6 +54,14 @@ export default new Vuex.Store({
                 });
             }).catch((err) => {
                 console.log(`getRankerr`, err);
+            })
+        },
+        getNewRun({ commit, state }, playerNum) {
+            getClear().then((res) => {
+                commit("changePlayerAmount", playerNum)
+                console.log(`getClear res.msg`, res.msg);
+            }).catch((err) => {
+                console.log(`err`, err);
             })
         }
   },

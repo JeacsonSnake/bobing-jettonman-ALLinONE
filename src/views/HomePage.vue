@@ -5,7 +5,9 @@
         <el-button type="text" icon="el-icon-s-data" @click="getRan()">
           Rank
         </el-button>
-        <el-button type="text" icon="el-icon-refresh" @click="getRstart()">REstart</el-button>
+        <el-button type="text" icon="el-icon-refresh" @click="getRestart()">
+          REstart
+        </el-button>
       </div>
       <div class="navBtnGroup">
         <el-button
@@ -37,6 +39,7 @@
         :data="rankData"
         class="rankSection"
         :height="`calc(var(--heightRate) * 800)`"
+        empty-text="No Data yet"
       >
         <el-table-column
           property="playername"
@@ -46,6 +49,34 @@
         ></el-table-column>
         <el-table-column property="prize" label="Prize"></el-table-column>
       </el-table>
+    </el-dialog>
+
+    <el-dialog
+      title="Number of players"
+      :visible.sync="restartVisible"
+      class="restartLayer"
+      center
+    >
+      <div class="restartSection">
+        <el-select
+          v-model="playerNum"
+          placeholder="Pleace Select"
+          :popper-append-to-body="false"
+          size="small"
+        >
+          <el-option
+            v-for="item in playerNumOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+
+      <el-button class="restartFooter" slot="footer" @click="start()"
+        >Start</el-button
+      >
     </el-dialog>
 
     <el-dialog
@@ -96,24 +127,101 @@ export default {
       aboutVisible: false,
       rulesVisible: false,
       rankVisible: false,
+      restartVisible: false,
+      playerNum: "",
+      playerNumOptions: [
+        {
+          value: "1",
+          label: "1",
+        },
+        {
+          value: "2",
+          label: "2",
+        },
+        {
+          value: "3",
+          label: "3",
+        },
+        {
+          value: "4",
+          label: "4",
+        },
+        {
+          value: "5",
+          label: "5",
+        },
+        {
+          value: "6",
+          label: "6",
+        },
+        {
+          value: "7",
+          label: "7",
+        },
+        {
+          value: "8",
+          label: "8",
+        },
+      ],
     };
   },
   computed: {
     rankData: function () {
-      return this.$store.state.playerRank
+      return this.$store.state.playerRank;
     },
   },
   methods: {
     async getRan() {
       this.rankVisible = true;
       this.loading = true;
-      await this.$store.dispatch("getRan", 3);
+      let pNum = this.$store.state.playerAmount;
+      await this.$store.dispatch("getRan", pNum);
       this.loading = false;
     },
 
-    getRstart() {
-        
-    }
+    getRestart() {
+      this.restartVisible = true;
+    },
+
+    async start() {
+      let p = this.playerNum;
+      if (p == "") {
+        this.$message.error("The number of people has not been chosen yet!");
+      } else {
+        this.$confirm(
+          "You're about to start a new round of games. Do you want to continue?",
+          "Attention",
+          {
+            distinguishCancelAndClose: true,
+            confirmButtonText: "confirm",
+            cancelButtonText: "cancel",
+            confirmButtonClass: "confirmButton",
+            cancelButtonClass: "cancelButton",
+          }
+        )
+          .then(() => {
+            this.restartVisible = false;
+            // let loadingInstance = this.$loading({
+            //   lock: true,
+            //   text: "Loading",
+            //   spinner: "el-icon-loading",
+            //   background: "rgba(255, 255, 255, 0.5)",
+            // });
+            this.$message({
+              type: "success",
+              message: "The game is being initialized...",
+            });
+            this.$store.dispatch("getNewRun", p);
+            //   .then(() => {
+            //     loadingInstance.close();
+            //   })
+            //   .catch((err) => {
+            //     console.log(`NewRunErr: `, err);
+            //   });
+          })
+          .catch((action) => {});
+      }
+    },
   },
 };
 </script>
@@ -150,15 +258,6 @@ export default {
         font-size: calc(var(--heightRate) * 30);
       }
     }
-  }
-
-  nav a {
-    font-weight: bold;
-    color: #2c3e50;
-  }
-
-  nav a.router-link-exact-active {
-    color: #42b983;
   }
 
   .aboutLayer {
@@ -327,6 +426,90 @@ export default {
 
       .el-table th.el-table__cell {
         background-color: #dedede;
+      }
+    }
+  }
+
+  .restartLayer {
+    ::v-deep .el-dialog {
+      width: calc(var(--widthRate) * 420);
+      height: calc(var(--heightRate) * 550);
+      margin: 0;
+      margin-top: calc(var(--heightRate) * 265) !important;
+      margin-bottom: calc(var(--heightRate) * 265) !important;
+      margin-left: calc(var(--widthRate) * 750);
+      background-color: #f0f0f0;
+      border-radius: calc(var(--heightRate) * 20);
+    }
+
+    ::v-deep .el-dialog__header {
+      display: flex;
+      padding: 0;
+      padding-top: calc(var(--heightRate) * 60);
+      justify-content: center;
+
+      .el-dialog__headerbtn:focus .el-dialog__close,
+      .el-dialog__headerbtn:hover .el-dialog__close {
+        color: #de5757;
+      }
+
+      .el-dialog__title {
+        font-family: "HarmonyOS_Sans_SC_Black";
+        font-size: calc(var(--heightRate) * 60);
+        line-height: calc(var(--heightRate) * 60);
+        color: #47484c;
+        width: calc(var(--widthRate) * 245);
+        height: calc(var(--heightRate) * 215);
+        word-break: normal;
+      }
+    }
+
+    ::v-deep .el-dialog__body {
+      padding: 0;
+      margin: 0;
+      //   width: calc(var(--widthRate) * 224);
+      //   height: calc(var(--heightRate) * 40);
+      font-family: "HarmonyOS_Sans_SC_Midium";
+
+      display: flex;
+      justify-content: center;
+
+      .el-input__inner {
+        // width: calc(var(--widthRate) * 224);
+        // height: calc(var(--heightRate) * 40);
+        font-size: calc(var(--heightRate) * 14);
+        line-height: calc(var(--heightRate) * 14);
+        padding: 0;
+        padding-right: calc(var(--widthRate) * 14);
+        padding-left: calc(var(--widthRate) * 14);
+      }
+
+      .el-select .el-input__inner:focus,
+      .el-range-editor.is-active,
+      .el-range-editor.is-active:hover,
+      .el-select .el-input.is-focus .el-input__inner {
+        border-color: #de5757;
+      }
+
+      .el-select-dropdown__item.selected {
+        color: #de5757;
+      }
+
+      .el-select-dropdown__list {
+        max-height: calc(var(--heightRate) * 247);
+      }
+    }
+
+    ::v-deep .el-dialog__footer {
+      margin: 0;
+      padding: 0;
+      padding-top: calc(var(--heightRate) * 70);
+
+      .el-button:focus,
+      .el-button:hover {
+        color: #f2f2f2;
+        border-color: #4d4747;
+        background-color: #de5757;
       }
     }
   }
