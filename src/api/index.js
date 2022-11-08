@@ -23,6 +23,17 @@ export const fooo = () => {
     })
 }
 
+export const getRank = (value) => {
+    // send request
+    return requests({
+        url: 'http://192.168.0.104:8080/user/numberresult',
+        method: 'post',
+        params: {
+            number: value
+        }
+    })
+}
+
 // request sending example:
 // __________________________________________________________________________
 // export const foo = (params) => {
