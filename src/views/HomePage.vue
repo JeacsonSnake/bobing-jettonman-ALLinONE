@@ -26,7 +26,47 @@
         </el-button>
       </div>
     </nav>
-    <router-link to="/about">About</router-link>
+
+    <div class="titleImgSection">
+      <img src="../../public/image/title.png" alt="" class="titleImg" />
+    </div>
+    <div class="bodySection">
+      <div class="singleRankSection">
+        <div class="playerName">
+          <span>{{ singleRankData.playerName }}</span>
+        </div>
+        <el-table
+          :data="singleRankData.prize"
+          class="prizeSection"
+          :height="`calc(var(--heightRate) * 280)`"
+          empty-text="No Data yet"
+          :show-header="false"
+        >
+          <el-table-column property="imgUrl" width="40">
+            <template v-slot="scope">
+              <img
+                :src="require(`../assets/img/${scope.row.imgUrl}`)"
+                alt=""
+                width="40"
+                height="40"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column property="number" width="100"> </el-table-column>
+        </el-table>
+      </div>
+      <div class="diceDisplaySection">
+        <div class="diceImgSection" v-for="(item, index) in diceNumArr">
+          <img :src="require(`../assets/img/dice/DICE-${item}.svg`)" alt="" />
+        </div>
+      </div>
+      <div class="rollButtonSection">
+        <el-button @click="getNextPlayerResults()"> Next To ROLL! </el-button>
+      </div>
+    </div>
+    <footer>
+      <span>© Jeacson_She & Eric_Zhao 2022 All rights Reserved.</span>
+    </footer>
 
     <el-dialog
       title="Rank: "
@@ -169,6 +209,12 @@ export default {
     rankData: function () {
       return this.$store.state.playerRank;
     },
+    singleRankData: function () {
+      return this.$store.state.singleRank;
+    },
+    diceNumArr: function () {
+      return this.$store.state.resultDiceNumArr;
+    },
   },
   methods: {
     async getRan() {
@@ -183,7 +229,7 @@ export default {
       this.restartVisible = true;
     },
 
-    async start() {
+    start() {
       let p = this.playerNum;
       if (p == "") {
         this.$message.error("The number of people has not been chosen yet!");
@@ -207,11 +253,11 @@ export default {
             //   spinner: "el-icon-loading",
             //   background: "rgba(255, 255, 255, 0.5)",
             // });
+            this.$store.dispatch("getNewRun", p);
             this.$message({
               type: "success",
               message: "The game is being initialized...",
             });
-            this.$store.dispatch("getNewRun", p);
             //   .then(() => {
             //     loadingInstance.close();
             //   })
@@ -221,6 +267,18 @@ export default {
           })
           .catch((action) => {});
       }
+    },
+
+    async getNextPlayerResults() {
+      this.$message({
+        type: "success",
+        message: "The game is going...",
+      });
+      await this.$store.dispatch("getNextResult");
+      this.$message({
+        type: "success",
+        message: "The game is on!",
+      });
     },
   },
 };
@@ -256,6 +314,175 @@ export default {
         color: #4d4747;
         font-family: "HarmonyOS_Sans_SC_Medium";
         font-size: calc(var(--heightRate) * 30);
+      }
+    }
+  }
+
+  .titleImgSection {
+    width: calc(var(--widthRate) * 1920);
+    height: calc(var(--heightRate) * 374);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .titleImg {
+      width: calc(var(--widthRate) * 1120);
+      height: calc(var(--heightRate) * 330);
+    }
+  }
+
+  .bodySection {
+    width: calc(var(--widthRate) * 1920);
+    height: calc(var(--heightRate) * 456);
+    display: flex;
+
+    .singleRankSection {
+      width: calc(var(--widthRate) * 322);
+      margin-left: calc(var(--widthRate) * 56);
+      background-color: rgba(204, 204, 204, 1);
+      border: calc(var(--heightRate) * 2) solid rgba(77, 71, 71, 1);
+      box-shadow: 9px 15px 44px rgba(0, 0, 0, 0.25);
+      border-radius: calc(var(--heightRate) * 20);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      overflow: hidden;
+
+      .playerName {
+        font-family: "HarmonyOS_Sans_SC_Black";
+        margin-top: calc(var(--heightRate) * 17);
+        padding-bottom: calc(var(--heightRate) * 12);
+        font-size: calc(var(--heightRate) * 60);
+        width: calc(var(--widthRate) * 242);
+        height: calc(var(--heightRate) * 90);
+        border-bottom: calc(var(--heightRate) * 3) solid rgba(166, 166, 166, 1);
+      }
+
+      .prizeSection {
+        display: flex;
+        border-radius: calc(var(--heightRate) * 40) calc(var(--heightRate) * 40) 0 0;
+        background-color: #dfdfdf;
+
+        ::v-deep .el-table__body-wrapper {
+          &::-webkit-scrollbar {
+            width: calc(var(--heightRate) * 8); /*滚动条宽度*/
+          }
+
+          &::-webkit-scrollbar-track {
+            border-radius: calc(var(--heightRate) * 1); /*滚动条的背景区域的圆角*/
+            background-color: #e5e5e5; /*滚动条的背景颜色*/
+          }
+
+          &::-webkit-scrollbar-corner {
+            background-color: #f0f0f0;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            border-radius: 4px; /*滚动条的圆角*/
+            background-color: #c5c5c5; /*滚动条的背景颜色*/
+          }
+
+          .el-table__body {
+            width: inherit !important;
+            display: flex;
+            justify-content: center;
+            colgroup {
+              display: none;
+            }
+
+            tbody tr {
+                background-color: #dfdfdf;
+            }
+
+            tbody td:first-child .cell {
+              width: calc(var(--widthRate) * 185);
+              display: flex;
+              justify-content: center;
+            }
+            tbody td:last-child .cell {
+              width: calc(var(--widthRate) * 132);
+              display: flex;
+              justify-content: center;
+            }
+          }
+
+          .el-table__empty-block {
+            width: 100% !important;
+          }
+        }
+      }
+    }
+
+    .diceDisplaySection {
+      width: calc(var(--widthRate) * 1000);
+      margin-left: calc(var(--widthRate) * 82);
+      background-color: rgba(204, 204, 204, 1);
+      border: calc(var(--heightRate) * 2) solid rgba(71, 72, 76, 1);
+      box-shadow: 8px 10px 32px rgba(0, 0, 0, 0.25);
+      border-radius: calc(var(--heightRate) * 20);
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      div:nth-child(-n + 3) {
+        margin-top: calc(var(--heightRate) * 20);
+      }
+
+      div:nth-child(1),
+      div:nth-child(4) {
+        margin-left: calc(var(--widthRate) * 62);
+      }
+
+      div:nth-child(2),
+      div:nth-child(3),
+      div:nth-child(5),
+      div:nth-child(6) {
+        margin-left: calc(var(--widthRate) * 169);
+      }
+
+      .diceImgSection {
+        width: calc(var(--heightRate) * 200);
+        height: calc(var(--heightRate) * 200);
+        display: flex;
+      }
+    }
+
+    .rollButtonSection {
+      width: calc(var(--widthRate) * 300);
+      margin-left: calc(var(--widthRate) * 82);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      ::v-deep .el-button {
+        width: inherit;
+        padding: 0;
+        height: calc(var(--heightRate) * 260);
+        border-radius: calc(var(--heightRate) * 20);
+        background: rgba(222, 87, 87, 1);
+        border: 1px solid rgba(71, 72, 76, 1);
+        word-wrap: break-word;
+        word-break: normal;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+          margin: 0;
+          padding: 0;
+          word-break: normal;
+          justify-content: center;
+          width: auto;
+          display: block;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          width: calc(var(--widthRate) * 270);
+          height: calc(var(--heightRate) * 180);
+          font-size: calc(var(--heightRate) * 80);
+          color: rgba(242, 242, 242, 1);
+          line-height: calc(var(--heightRate) * 100);
+        }
       }
     }
   }

@@ -15,11 +15,14 @@ export const createPlayer = (params) => {
     })
 }
 
-export const fooo = () => {
+export const getResult = (value) => {
     // send request
     return requests({
         url: 'http://192.168.0.104:8080/game/result',
-        method: 'get',
+        method: 'post',
+        params: {
+            name: value
+        }
     })
 }
 
@@ -30,6 +33,17 @@ export const getRank = (value) => {
         method: 'post',
         params: {
             number: value
+        }
+    })
+}
+
+export const getSingle = (value) => {
+    // send request
+    return requests({
+        url: 'http://192.168.0.104:8080/user/result',
+        method: 'post',
+        params: {
+            name: value
         }
     })
 }
