@@ -7,10 +7,28 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         playerRank: [],
-        singleRank: {},
+        singleRank: {
+            playerName: "Rank",
+                prize: []
+        },
         resultDiceNumArr:[],
-        playerNow: 0,
+        playerNow: -1,
         playerAmount: 0,
+        prizeName: [     
+            "yixiu",
+            "erju",
+            "sijin",
+            "sanhong",
+            "straight6",
+            "redotfour",
+            "blackdot5",
+            "redotfive",
+            "blackdot6",
+            "blossomone",
+            "allaroundsix",
+            "icing",
+            "null"
+        ],
         prizeRealName: [
             "yi XIU",
             "er JU",
@@ -23,7 +41,8 @@ export default new Vuex.Store({
             "blackdot 6",
             "blossom ONE",
             "allaround SIX",
-            "icing 4+2"
+            "icing 4+2",
+            "poor luck"
         ],
         prizeImgUrl: [
             "yiXIU.svg",
@@ -50,10 +69,19 @@ export default new Vuex.Store({
         },
         changePlayerNow(state, playerNum) {
             state.playerNow = playerNum
-      }
+        },
+        clearSingleRank(state) { 
+            state.singleRank = {
+                playerName: "Rank",
+                prize: []
+            }
+        },
+        clearResultDiceNumArr(state) {
+            state.resultDiceNumArr = []
+        }
   },
     actions: {
-        getRan({ commit, state}, amount) {
+        getRan({state}, amount) {
             let player = {};
             getRank(amount).then((res) => {
                 state.playerRank.splice(0, this.state.playerRank.length)
@@ -78,15 +106,17 @@ export default new Vuex.Store({
         getNewRun({ commit, state }, playerNum) {
             getClear().then((res) => {
                 commit("changePlayerAmount", playerNum)
-                state.playerNow = 1;
-                this.dispatch("getSinglePlayerRank", 1)
+                commit("changePlayerNow", 0)
+                commit("clearSingleRank")
+                commit("clearResultDiceNumArr")
+                // this.dispatch("getSinglePlayerRank", 1)
                 console.log(`getClear res.msg`, res.msg);
             }).catch((err) => {
                 console.log(`err`, err);
             })
         },
 
-        getSinglePlayerRank({ commit, state }, playerName) {
+        getSinglePlayerRank({state}, playerName) {
             let player = {
                 playerName: "",
                 prize: []
@@ -103,7 +133,7 @@ export default new Vuex.Store({
                     if (v != '0' & tempKeyArr[j] != "name") {
                         singlePrize.imgUrl = state.prizeImgUrl[j-1]
                         singlePrize.number = v
-                        player.prize.push({...singlePrize})
+                        player.prize.unshift({...singlePrize})
                     }
                 })
                 state.singleRank = { ...player }
@@ -113,14 +143,15 @@ export default new Vuex.Store({
             })
         },
 
-        getNextResult({ commit, state }) {
+        getNextResult({state}) {
             if (state.playerNow == state.playerAmount) {
                 state.playerNow = 1
             }
-            // else {
-            //     state.playerNow++
-            // }
+            else {
+                state.playerNow++
+            }
             getResult(state.playerNow).then((res) => {
+                console.log(`res.data`, res.data);
                 state.resultDiceNumArr = res.data.resultNum.split("")
                 console.log(`state.resultDiceNumArr`, state.resultDiceNumArr);
                 this.dispatch("getSinglePlayerRank", state.playerNow)

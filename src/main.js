@@ -30,7 +30,7 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Select)
 Vue.use(Option)
-Vue.prototype.$loading = Loading
+Vue.prototype.$elLoading = Loading
 Vue.prototype.$message = Message
 Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm

@@ -215,6 +215,9 @@ export default {
     diceNumArr: function () {
       return this.$store.state.resultDiceNumArr;
     },
+    playerNow: function () {
+      return this.$store.state.playerNow;
+    },
   },
   methods: {
     async getRan() {
@@ -244,42 +247,62 @@ export default {
             confirmButtonClass: "confirmButton",
             cancelButtonClass: "cancelButton",
           }
-        )
-          .then(() => {
-            this.restartVisible = false;
-            // let loadingInstance = this.$loading({
-            //   lock: true,
-            //   text: "Loading",
-            //   spinner: "el-icon-loading",
-            //   background: "rgba(255, 255, 255, 0.5)",
-            // });
-            this.$store.dispatch("getNewRun", p);
-            this.$message({
-              type: "success",
-              message: "The game is being initialized...",
-            });
-            //   .then(() => {
-            //     loadingInstance.close();
-            //   })
-            //   .catch((err) => {
-            //     console.log(`NewRunErr: `, err);
-            //   });
-          })
-          .catch((action) => {});
+        ).then(() => {
+          this.restartVisible = false;
+          const loading = this.startLoading("Creating...");
+          setTimeout(() => {
+            this.$store
+              .dispatch("getNewRun", p)
+              .then(() => {
+                setTimeout(() => {
+                  this.endLoading(loading);
+                  this.$message({
+                    type: "success",
+                    message: "The game is being initialized!",
+                  });
+                }, 400);
+              })
+              .catch((action) => {});
+          }, 300);
+        });
       }
     },
 
-    async getNextPlayerResults() {
-      this.$message({
-        type: "success",
-        message: "The game is going...",
-      });
-      await this.$store.dispatch("getNextResult");
-      this.$message({
-        type: "success",
-        message: "The game is on!",
-      });
+    getNextPlayerResults() {
+      if (this.playerNow == -1) {
+        this.restartVisible = true;
+        this.$message({
+          type: "error",
+          message: "The number of players is not set yet!",
+        });
+      } else {
+        const loading = this.startLoading("Rolling...");
+        setTimeout(() => {
+          this.$store.dispatch("getNextResult").then(() => {
+            setTimeout(() => {
+              this.endLoading(loading);
+            }, 600);
+          });
+        }, 300);
+      }
     },
+
+    startLoading(loadingText) {
+      const loading = this.$elLoading.service({
+        lock: true,
+        target: ".homePage",
+        text: loadingText,
+        background: "rgba(200, 200, 200, 1)",
+      });
+      return loading;
+    },
+
+    endLoading(loading) {
+      loading.close();
+    },
+  },
+  created() {
+    this.restartVisible = true;
   },
 };
 </script>
@@ -361,7 +384,8 @@ export default {
 
       .prizeSection {
         display: flex;
-        border-radius: calc(var(--heightRate) * 40) calc(var(--heightRate) * 40) 0 0;
+        border-radius: calc(var(--heightRate) * 40) calc(var(--heightRate) * 40)
+          0 0;
         background-color: #dfdfdf;
 
         ::v-deep .el-table__body-wrapper {
@@ -370,7 +394,9 @@ export default {
           }
 
           &::-webkit-scrollbar-track {
-            border-radius: calc(var(--heightRate) * 1); /*滚动条的背景区域的圆角*/
+            border-radius: calc(
+              var(--heightRate) * 1
+            ); /*滚动条的背景区域的圆角*/
             background-color: #e5e5e5; /*滚动条的背景颜色*/
           }
 
@@ -392,7 +418,7 @@ export default {
             }
 
             tbody tr {
-                background-color: #dfdfdf;
+              background-color: #dfdfdf;
             }
 
             tbody td:first-child .cell {
@@ -738,6 +764,37 @@ export default {
         border-color: #4d4747;
         background-color: #de5757;
       }
+    }
+  }
+
+  ::v-deep .el-loading-spinner {
+    width: calc(var(--widthRate) * 420);
+    height: calc(var(--heightRate) * 550);
+    top: calc(50% - var(--widthRate) * 210);
+    left: calc(50% - var(--heightRate) * 225);
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: calc(var(--heightRate) * 2) solid #757575;
+    border-radius: calc(var(--heightRate) * 20);
+    box-shadow: calc(var(--heightRate) * 6) calc(var(--heightRate) * 30)
+      calc(var(--heightRate) * 52) 0 #383737d2;
+
+    .circular {
+      width: calc(var(--heightRate) * 180);
+      height: calc(var(--heightRate) * 180);
+      margin-bottom: calc(var(--heightRate) * 100);
+      .path {
+        stroke: #de5757;
+      }
+    }
+
+    .el-loading-text {
+      font-family: "HarmonyOS_Sans_SC_Black";
+      font-size: calc(var(--heightRate) * 60);
+      color: #de5757;
     }
   }
 }
