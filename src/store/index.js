@@ -11,6 +11,11 @@ export default new Vuex.Store({
             playerName: "Rank",
                 prize: []
         },
+        prizeNow: {
+            imgUrl: "blank.svg",
+            prizeName:"poor luck"
+        },
+        poorLuck: false,
         resultDiceNumArr:[],
         playerNow: -1,
         playerAmount: 0,
@@ -27,7 +32,7 @@ export default new Vuex.Store({
             "blossomone",
             "allaroundsix",
             "icing",
-            "null"
+            "NULL"
         ],
         prizeRealName: [
             "yi XIU",
@@ -152,6 +157,17 @@ export default new Vuex.Store({
             }
             getResult(state.playerNow).then((res) => {
                 console.log(`res.data`, res.data);
+                state.prizeName.forEach((p, i) => {
+                    if (res.data.resultName == p) {
+                        if (res.data.resultName == "NULL") {
+                            state.poorLuck = true;
+                        } else {
+                            state.poorLuck = false;
+                        }
+                        state.prizeNow.imgUrl = state.prizeImgUrl[i]
+                        state.prizeNow.prizeName = state.prizeRealName[i]
+                    }
+                })
                 state.resultDiceNumArr = res.data.resultNum.split("")
                 console.log(`state.resultDiceNumArr`, state.resultDiceNumArr);
                 this.dispatch("getSinglePlayerRank", state.playerNow)

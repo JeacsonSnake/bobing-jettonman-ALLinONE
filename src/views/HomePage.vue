@@ -39,7 +39,7 @@
           :data="singleRankData.prize"
           class="prizeSection"
           :height="`calc(var(--heightRate) * 280)`"
-          empty-text="No Data yet"
+          empty-text="No Prize yet"
           :show-header="false"
         >
           <el-table-column property="imgUrl" width="40">
@@ -156,6 +156,17 @@
         >©Jeacson_She & Eric_Zhao @2022 all rights reserved.</span
       >
     </el-dialog>
+
+    <el-dialog
+      :visible.sync="prizeResultVisible"
+      class="prizeResultLayer"
+      center
+    >
+      <div class="prizeResultSection">
+        <img :src="require(`../assets/img/${this.prizeNow.imgUrl}`)" alt="" />
+      </div>
+      <span slot="footer" :class="{'poorLuck': poorLuck}"> {{ this.prizeNow.prizeName }} ! </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -164,6 +175,7 @@ export default {
   data() {
     return {
       loading: false,
+      prizeResultVisible: false,
       aboutVisible: false,
       rulesVisible: false,
       rankVisible: false,
@@ -218,6 +230,12 @@ export default {
     playerNow: function () {
       return this.$store.state.playerNow;
     },
+    prizeNow: function () {
+      return this.$store.state.prizeNow;
+    },
+    poorLuck: function() {
+        return this.$store.state.poorLuck;
+    }
   },
   methods: {
     async getRan() {
@@ -278,11 +296,18 @@ export default {
       } else {
         const loading = this.startLoading("Rolling...");
         setTimeout(() => {
-          this.$store.dispatch("getNextResult").then(() => {
-            setTimeout(() => {
-              this.endLoading(loading);
-            }, 600);
-          });
+          this.$store
+            .dispatch("getNextResult")
+            .then(() => {
+              setTimeout(() => {
+                this.endLoading(loading);
+              }, 400);
+            })
+            .then(() => {
+              setTimeout(() => {
+                this.prizeResultVisible = true;
+              }, 700);
+            });
         }, 300);
       }
     },
@@ -303,6 +328,7 @@ export default {
   },
   created() {
     this.restartVisible = true;
+    // this.prizeResultVisible = true;
   },
 };
 </script>
@@ -763,6 +789,45 @@ export default {
         color: #f2f2f2;
         border-color: #4d4747;
         background-color: #de5757;
+      }
+    }
+  }
+
+  .prizeResultLayer {
+    ::v-deep .el-dialog {
+      width: calc(var(--widthRate) * 420);
+      height: calc(var(--heightRate) * 550);
+      margin: 0;
+      margin-top: calc(var(--heightRate) * 265) !important;
+      margin-bottom: calc(var(--heightRate) * 265) !important;
+      margin-left: calc(var(--widthRate) * 750);
+      background-color: #f0f0f0;
+      border-radius: calc(var(--heightRate) * 20);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ::v-deep .el-dialog__body,
+    .prizeResultSection {
+      padding: 0;
+      margin: 0;
+      width: calc(var(--widthRate) * 250);
+      height: calc(var(--heightRate) * 250);
+      display: flex;
+      justify-content: center;
+    }
+
+    ::v-deep .el-dialog__footer {
+      margin: 0;
+      padding: 0;
+      padding-top: calc(var(--heightRate) * 50);
+      font-family: "HarmonyOS_Sans_SC_Black";
+      font-size: calc(var(--heightRate) * 70);
+      color: #de5757;
+      .poorLuck {
+        color: #757575;
       }
     }
   }
