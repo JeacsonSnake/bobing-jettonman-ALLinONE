@@ -11,7 +11,8 @@ import {
     Option,
     Message,
     MessageBox,
-    Loading
+    Loading,
+    Tooltip
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
@@ -30,6 +31,7 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Tooltip)
 Vue.prototype.$elLoading = Loading
 Vue.prototype.$message = Message
 Vue.prototype.$alert = MessageBox.alert

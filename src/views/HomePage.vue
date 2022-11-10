@@ -145,12 +145,26 @@
       <div class="aboutSection">
         <span class="aboutSection_Title">Front-end Design: </span>
         <span class="aboutSection_Name">Jeacson_She</span>
-        <i class="el-icon-info"></i>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="Go to Github"
+          placement="top"
+        >
+          <i class="el-icon-info" @click="jumpFrontEnd()"></i>
+        </el-tooltip>
       </div>
       <div class="aboutSection">
         <span class="aboutSection_Title">Back-end Design: </span>
         <span class="aboutSection_Name">Eric_Zhao</span>
-        <i class="el-icon-info"></i>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="Go to Github"
+          placement="top"
+        >
+          <i class="el-icon-info" @click="jumpBackEnd()"></i>
+        </el-tooltip>
       </div>
       <span slot="footer"
         >©Jeacson_She & Eric_Zhao @2022 all rights reserved.</span
@@ -161,12 +175,62 @@
       :visible.sync="prizeResultVisible"
       class="prizeResultLayer"
       center
+      :modal="false"
     >
       <div class="prizeResultSection">
         <img :src="require(`../assets/img/${this.prizeNow.imgUrl}`)" alt="" />
       </div>
-      <span slot="footer" :class="{'poorLuck': poorLuck}"> {{ this.prizeNow.prizeName }} ! </span>
+      <span slot="footer" :class="{ poorLuck: poorLuck }">
+        {{ this.prizeNow.prizeName }} !
+      </span>
     </el-dialog>
+
+    <div class="welcomePage">
+      <el-dialog
+        title="Welcome to Bobing!"
+        :visible.sync="welcomeVisible"
+        class="welcomeLayer"
+        center
+        :show-close="false"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+      >
+        <div class="welcomeSection">
+          <div class="rootSection">
+            <span class="title">Roots of Bobing:</span>
+            <div class="info">
+              <span class="intro">
+                The custom of "Bobing" in Chinese Traditional Festivals:
+                Mid-Autumn Festival was firstly originated in Xiamen, Fujian
+                Province, and then prevailed in the southern part of Fujian
+                Province and Taiwan Province. The rules of this game are simple
+                and fair. It is full of competition suspense and life interest.
+                It has always been loved by the general public.
+              </span>
+            </div>
+          </div>
+          <div class="ruleSection">
+            <span class="title">How to play?</span>
+            <div class="info mb">
+              <span class="intro">
+                For example, in a multiplayer game, after selecting the number
+                of players and deciding the order of player, click the button to
+                roll the dice. If player match the points in the table below,
+                the player will win a prize.
+              </span>
+              <img src="../../public/image/rule.png" alt="" class="ruleImg" />
+            </div>
+          </div>
+        </div>
+
+        <div slot="footer">
+          <div class="title">Want's to play?</div>
+          <el-button class="btn" @click="restartVisible = true"
+            >Click HERE!</el-button
+          >
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -180,6 +244,7 @@ export default {
       rulesVisible: false,
       rankVisible: false,
       restartVisible: false,
+      welcomeVisible: false,
       playerNum: "",
       playerNumOptions: [
         {
@@ -233,11 +298,19 @@ export default {
     prizeNow: function () {
       return this.$store.state.prizeNow;
     },
-    poorLuck: function() {
-        return this.$store.state.poorLuck;
-    }
+    poorLuck: function () {
+      return this.$store.state.poorLuck;
+    },
   },
   methods: {
+    jumpFrontEnd() {
+      window.open("https://github.com/JeacsonSnake/bobing-jettonman", "_blank");
+    },
+
+    jumpBackEnd() {
+      window.open("https://github.com/EricZhao666/Bobing", "_blank");
+    },
+
     async getRan() {
       this.rankVisible = true;
       this.loading = true;
@@ -266,7 +339,10 @@ export default {
             cancelButtonClass: "cancelButton",
           }
         ).then(() => {
-          this.restartVisible = false;
+          setTimeout(() => {
+            this.restartVisible = false;
+            this.welcomeVisible = false;
+          }, 100);
           const loading = this.startLoading("Creating...");
           setTimeout(() => {
             this.$store
@@ -327,8 +403,8 @@ export default {
     },
   },
   created() {
-    this.restartVisible = true;
-    // this.prizeResultVisible = true;
+    // this.restartVisible = true;
+    this.welcomeVisible = true;
   },
 };
 </script>
@@ -539,6 +615,16 @@ export default {
     }
   }
 
+  footer {
+    margin-top: calc(var(--heightRate) * 141);
+    background-color: #ccccccb0;
+
+    span {
+      font-size: calc(var(--heightRate) * 14);
+      font-family: "HarmonyOS_Sans_SC_Medium";
+    }
+  }
+
   .aboutLayer {
     ::v-deep .el-dialog {
       width: calc(var(--widthRate) * 1280);
@@ -594,13 +680,17 @@ export default {
           calc(var(--heightRate) * 9) rgba(0, 0, 0, 0.25);
         padding-right: calc(var(--heightRate) * 40);
       }
+
+      .item {
+        cursor: pointer;
+      }
     }
   }
 
   .rulesLayer {
     ::v-deep .el-dialog {
       width: calc(var(--widthRate) * 1280);
-      height: calc(var(--heightRate) * 1300);
+      height: calc(var(--heightRate) * 1430);
       margin-top: calc(var(--heightRate) * 60) !important;
       margin-bottom: calc(var(--heightRate) * 60) !important;
       margin-left: calc(var(--widthRate) * 320);
@@ -636,7 +726,7 @@ export default {
       padding: 0;
       margin: 0;
       width: calc(var(--widthRate) * 1110);
-      height: calc(var(--heightRate) * 1090);
+      height: calc(var(--heightRate) * 1210);
       border-radius: calc(var(--heightRate) * 20);
       border: 2px solid rgba(77, 71, 71, 1);
       display: flex;
@@ -652,7 +742,7 @@ export default {
 
       .ruleImg {
         width: calc(var(--widthRate) * 1053);
-        height: calc(var(--heightRate) * 923);
+        height: calc(var(--heightRate) * 1040);
       }
     }
 
@@ -809,6 +899,13 @@ export default {
       justify-content: center;
     }
 
+    ::v-deep .el-dialog__header {
+      .el-dialog__headerbtn:focus .el-dialog__close,
+      .el-dialog__headerbtn:hover .el-dialog__close {
+        color: #de5757;
+      }
+    }
+
     ::v-deep .el-dialog__body,
     .prizeResultSection {
       padding: 0;
@@ -828,6 +925,136 @@ export default {
       color: #de5757;
       .poorLuck {
         color: #757575;
+      }
+    }
+  }
+
+  .welcomePage {
+    ::v-deep .el-dialog__wrapper {
+      background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
+      background-color: rgb(228, 228, 228);
+    }
+
+    ::v-deep .el-dialog {
+      width: calc(var(--widthRate) * 1280);
+      height: calc(var(--heightRate) * 2357);
+      margin-top: calc(var(--heightRate) * 60) !important;
+      margin-bottom: calc(var(--heightRate) * 60) !important;
+      margin-left: calc(var(--widthRate) * 320);
+      border-radius: calc(var(--heightRate) * 20);
+      background: rgba(240, 240, 240, 1);
+    }
+
+    ::v-deep .el-dialog__header {
+      padding: 0;
+      padding-top: calc(var(--heightRate) * 100);
+
+      .el-dialog__headerbtn:focus .el-dialog__close,
+      .el-dialog__headerbtn:hover .el-dialog__close {
+        color: #de5757;
+      }
+
+      .el-dialog__title {
+        font-family: "HarmonyOS_Sans_SC_Black";
+        font-size: calc(var(--heightRate) * 72);
+        color: #757575;
+      }
+    }
+
+    ::v-deep .el-dialog__body {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      padding-top: calc(var(--heightRate) * 66);
+    }
+
+    .welcomeSection {
+      padding: 0;
+      margin: 0;
+      width: calc(var(--widthRate) * 1110);
+      height: calc(var(--heightRate) * 1550);
+
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+
+      .rootSection,
+      .ruleSection {
+        width: 100%;
+        border-radius: calc(var(--heightRate) * 20);
+        border: 2px solid rgba(77, 71, 71, 1);
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+
+        .title {
+          font-family: "HarmonyOS_Sans_SC_Black";
+          font-size: calc(var(--heightRate) * 60);
+          color: #757575;
+          padding-left: calc(var(--widthRate) * 16);
+        }
+
+        .info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .intro {
+          width: calc(var(--widthRate) * 1070);
+          padding: calc(var(--heightRate) * 10) 0;
+          word-wrap: break-word;
+          word-break: normal;
+        }
+      }
+
+      .ruleSection {
+        margin-top: calc(var(--heightRate) * 52);
+        .mb {
+          margin-bottom: calc(var(--heightRate) * 20);
+        }
+      }
+
+      .ruleImg {
+        width: calc(var(--widthRate) * 1053);
+        height: calc(var(--heightRate) * 1040);
+      }
+    }
+
+    ::v-deep .el-dialog__footer {
+      padding: 0;
+      padding-top: calc(var(--heightRate) * 140);
+      font-size: calc(var(--heightRate) * 14);
+
+      .title {
+        font-family: "HarmonyOS_Sans_SC_Black";
+        font-size: calc(var(--heightRate) * 100);
+        color: #757575;
+        padding-left: calc(var(--widthRate) * 16);
+        padding-bottom: calc(var(--heightRate) * 100);
+      }
+
+      .btn {
+        width: calc(var(--widthRate) * 555);
+        height: calc(var(--heightRate) * 120);
+        padding: 0;
+        color: #f2f2f2;
+        border-color: #4d4747;
+        background-color: #de5757;
+        font-family: "HarmonyOS_Sans_SC_Bold";
+        font-size: calc(var(--heightRate) * 80);
+        line-height: calc(var(--heightRate) * 80);
+        border: calc(var(--heightRate) * 4) solid rgba(71, 72, 76, 1);
+      }
+
+      .el-button:focus,
+      .el-button:hover {
+        color: #fffefe;
+        border-color: #232222;
+        background-color: #ad3e3e;
       }
     }
   }
