@@ -33,7 +33,7 @@
     <div class="bodySection">
       <div class="singleRankSection">
         <div class="playerName">
-          <span>{{ singleRankData.playerName }}</span>
+          <span>{{singleRankData.playerName == 'Rank' ? singleRankData.playerName : `Player ${singleRankData.playerName}`}}</span>
         </div>
         <el-table
           :data="singleRankData.prize"
@@ -52,7 +52,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column property="number" width="100"> </el-table-column>
+          <el-table-column property="prizeGetNum" width="100"> </el-table-column>
         </el-table>
       </div>
       <div class="diceDisplaySection">
@@ -61,6 +61,7 @@
         </div>
       </div>
       <div class="rollButtonSection">
+        <div>Player Next: {{playerNow == playerAmount || playerNow == '0'? `Player 1` :`Player ${playerNow + 1}` }} </div>
         <el-button @click="getNextPlayerResults()"> Next To ROLL! </el-button>
       </div>
     </div>
@@ -82,12 +83,12 @@
         empty-text="No Data yet"
       >
         <el-table-column
-          property="playername"
+          property="playerName"
           label="Player Name"
           fixed
           width="150"
         ></el-table-column>
-        <el-table-column property="prize" label="Prize"></el-table-column>
+        <el-table-column property="prize" label="Prize" :formatter="playerRankDataFormatter"></el-table-column>
       </el-table>
     </el-dialog>
 
@@ -301,6 +302,9 @@ export default {
     poorLuck: function () {
       return this.$store.state.poorLuck;
     },
+    playerAmount: function () {
+        return this.$store.state.playerAmount;
+    }
   },
   methods: {
     jumpFrontEnd() {
@@ -311,12 +315,8 @@ export default {
       window.open("https://github.com/EricZhao666/Bobing", "_blank");
     },
 
-    async getRan() {
+    getRan() {
       this.rankVisible = true;
-      this.loading = true;
-      let pNum = this.$store.state.playerAmount;
-      await this.$store.dispatch("getRan", pNum);
-      this.loading = false;
     },
 
     getRestart() {
@@ -401,6 +401,27 @@ export default {
     endLoading(loading) {
       loading.close();
     },
+
+    playerRankDataFormatter(row, column, cellValue, index) {
+        // console.log(row);
+        // console.log(column);
+        // console.log("cellvalue", cellValue);
+        // console.log(index);
+        let formattedCellValue = ''
+        cellValue.forEach((singlePrizeObj, index) => {
+            let prizeRealName = ''
+            this.$store.state.prizeName.forEach((SingleRealName, index) => {
+                if (SingleRealName === singlePrizeObj.prizeName) {
+                    prizeRealName = this.$store.state.prizeRealName[index]
+                }
+            })
+            formattedCellValue += prizeRealName
+            formattedCellValue += '*'
+            formattedCellValue += singlePrizeObj.prizeGetNum
+            formattedCellValue += ", "
+        });
+        return formattedCellValue.slice(0, -2)
+    }
   },
   created() {
     // this.restartVisible = true;
@@ -582,6 +603,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
 
       ::v-deep .el-button {
         width: inherit;

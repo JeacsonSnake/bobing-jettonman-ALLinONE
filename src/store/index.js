@@ -1,53 +1,65 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getRank, getClear, getSingle, getResult } from '../api'
+import {
+    getResult
+} from '../util/result'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
         playerRank: [],
+        singleRankTemplate: {
+            playerName: "",
+            prize: []
+        },
+        isONFirst: true,
         singleRank: {
-            playerName: "Rank",
-                prize: []
+            playerName: "",
+            prize: []
+        },
+        singlePrizeTemplate: {
+            prizeName: "",
+            imgUrl: "",
+            prizeGetNum: 0
         },
         prizeNow: {
             imgUrl: "blank.svg",
-            prizeName:"poor luck"
+            prizeName: "博空"
         },
         poorLuck: false,
-        resultDiceNumArr:[],
+        resultDiceNumArr: [],
         playerNow: -1,
         playerAmount: 0,
-        prizeName: [     
-            "yixiu",
-            "erju",
-            "sijin",
-            "sanhong",
-            "straight6",
-            "redotfour",
-            "blackdot5",
-            "redotfive",
-            "blackdot6",
-            "blossomone",
-            "allaroundsix",
-            "icing",
+        prizeName: [
+            "YiXiu",
+            "ErJu",
+            "SiJin",
+            "SanHong",
+            "DuiTang",
+            "SiDianHong",
+            "WuBoHei",
+            "WuBoHong",
+            "LiuBoHei",
+            "BianDiJing",
+            "LiuBoHong",
+            "ZhuangYuanChaJinHua",
             "NULL"
         ],
         prizeRealName: [
-            "yi XIU",
-            "er JU",
-            "si JIN",
-            "san HONG",
-            "straight 6",
-            "redot FOUR",
-            "blackdot 5",
-            "redot FIVE",
-            "blackdot 6",
-            "blossom ONE",
-            "allaround SIX",
-            "icing 4+2",
-            "poor luck"
+            "一秀",
+            "二举",
+            "四进",
+            "三红",
+            "对堂",
+            "四点红",
+            "五子登科",
+            "红五王",
+            "六博黑",
+            "遍地锦",
+            "六博红",
+            "状元插金花",
+            "博空"
         ],
         prizeImgUrl: [
             "yiXIU.svg",
@@ -65,9 +77,8 @@ export default new Vuex.Store({
             "blank.svg"
         ],
 
-  },
-  getters: {
-  },
+    },
+    getters: {},
     mutations: {
         changePlayerAmount(state, playerNum) {
             state.playerAmount = playerNum
@@ -75,107 +86,198 @@ export default new Vuex.Store({
         changePlayerNow(state, playerNum) {
             state.playerNow = playerNum
         },
-        clearSingleRank(state) { 
+        clearSingleRank(state) {
             state.singleRank = {
                 playerName: "Rank",
                 prize: []
             }
         },
+        setSingleRank(state, {
+            playerName,
+            prize
+        }) {
+            state.singleRank = {
+                playerName,
+                prize
+            }
+            console.log('state.singleRank', state.singleRank);
+        },
         clearResultDiceNumArr(state) {
             state.resultDiceNumArr = []
-        }
-  },
+        },
+        setisONFirst(state, value) {
+            state.isONFirst = value
+        },
+    },
     actions: {
-        getRan({state}, amount) {
-            let player = {};
-            getRank(amount).then((res) => {
-                state.playerRank.splice(0, this.state.playerRank.length)
-                res.data.forEach((rank, i) => {
-                    player.playername = "player " + rank.name
-                    player.prize = ""
-                    let tempKeyArr = Object.keys(rank)
-                    let tempValueArr = Object.values(rank)
-                    tempValueArr.forEach((v, j) => {
-                        if (v != '0' & tempKeyArr[j] != "name") {
-                            player.prize += " "+ state.prizeRealName[j-1] + " * " + v +","
-                        }
-                    })
-                    player.prize = player.prize.slice(1, player.prize.length - 1)
-                    state.playerRank.push({...player})
-                });
-            }).catch((err) => {
-                console.log(`getRankerr`, err);
-            })
+        getRan({
+            state
+        }, amount) {
+            // let player = {};
+            // getRank(amount).then((res) => {
+            //     state.playerRank.splice(0, this.state.playerRank.length)
+            //     res.data.forEach((rank, i) => {
+            //         player.playername = "player " + rank.name
+            //         player.prize = ""
+            //         let tempKeyArr = Object.keys(rank)
+            //         let tempValueArr = Object.values(rank)
+            //         tempValueArr.forEach((v, j) => {
+            //             if (v != '0' & tempKeyArr[j] != "name") {
+            //                 player.prize += " "+ state.prizeRealName[j-1] + " * " + v +","
+            //             }
+            //         })
+            //         player.prize = player.prize.slice(1, player.prize.length - 1)
+            //         state.playerRank.push({...player})
+            //     });
+            // }).catch((err) => {
+            //     console.log(`getRankerr`, err);
+            // })
         },
 
-        getNewRun({ commit, state }, playerNum) {
-            getClear().then((res) => {
-                commit("changePlayerAmount", playerNum)
-                commit("changePlayerNow", 0)
-                commit("clearSingleRank")
-                commit("clearResultDiceNumArr")
-                // this.dispatch("getSinglePlayerRank", 1)
-                console.log(`getClear res.msg`, res.msg);
-            }).catch((err) => {
-                console.log(`err`, err);
-            })
-        },
+        getNewRun({
+            commit,
+            state
+        }, playerNum) {
 
-        getSinglePlayerRank({state}, playerName) {
-            let player = {
-                playerName: "",
-                prize: []
+            let localPlayersRank = JSON.parse(localStorage.getItem('Bobing_playersRank'))
+            if (localPlayersRank) {
+                localStorage.removeItem('Bobing_playersRank')
+
             }
-            let singlePrize = {
-                imgUrl: "",
-                number: 0
-            }
-            getSingle(playerName).then((res) => {
-                player.playerName = "player " + res.data[0].name
-                let tempKeyArr = Object.keys(res.data[0])
-                let tempValueArr = Object.values(res.data[0])
-                tempValueArr.forEach((v, j) => {
-                    if (v != '0' & tempKeyArr[j] != "name") {
-                        singlePrize.imgUrl = state.prizeImgUrl[j-1]
-                        singlePrize.number = v
-                        player.prize.unshift({...singlePrize})
-                    }
-                })
-                state.singleRank = { ...player }
-                console.log(`state.singleRank`, state.singleRank);
-            }).catch((err) => {
-                console.log(`getSingleRankerr`, err);
-            })
+            commit("changePlayerAmount", playerNum)
+            commit("changePlayerNow", 0)
+            commit("clearSingleRank")
+            commit("clearResultDiceNumArr")
+            commit("setisONFirst", true)
+            // this.dispatch("getSinglePlayerRank", 1)
+            // console.log(`getClear`);
+
+
         },
 
-        getNextResult({state}) {
+        getNextResult({
+            state
+        }) {
             if (state.playerNow == state.playerAmount) {
                 state.playerNow = 1
-            }
-            else {
+                this.commit("setisONFirst", false)
+
+            } else {
                 state.playerNow++
             }
-            getResult(state.playerNow).then((res) => {
-                console.log(`res.data`, res.data);
-                state.prizeName.forEach((p, i) => {
-                    if (res.data.resultName == p) {
-                        if (res.data.resultName == "NULL") {
-                            state.poorLuck = true;
-                        } else {
-                            state.poorLuck = false;
-                        }
-                        state.prizeNow.imgUrl = state.prizeImgUrl[i]
-                        state.prizeNow.prizeName = state.prizeRealName[i]
+            // getResult 返回结果
+            /*
+                {
+                    resultName: 与prizeName中变量名一致
+                    resultNum: "123532" 字符串
+                }
+            */
+            let rollingResult = getResult(state.isONFirst)
+            // console.log(`rollingResult`, rollingResult);
+            state.prizeName.forEach((p, i) => {
+                if (rollingResult.resultName == p) {
+                    if (rollingResult.resultName == "NULL") {
+                        state.poorLuck = true;
+                    } else {
+                        state.poorLuck = false;
                     }
-                })
-                state.resultDiceNumArr = res.data.resultNum.split("")
-                console.log(`state.resultDiceNumArr`, state.resultDiceNumArr);
-                this.dispatch("getSinglePlayerRank", state.playerNow)
-            }).catch((err) => {
-                
+                    state.prizeNow.imgUrl = state.prizeImgUrl[i]
+                    state.prizeNow.prizeName = state.prizeRealName[i]
+                }
             })
-        }
-  },
-  modules: {
-  }
+            state.resultDiceNumArr = rollingResult.resultNum.split("")
+            // console.log(`state.resultDiceNumArr`, state.resultDiceNumArr);
+            this.dispatch("setPlayerRank", rollingResult)
+
+        },
+
+        setPlayerRank({
+            state
+        }, rollingResult) {
+            if (state.poorLuck === true) {
+                return
+            }
+            /*
+                singlePrizeTemplate: {
+                    prizeName: "",
+                    imgUrl: "",
+                    prizeGetNum: 0
+                }
+                singleRankTemplate: {
+                    playerName: "",
+                    prize: []
+                },
+            */
+            let isPlayerSet = false
+            let isPrizeSet = false
+            state.playerRank.forEach((singleRankObj, index, playerRank) => {
+                if (isPlayerSet) {
+                    return
+                }
+                if (singleRankObj.playerName === state.playerNow) {
+                    singleRankObj.prize.forEach((singlePrizeObj, index, singlePrize) => {
+                        if (isPrizeSet) {
+                            return
+                        }
+                        if (singlePrizeObj.prizeName === rollingResult.resultName) {
+                            isPrizeSet = true
+                            singlePrizeObj.prizeGetNum++
+
+                        }
+                    })
+                    if (!isPrizeSet) {
+                        let singlePrize = JSON.parse(JSON.stringify(state.singlePrizeTemplate))
+                        singlePrize.prizeName = rollingResult.resultName
+                        singlePrize.imgUrl = state.prizeNow.imgUrl
+                        singlePrize.prizeGetNum++
+                        singleRankObj.prize.push(singlePrize)
+                    }
+                    isPlayerSet = true
+                }
+            });
+            if (!isPlayerSet) {
+                // console.log('111');
+                let singlePrize = JSON.parse(JSON.stringify(state.singlePrizeTemplate))
+                let singleRank = JSON.parse(JSON.stringify(state.singleRankTemplate))
+                singlePrize.prizeName = rollingResult.resultName
+                singlePrize.imgUrl = state.prizeNow.imgUrl
+                singlePrize.prizeGetNum++
+                singleRank.prize.push(singlePrize)
+                singleRank.playerName = state.playerNow
+                state.playerRank.push(singleRank)
+                console.log("singlePrize", singlePrize);
+
+            }
+            console.log("12345");
+            this.dispatch("setNowPlayerRank")
+            console.log("4567");
+
+        },
+
+        setNowPlayerRank({
+            state
+        }) {
+            let displayPrize = []
+            console.log("2323555",state.playerRank);
+
+            state.playerRank.forEach((singleRankObj, index) => {
+                if (displayPrize.length != 0) {
+                    console.log('?', displayPrize);
+                    return
+                }
+                console.log(singleRankObj);
+
+                if (singleRankObj.playerName == state.playerNow) {
+                    displayPrize = singleRankObj.prize
+                }
+            })
+
+            this.commit('setSingleRank', {
+                playerName: state.playerNow,
+                prize: displayPrize
+            })
+        },
+    },
+
+    modules: {}
 })
