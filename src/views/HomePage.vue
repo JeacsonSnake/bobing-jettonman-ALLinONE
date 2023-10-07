@@ -3,10 +3,10 @@
     <nav>
       <div class="navBtnGroup">
         <el-button type="text" icon="el-icon-s-data" @click="getRan()">
-          Rank
+          排行榜
         </el-button>
         <el-button type="text" icon="el-icon-refresh" @click="getRestart()">
-          REstart
+          重开一局
         </el-button>
       </div>
       <div class="navBtnGroup">
@@ -15,14 +15,14 @@
           icon="el-icon-tickets"
           @click="rulesVisible = true"
         >
-          Rule
+          博饼规则
         </el-button>
         <el-button
           type="text"
           icon="el-icon-ice-cream-round"
           @click="aboutVisible = true"
         >
-          About
+          关于
         </el-button>
       </div>
     </nav>
@@ -33,13 +33,17 @@
     <div class="bodySection">
       <div class="singleRankSection">
         <div class="playerName">
-          <span>{{singleRankData.playerName == 'Rank' ? singleRankData.playerName : `Player ${singleRankData.playerName}`}}</span>
+          <span>{{
+            singleRankData.playerName == "个人奖项"
+              ? singleRankData.playerName
+              : `玩家 ${singleRankData.playerName}`
+          }}</span>
         </div>
         <el-table
           :data="singleRankData.prize"
           class="prizeSection"
           :height="`calc(var(--heightRate) * 280)`"
-          empty-text="No Prize yet"
+          empty-text="还未获奖"
           :show-header="false"
         >
           <el-table-column property="imgUrl" width="40">
@@ -52,7 +56,8 @@
               />
             </template>
           </el-table-column>
-          <el-table-column property="prizeGetNum" width="100"> </el-table-column>
+          <el-table-column property="prizeGetNum" width="100">
+          </el-table-column>
         </el-table>
       </div>
       <div class="diceDisplaySection">
@@ -61,12 +66,21 @@
         </div>
       </div>
       <div class="rollButtonSection">
-        <div>Player Next: {{playerNow == playerAmount || playerNow == '0'? `Player 1` :`Player ${playerNow + 1}` }} </div>
-        <el-button @click="getNextPlayerResults()"> Next To ROLL! </el-button>
+        <div>
+          下一位玩家为:
+          {{
+            playerNow == playerAmount || playerNow == "0"
+              ? `玩家 1`
+              : `玩家 ${playerNow + 1}`
+          }}
+        </div>
+        <el-button @click="getNextPlayerResults()"> 掷骰开博
+            <br>
+            下一位！ </el-button>
       </div>
     </div>
     <footer>
-      <span>© Jeacson_She & Eric_Zhao 2022 All rights Reserved.</span>
+      <span>© Jeacson_She 2023-present All rights Reserved.</span>
     </footer>
 
     <el-dialog
@@ -84,16 +98,20 @@
       >
         <el-table-column
           property="playerName"
-          label="Player Name"
+          label="玩家名"
           fixed
           width="150"
         ></el-table-column>
-        <el-table-column property="prize" label="Prize" :formatter="playerRankDataFormatter"></el-table-column>
+        <el-table-column
+          property="prize"
+          label="获得奖项"
+          :formatter="playerRankDataFormatter"
+        ></el-table-column>
       </el-table>
     </el-dialog>
 
     <el-dialog
-      title="Number of players"
+      title="定义玩家数量"
       :visible.sync="restartVisible"
       class="restartLayer"
       center
@@ -101,7 +119,7 @@
       <div class="restartSection">
         <el-select
           v-model="playerNum"
-          placeholder="Pleace Select"
+          placeholder="请选择(最多8人)"
           :popper-append-to-body="false"
           size="small"
         >
@@ -116,35 +134,32 @@
       </div>
 
       <el-button class="restartFooter" slot="footer" @click="start()"
-        >Start</el-button
+        >选好了！</el-button
       >
     </el-dialog>
 
     <el-dialog
-      title="How to Play?"
+      title="博饼怎么玩？"
       :visible.sync="rulesVisible"
       class="rulesLayer"
       center
     >
       <div class="ruleSection">
         <span class="ruleIntro">
-          For example, in a multiplayer game, after selecting the number of
-          players and deciding the order of player, click the button to roll the
-          dice. If player match the points in the table below, the player will
-          win a prize.
+          例如，在多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家符合下表中的点数，就能赢得奖品。
         </span>
         <img src="../../public/image/rule.png" alt="" class="ruleImg" />
       </div>
     </el-dialog>
 
     <el-dialog
-      title="About"
+      title="关于"
       :visible.sync="aboutVisible"
       class="aboutLayer"
       center
     >
       <div class="aboutSection">
-        <span class="aboutSection_Title">Front-end Design: </span>
+        <span class="aboutSection_Title">页面设计&网页开发: </span>
         <span class="aboutSection_Name">Jeacson_She</span>
         <el-tooltip
           class="item"
@@ -155,21 +170,7 @@
           <i class="el-icon-info" @click="jumpFrontEnd()"></i>
         </el-tooltip>
       </div>
-      <div class="aboutSection">
-        <span class="aboutSection_Title">Back-end Design: </span>
-        <span class="aboutSection_Name">Eric_Zhao</span>
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="Go to Github"
-          placement="top"
-        >
-          <i class="el-icon-info" @click="jumpBackEnd()"></i>
-        </el-tooltip>
-      </div>
-      <span slot="footer"
-        >©Jeacson_She & Eric_Zhao @2022 all rights reserved.</span
-      >
+      <span slot="footer">©Jeacson_She @2023-present all rights reserved.</span>
     </el-dialog>
 
     <el-dialog
@@ -188,7 +189,7 @@
 
     <div class="welcomePage">
       <el-dialog
-        title="Welcome to Bobing!"
+        title="欢迎来到博饼页面!"
         :visible.sync="welcomeVisible"
         class="welcomeLayer"
         center
@@ -198,26 +199,21 @@
       >
         <div class="welcomeSection">
           <div class="rootSection">
-            <span class="title">Roots of Bobing:</span>
+            <span class="title">啥是博饼？</span>
             <div class="info">
               <span class="intro">
-                The custom of "Bobing" in Chinese Traditional Festivals:
-                Mid-Autumn Festival was firstly originated in Xiamen, Fujian
-                Province, and then prevailed in the southern part of Fujian
-                Province and Taiwan Province. The rules of this game are simple
-                and fair. It is full of competition suspense and life interest.
-                It has always been loved by the general public.
+                "博饼
+                "是闽南地区在中秋节的一种传统习俗，它最早起源于福建厦门，后盛行于闽南地区和台湾省。游戏规则简单、公平，充满竞技悬念和生活情趣。一直深受分布在世界各地的广大群众喜爱。
               </span>
             </div>
           </div>
           <div class="ruleSection">
-            <span class="title">How to play?</span>
+            <span class="title">怎么玩?</span>
             <div class="info mb">
               <span class="intro">
-                For example, in a multiplayer game, after selecting the number
-                of players and deciding the order of player, click the button to
-                roll the dice. If player match the points in the table below,
-                the player will win a prize.
+                很简单。例如，在多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。
+                <br />
+                如果玩家符合下表中的点数，就能赢得奖品。
               </span>
               <img src="../../public/image/rule.png" alt="" class="ruleImg" />
             </div>
@@ -225,9 +221,9 @@
         </div>
 
         <div slot="footer">
-          <div class="title">Want's to play?</div>
+          <div class="title">即刻开始?</div>
           <el-button class="btn" @click="restartVisible = true"
-            >Click HERE!</el-button
+            >点我!</el-button
           >
         </div>
       </el-dialog>
@@ -303,8 +299,8 @@ export default {
       return this.$store.state.poorLuck;
     },
     playerAmount: function () {
-        return this.$store.state.playerAmount;
-    }
+      return this.$store.state.playerAmount;
+    },
   },
   methods: {
     jumpFrontEnd() {
@@ -326,39 +322,45 @@ export default {
     start() {
       let p = this.playerNum;
       if (p == "") {
-        this.$message.error("The number of people has not been chosen yet!");
+        this.$message.error("人数尚未确定！");
       } else {
-        this.$confirm(
-          "You're about to start a new round of games. Do you want to continue?",
-          "Attention",
-          {
-            distinguishCancelAndClose: true,
-            confirmButtonText: "confirm",
-            cancelButtonText: "cancel",
-            confirmButtonClass: "confirmButton",
-            cancelButtonClass: "cancelButton",
-          }
-        ).then(() => {
-          setTimeout(() => {
-            this.restartVisible = false;
-            this.welcomeVisible = false;
-          }, 100);
-          const loading = this.startLoading("Creating...");
-          setTimeout(() => {
-            this.$store
-              .dispatch("getNewRun", p)
-              .then(() => {
-                setTimeout(() => {
-                  this.endLoading(loading);
-                  this.$message({
-                    type: "success",
-                    message: "The game is being initialized!",
-                  });
-                }, 400);
-              })
-              .catch((action) => {});
-          }, 300);
-        });
+        this.$confirm("你将开启新一轮游戏，确定吗？", "注意", {
+          distinguishCancelAndClose: true,
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          confirmButtonClass: "confirmButton",
+          cancelButtonClass: "cancelButton",
+        })
+          .then(() => {
+            setTimeout(() => {
+              this.restartVisible = false;
+              this.welcomeVisible = false;
+            }, 100);
+            const loading = this.startLoading("创建中...");
+            setTimeout(() => {
+              this.$store
+                .dispatch("getNewRun", p)
+                .then(() => {
+                  setTimeout(() => {
+                    this.endLoading(loading);
+                    this.$message({
+                      type: "success",
+                      message: "已创建新一轮游戏!",
+                    });
+                  }, 400);
+                })
+                .catch((action) => {});
+            }, 300);
+          })
+          .catch((err) => {
+            // console.log(err);
+            if (err == "cancel") {
+              this.$message({
+                type: "info",
+                message: "已取消开启新一轮游戏",
+              });
+            }
+          });
       }
     },
 
@@ -370,7 +372,7 @@ export default {
           message: "The number of players is not set yet!",
         });
       } else {
-        const loading = this.startLoading("Rolling...");
+        const loading = this.startLoading("掷骰入碗...");
         setTimeout(() => {
           this.$store
             .dispatch("getNextResult")
@@ -403,25 +405,25 @@ export default {
     },
 
     playerRankDataFormatter(row, column, cellValue, index) {
-        // console.log(row);
-        // console.log(column);
-        // console.log("cellvalue", cellValue);
-        // console.log(index);
-        let formattedCellValue = ''
-        cellValue.forEach((singlePrizeObj, index) => {
-            let prizeRealName = ''
-            this.$store.state.prizeName.forEach((SingleRealName, index) => {
-                if (SingleRealName === singlePrizeObj.prizeName) {
-                    prizeRealName = this.$store.state.prizeRealName[index]
-                }
-            })
-            formattedCellValue += prizeRealName
-            formattedCellValue += '*'
-            formattedCellValue += singlePrizeObj.prizeGetNum
-            formattedCellValue += ", "
+      // console.log(row);
+      // console.log(column);
+      // console.log("cellvalue", cellValue);
+      // console.log(index);
+      let formattedCellValue = "";
+      cellValue.forEach((singlePrizeObj, index) => {
+        let prizeRealName = "";
+        this.$store.state.prizeName.forEach((SingleRealName, index) => {
+          if (SingleRealName === singlePrizeObj.prizeName) {
+            prizeRealName = this.$store.state.prizeRealName[index];
+          }
         });
-        return formattedCellValue.slice(0, -2)
-    }
+        formattedCellValue += prizeRealName;
+        formattedCellValue += "*";
+        formattedCellValue += singlePrizeObj.prizeGetNum;
+        formattedCellValue += ", ";
+      });
+      return formattedCellValue.slice(0, -2);
+    },
   },
   created() {
     // this.restartVisible = true;
@@ -443,13 +445,13 @@ export default {
 
   nav {
     width: calc(var(--widthRate) * 1920);
-    height: calc(var(--heightRate) * 56);
+    height: calc(var(--heightRate) * 77);
     background: rgba(204, 204, 204, 0);
     border-bottom: 1px solid rgb(0, 0, 0);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-content: center;
+    align-items: center;
 
     .navBtnGroup {
       height: calc(var(--heightRate) * 30);
@@ -502,7 +504,7 @@ export default {
         font-size: calc(var(--heightRate) * 60);
         width: calc(var(--widthRate) * 242);
         height: calc(var(--heightRate) * 90);
-        border-bottom: calc(var(--heightRate) * 3) solid rgba(166, 166, 166, 1);
+        // border-bottom: calc(var(--heightRate) * 3) solid rgba(166, 166, 166, 1);
       }
 
       .prizeSection {
@@ -542,17 +544,23 @@ export default {
 
             tbody tr {
               background-color: #dfdfdf;
-            }
+              .el-table__cell {
+                border-bottom: 1px solid rgb(191, 195, 202);
+              }
+              td {
+                &:first-child .cell {
+                  width: calc(var(--widthRate) * 185);
+                  display: flex;
+                  justify-content: center;
+                }
 
-            tbody td:first-child .cell {
-              width: calc(var(--widthRate) * 185);
-              display: flex;
-              justify-content: center;
-            }
-            tbody td:last-child .cell {
-              width: calc(var(--widthRate) * 132);
-              display: flex;
-              justify-content: center;
+                &:last-child .cell {
+                  width: calc(var(--widthRate) * 132);
+                  display: flex;
+                  justify-content: center;
+                  font-size: calc(var(--heightRate) * 40);
+                }
+              }
             }
           }
 
@@ -629,7 +637,7 @@ export default {
           word-wrap: break-word;
           width: calc(var(--widthRate) * 270);
           height: calc(var(--heightRate) * 180);
-          font-size: calc(var(--heightRate) * 80);
+          font-size: calc(var(--heightRate) * 64);
           color: rgba(242, 242, 242, 1);
           line-height: calc(var(--heightRate) * 100);
         }
@@ -1048,7 +1056,7 @@ export default {
 
     ::v-deep .el-dialog__footer {
       padding: 0;
-      padding-top: calc(var(--heightRate) * 140);
+      padding-top: calc(var(--heightRate) * 25);
       font-size: calc(var(--heightRate) * 14);
 
       .title {

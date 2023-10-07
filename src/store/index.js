@@ -15,7 +15,7 @@ export default new Vuex.Store({
         },
         isONFirst: true,
         singleRank: {
-            playerName: "",
+            playerName: "个人奖项",
             prize: []
         },
         singlePrizeTemplate: {
@@ -88,7 +88,7 @@ export default new Vuex.Store({
         },
         clearSingleRank(state) {
             state.singleRank = {
-                playerName: "Rank",
+                playerName: "个人奖项",
                 prize: []
             }
         },
@@ -195,6 +195,7 @@ export default new Vuex.Store({
             state
         }, rollingResult) {
             if (state.poorLuck === true) {
+                this.dispatch("setNowPlayerRank")
                 return
             }
             /*
@@ -245,12 +246,12 @@ export default new Vuex.Store({
                 singleRank.prize.push(singlePrize)
                 singleRank.playerName = state.playerNow
                 state.playerRank.push(singleRank)
-                console.log("singlePrize", singlePrize);
+                // console.log("singlePrize", singlePrize);
 
             }
-            console.log("12345");
+            // console.log("12345");
             this.dispatch("setNowPlayerRank")
-            console.log("4567");
+            // console.log("4567");
 
         },
 
@@ -258,14 +259,14 @@ export default new Vuex.Store({
             state
         }) {
             let displayPrize = []
-            console.log("2323555",state.playerRank);
+            // console.log("2323555",state.playerRank);
 
             state.playerRank.forEach((singleRankObj, index) => {
                 if (displayPrize.length != 0) {
-                    console.log('?', displayPrize);
+                    // console.log('?', displayPrize);
                     return
                 }
-                console.log(singleRankObj);
+                // console.log(singleRankObj);
 
                 if (singleRankObj.playerName == state.playerNow) {
                     displayPrize = singleRankObj.prize
