@@ -92,6 +92,12 @@ export default new Vuex.Store({
                 prize: []
             }
         },
+        clearPlayerRank(state) {
+            state.playerRank = []
+        },
+        setPlayerRank(state, rankValue) {
+            state.playerRank = JSON.parse(JSON.stringify(rankValue))
+        },
         setSingleRank(state, {
             playerName,
             prize
@@ -105,34 +111,14 @@ export default new Vuex.Store({
         clearResultDiceNumArr(state) {
             state.resultDiceNumArr = []
         },
+        setResultDiceNumArr(state, ResultDiceNumArr) {
+            state.resultDiceNumArr = JSON.parse(JSON.stringify(ResultDiceNumArr))
+        },
         setisONFirst(state, value) {
             state.isONFirst = value
         },
     },
     actions: {
-        getRan({
-            state
-        }, amount) {
-            // let player = {};
-            // getRank(amount).then((res) => {
-            //     state.playerRank.splice(0, this.state.playerRank.length)
-            //     res.data.forEach((rank, i) => {
-            //         player.playername = "player " + rank.name
-            //         player.prize = ""
-            //         let tempKeyArr = Object.keys(rank)
-            //         let tempValueArr = Object.values(rank)
-            //         tempValueArr.forEach((v, j) => {
-            //             if (v != '0' & tempKeyArr[j] != "name") {
-            //                 player.prize += " "+ state.prizeRealName[j-1] + " * " + v +","
-            //             }
-            //         })
-            //         player.prize = player.prize.slice(1, player.prize.length - 1)
-            //         state.playerRank.push({...player})
-            //     });
-            // }).catch((err) => {
-            //     console.log(`getRankerr`, err);
-            // })
-        },
 
         getNewRun({
             commit,
@@ -141,12 +127,14 @@ export default new Vuex.Store({
 
             let localPlayersRank = JSON.parse(localStorage.getItem('Bobing_playersRank'))
             if (localPlayersRank) {
+                console.log("删掉了");
                 localStorage.removeItem('Bobing_playersRank')
 
             }
             commit("changePlayerAmount", playerNum)
             commit("changePlayerNow", 0)
             commit("clearSingleRank")
+            commit("clearPlayerRank")
             commit("clearResultDiceNumArr")
             commit("setisONFirst", true)
             // this.dispatch("getSinglePlayerRank", 1)
@@ -277,6 +265,21 @@ export default new Vuex.Store({
                 playerName: state.playerNow,
                 prize: displayPrize
             })
+            
+            let localPlayersRank = {
+                playerRank: JSON.parse(JSON.stringify(state.playerRank)),
+                playerNow: state.playerNow,
+                playerAmount: state.playerAmount,
+                resultDiceNumArr: JSON.parse(
+                    JSON.stringify(state.resultDiceNumArr)
+                ),
+            };
+            // console.log("localPlayersRank: ", localPlayersRank);
+            localStorage.setItem(
+                "Bobing_playersRank",
+                JSON.stringify(localPlayersRank)
+            );
+            // console.log("Bobing_playersRank: ", localStorage.getItem("Bobing_playersRank"))
         },
     },
 

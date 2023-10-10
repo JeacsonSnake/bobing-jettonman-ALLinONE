@@ -1,5 +1,18 @@
 <template>
   <div class="homePage">
+    <div class="loadingPage" v-if="loadingVisible">
+      <el-dialog
+        :visible.sync="loadingVisible"
+        class="welcomeLayer"
+        center
+        :show-close="false"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+      >
+        <img src="../../public/image/title.png" alt="" class="ruleImg" />
+      </el-dialog>
+    </div>
+
     <nav>
       <div class="navBtnGroup">
         <el-button type="text" icon="el-icon-s-data" @click="getRan()">
@@ -74,9 +87,11 @@
               : `玩家 ${playerNow + 1}`
           }}
         </div>
-        <el-button @click="getNextPlayerResults()"> 掷骰开博
-            <br>
-            下一位！ </el-button>
+        <el-button @click="getNextPlayerResults()">
+          掷骰开博
+          <br />
+          下一位！
+        </el-button>
       </div>
     </div>
     <footer>
@@ -242,6 +257,7 @@ export default {
       rankVisible: false,
       restartVisible: false,
       welcomeVisible: false,
+      loadingVisible: true,
       playerNum: "",
       playerNumOptions: [
         {
@@ -427,7 +443,39 @@ export default {
   },
   created() {
     // this.restartVisible = true;
-    this.welcomeVisible = true;
+    // this.loadingVisible = true;
+  },
+  mounted() {
+    let localPlayersRank = JSON.parse(
+      localStorage.getItem("Bobing_playersRank")
+    );
+    console.log(localPlayersRank);
+    if (localPlayersRank) {
+      const loading = this.startLoading("正在读取存档...");
+      setTimeout(() => {
+        this.$store.commit("changePlayerAmount", localPlayersRank.playerAmount);
+        this.$store.commit("changePlayerNow", localPlayersRank.playerNow);
+        this.$store.commit("setPlayerRank", localPlayersRank.playerRank);
+        this.$store.commit(
+          "setResultDiceNumArr",
+          localPlayersRank.resultDiceNumArr
+        );
+        this.$store.dispatch("setNowPlayerRank");
+        this.loadingVisible = false;
+      }, 2000);
+      setTimeout(() => {
+        this.endLoading(loading);
+      }, 2500);
+    } else {
+      const loading = this.startLoading("加载中...");
+      setTimeout(() => {
+        this.welcomeVisible = true;
+        this.loadingVisible = false;
+      }, 2000);
+      setTimeout(() => {
+        this.endLoading(loading);
+      }, 2500);
+    }
   },
 };
 </script>
@@ -1086,6 +1134,32 @@ export default {
         border-color: #232222;
         background-color: #ad3e3e;
       }
+    }
+  }
+
+  .loadingPage {
+    ::v-deep .el-dialog__wrapper {
+      background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
+      background-color: rgb(228, 228, 228);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    ::v-deep .el-dialog {
+      width: calc(var(--widthRate) * 1280);
+      height: inherit;
+      margin-top: calc(var(--heightRate) * 30) !important;
+      margin-bottom: calc(var(--heightRate) * 30) !important;
+      margin-left: calc(var(--widthRate) * 320);
+      border-radius: calc(var(--heightRate) * 20);
+      background: rgba(240, 240, 240, 1);
+    }
+    ::v-deep .el-dialog__header {
+      padding: 0;
+    }
+    .ruleImg {
+      width: 100%;
+      height: 100%;
     }
   }
 
