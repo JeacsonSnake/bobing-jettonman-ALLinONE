@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import * as Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -23,27 +23,27 @@ import './assets/fonts/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 // use axois & vue-axios
-Vue.use(VueAxios, axios)
+window.$vueApp.use(VueAxios, axios)
 
-Vue.use(Button)
-Vue.use(Dialog)
-Vue.use(Table)
-Vue.use(TableColumn)
-Vue.use(Select)
-Vue.use(Option)
-Vue.use(Tooltip)
-Vue.prototype.$elLoading = Loading
-Vue.prototype.$message = Message
-Vue.prototype.$alert = MessageBox.alert
-Vue.prototype.$confirm = MessageBox.confirm
-Vue.prototype.$prompt = MessageBox.prompt
+window.$vueApp.use(Button)
+window.$vueApp.use(Dialog)
+window.$vueApp.use(Table)
+window.$vueApp.use(TableColumn)
+window.$vueApp.use(Select)
+window.$vueApp.use(Option)
+window.$vueApp.use(Tooltip)
+window.$vueApp.config.globalProperties.$elLoading = Loading
+window.$vueApp.config.globalProperties.$message = Message
+window.$vueApp.config.globalProperties.$alert = MessageBox.alert
+window.$vueApp.config.globalProperties.$confirm = MessageBox.confirm
+window.$vueApp.config.globalProperties.$prompt = MessageBox.prompt
 
-Vue.prototype.$httpRequestList = [] //管理所有请求中断方法的集合
+window.$vueApp.config.globalProperties.$httpRequestList = [] //管理所有请求中断方法的集合
 
-Vue.config.productionTip = false
-
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#app')
+window.$vueApp = Vue.createApp(App)
+window.$vueApp.mount('#app')
+window.$vueApp.config.globalProperties.routerAppend = (path, pathToAppend) => {
+  return path + (path.endsWith('/') ? '' : '/') + pathToAppend
+}
+window.$vueApp.use(store)
+window.$vueApp.use(router)

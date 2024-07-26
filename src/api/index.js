@@ -1,6 +1,6 @@
 //API接口统一管理点
 import requests from './request'
-import Vue from 'vue'
+import * as Vue from 'vue'
 import axios from 'axios'
 
 export const createPlayer = (params) => {
@@ -10,7 +10,7 @@ export const createPlayer = (params) => {
     method: 'get',
     params,
     cancelToken: new axios.CancelToken((c) => {
-      Vue.prototype.$httpRequestList.push(c) // When request is interrupted, the corresponding interrupt method will stored in this array
+      window.$vueApp.config.globalProperties.$httpRequestList.push(c) // When request is interrupted, the corresponding interrupt method will stored in this array
     }),
   })
 }

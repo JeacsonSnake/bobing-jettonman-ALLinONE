@@ -2,7 +2,7 @@
   <div class="homePage">
     <div class="loadingPage" v-if="loadingVisible">
       <el-dialog
-        :visible.sync="loadingVisible"
+        v-model:visible="loadingVisible"
         class="welcomeLayer"
         center
         :show-close="false"
@@ -100,7 +100,7 @@
 
     <el-dialog
       title="Rank: "
-      :visible.sync="rankVisible"
+      v-model:visible="rankVisible"
       class="rankLayer"
       center
     >
@@ -127,13 +127,13 @@
 
     <el-dialog
       title="定义玩家数量"
-      :visible.sync="restartVisible"
+      v-model:visible="restartVisible"
       class="restartLayer"
       center
     >
       <div class="restartSection">
         <el-select
-          v-model="playerNum"
+          v-model:value="playerNum"
           placeholder="请选择(最多8人)"
           :popper-append-to-body="false"
           size="small"
@@ -148,14 +148,14 @@
         </el-select>
       </div>
 
-      <el-button class="restartFooter" slot="footer" @click="start()"
-        >选好了！</el-button
-      >
+      <template v-slot:footer>
+        <el-button class="restartFooter" @click="start()">选好了！</el-button>
+      </template>
     </el-dialog>
 
     <el-dialog
       title="博饼怎么玩？"
-      :visible.sync="rulesVisible"
+      v-model:visible="rulesVisible"
       class="rulesLayer"
       center
     >
@@ -169,7 +169,7 @@
 
     <el-dialog
       title="关于"
-      :visible.sync="aboutVisible"
+      v-model:visible="aboutVisible"
       class="aboutLayer"
       center
     >
@@ -185,11 +185,13 @@
           <i class="el-icon-info" @click="jumpFrontEnd()"></i>
         </el-tooltip>
       </div>
-      <span slot="footer">©Jeacson_She @2023-present all rights reserved.</span>
+      <template v-slot:footer>
+        <span>©Jeacson_She @2023-present all rights reserved.</span>
+      </template>
     </el-dialog>
 
     <el-dialog
-      :visible.sync="prizeResultVisible"
+      v-model:visible="prizeResultVisible"
       class="prizeResultLayer"
       center
       :modal="false"
@@ -197,15 +199,17 @@
       <div class="prizeResultSection">
         <img :src="require(`../assets/img/${this.prizeNow.imgUrl}`)" alt="" />
       </div>
-      <span slot="footer" :class="{ poorLuck: poorLuck }">
-        {{ this.prizeNow.prizeName }} !
-      </span>
+      <template v-slot:footer>
+        <span :class="{ poorLuck: poorLuck }">
+          {{ this.prizeNow.prizeName }} !
+        </span>
+      </template>
     </el-dialog>
 
     <div class="welcomePage">
       <el-dialog
         title="欢迎来到博饼页面!"
-        :visible.sync="welcomeVisible"
+        v-model:visible="welcomeVisible"
         class="welcomeLayer"
         center
         :show-close="false"
@@ -235,12 +239,14 @@
           </div>
         </div>
 
-        <div slot="footer">
-          <div class="title">即刻开始?</div>
-          <el-button class="btn" @click="restartVisible = true"
-            >点我!</el-button
-          >
-        </div>
+        <template v-slot:footer>
+          <div>
+            <div class="title">即刻开始?</div>
+            <el-button class="btn" @click="restartVisible = true"
+              >点我!</el-button
+            >
+          </div>
+        </template>
       </el-dialog>
     </div>
   </div>
@@ -490,7 +496,6 @@ export default {
   height: 100vh;
   background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
   background-color: rgba(242, 242, 242, 0.5);
-
   nav {
     width: calc(var(--widthRate) * 1920);
     height: calc(var(--heightRate) * 77);

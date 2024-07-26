@@ -1,8 +1,6 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import * as Vue from 'vue'
+import * as VueRouter from 'vue-router'
 import HomePage from '../views/HomePage.vue'
-
-Vue.use(VueRouter)
 
 const routes = [
   {
@@ -20,14 +18,15 @@ const routes = [
   //   }
 ]
 
-const router = new VueRouter({
-  routes,
+const router = VueRouter.createRouter({
+  history: VueRouter.createWebHashHistory(),
+  routes: routes,
 })
 
 router.beforeEach((to, from, next) => {
-  if (Vue.prototype.$httpRequestList.length > 0) {
+  if (window.$vueApp.config.globalProperties.$httpRequestList.length > 0) {
     // 检查是否有需要中断的请求
-    Vue.prototype.$httpRequestList.forEach((item) => {
+    window.$vueApp.config.globalProperties.$httpRequestList.forEach((item) => {
       // 遍历,执行中断方法并传入中断信息
       item('interrupt')
     })
