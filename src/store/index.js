@@ -1,82 +1,80 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import {
+    createStore
+} from 'vuex'
 import {
     getResult
 } from '../util/result'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export const store = createStore({
     state: {
         playerRank: [],
         singleRankTemplate: {
-            playerName: "",
-            prize: []
+            playerName: '',
+            prize: [],
         },
         isONFirst: true,
         singleRank: {
-            playerName: "个人奖项",
-            prize: []
+            playerName: '个人奖项',
+            prize: [],
         },
         singlePrizeTemplate: {
-            prizeName: "",
-            imgUrl: "",
-            prizeGetNum: 0
+            prizeName: '',
+            imgUrl: '',
+            prizeGetNum: 0,
         },
         prizeNow: {
-            imgUrl: "blank.svg",
-            prizeName: "博空"
+            imgUrl: 'blank.svg',
+            prizeName: '博空',
         },
         poorLuck: false,
         resultDiceNumArr: [],
         playerNow: -1,
         playerAmount: 0,
         prizeName: [
-            "YiXiu",
-            "ErJu",
-            "SiJin",
-            "SanHong",
-            "DuiTang",
-            "SiDianHong",
-            "WuBoHei",
-            "WuBoHong",
-            "LiuBoHei",
-            "BianDiJing",
-            "LiuBoHong",
-            "ZhuangYuanChaJinHua",
-            "NULL"
+            'YiXiu',
+            'ErJu',
+            'SiJin',
+            'SanHong',
+            'DuiTang',
+            'SiDianHong',
+            'WuBoHei',
+            'WuBoHong',
+            'LiuBoHei',
+            'BianDiJing',
+            'LiuBoHong',
+            'ZhuangYuanChaJinHua',
+            'NULL',
         ],
         prizeRealName: [
-            "一秀",
-            "二举",
-            "四进",
-            "三红",
-            "对堂",
-            "四点红",
-            "五子登科",
-            "红五王",
-            "六博黑",
-            "遍地锦",
-            "六博红",
-            "状元插金花",
-            "博空"
+            '一秀',
+            '二举',
+            '四进',
+            '三红',
+            '对堂!',
+            '四点红!',
+            '五子登科!',
+            '红五王!',
+            '六博黑!',
+            '遍地锦!',
+            '六博红!',
+            '状元插金花!',
+            '博空~',
         ],
         prizeImgUrl: [
-            "yiXIU.svg",
-            "erju.svg",
-            "sijin.svg",
-            "sanhong.svg",
-            "duitang.svg",
-            "sidianhong.svg",
-            "wubohei.svg",
-            "redotFIVE.svg",
-            "blackdot-6.svg",
-            "blossom-ONE.svg",
-            "All-around-6.svg",
-            "icing4+2.svg",
-            "blank.svg"
+            'yiXIU.svg',
+            'erju.svg',
+            'sijin.svg',
+            'sanhong.svg',
+            'duitang.svg',
+            'sidianhong.svg',
+            'wubohei.svg',
+            'redotFIVE.svg',
+            'blackdot-6.svg',
+            'blossom-ONE.svg',
+            'All-around-6.svg',
+            'icing4+2.svg',
+            'blank.svg',
         ],
-
     },
     getters: {},
     mutations: {
@@ -88,8 +86,8 @@ export default new Vuex.Store({
         },
         clearSingleRank(state) {
             state.singleRank = {
-                playerName: "个人奖项",
-                prize: []
+                playerName: '个人奖项',
+                prize: [],
             }
         },
         clearPlayerRank(state) {
@@ -104,9 +102,9 @@ export default new Vuex.Store({
         }) {
             state.singleRank = {
                 playerName,
-                prize
+                prize,
             }
-            console.log('state.singleRank', state.singleRank);
+            console.log('state.singleRank', state.singleRank)
         },
         clearResultDiceNumArr(state) {
             state.resultDiceNumArr = []
@@ -119,28 +117,25 @@ export default new Vuex.Store({
         },
     },
     actions: {
-
         getNewRun({
             commit,
             state
         }, playerNum) {
-
-            let localPlayersRank = JSON.parse(localStorage.getItem('Bobing_playersRank'))
+            let localPlayersRank = JSON.parse(
+                localStorage.getItem('Bobing_playersRank')
+            )
             if (localPlayersRank) {
-                console.log("删掉了");
+                console.log('删掉了')
                 localStorage.removeItem('Bobing_playersRank')
-
             }
-            commit("changePlayerAmount", playerNum)
-            commit("changePlayerNow", 0)
-            commit("clearSingleRank")
-            commit("clearPlayerRank")
-            commit("clearResultDiceNumArr")
-            commit("setisONFirst", true)
+            commit('changePlayerAmount', playerNum)
+            commit('changePlayerNow', 0)
+            commit('clearSingleRank')
+            commit('clearPlayerRank')
+            commit('clearResultDiceNumArr')
+            commit('setisONFirst', true)
             // this.dispatch("getSinglePlayerRank", 1)
             // console.log(`getClear`);
-
-
         },
 
         getNextResult({
@@ -148,55 +143,53 @@ export default new Vuex.Store({
         }) {
             if (state.playerNow == state.playerAmount) {
                 state.playerNow = 1
-                this.commit("setisONFirst", false)
-
+                this.commit('setisONFirst', false)
             } else {
                 state.playerNow++
             }
             // getResult 返回结果
             /*
-                {
-                    resultName: 与prizeName中变量名一致
-                    resultNum: "123532" 字符串
-                }
-            */
+                      {
+                          resultName: 与prizeName中变量名一致
+                          resultNum: "123532" 字符串
+                      }
+                  */
             let rollingResult = getResult(state.isONFirst)
             // console.log(`rollingResult`, rollingResult);
             state.prizeName.forEach((p, i) => {
                 if (rollingResult.resultName == p) {
-                    if (rollingResult.resultName == "NULL") {
-                        state.poorLuck = true;
+                    if (rollingResult.resultName == 'NULL') {
+                        state.poorLuck = true
                     } else {
-                        state.poorLuck = false;
+                        state.poorLuck = false
                     }
                     state.prizeNow.imgUrl = state.prizeImgUrl[i]
                     state.prizeNow.prizeName = state.prizeRealName[i]
                 }
             })
-            state.resultDiceNumArr = rollingResult.resultNum.split("")
+            state.resultDiceNumArr = rollingResult.resultNum.split('')
             // console.log(`state.resultDiceNumArr`, state.resultDiceNumArr);
-            this.dispatch("setPlayerRank", rollingResult)
-
+            this.dispatch('setPlayerRank', rollingResult)
         },
 
         setPlayerRank({
             state
         }, rollingResult) {
             if (state.poorLuck === true) {
-                this.dispatch("setNowPlayerRank")
+                this.dispatch('setNowPlayerRank')
                 return
             }
             /*
-                singlePrizeTemplate: {
-                    prizeName: "",
-                    imgUrl: "",
-                    prizeGetNum: 0
-                }
-                singleRankTemplate: {
-                    playerName: "",
-                    prize: []
-                },
-            */
+                      singlePrizeTemplate: {
+                          prizeName: "",
+                          imgUrl: "",
+                          prizeGetNum: 0
+                      }
+                      singleRankTemplate: {
+                          playerName: "",
+                          prize: []
+                      },
+                  */
             let isPlayerSet = false
             let isPrizeSet = false
             state.playerRank.forEach((singleRankObj, index, playerRank) => {
@@ -211,11 +204,12 @@ export default new Vuex.Store({
                         if (singlePrizeObj.prizeName === rollingResult.resultName) {
                             isPrizeSet = true
                             singlePrizeObj.prizeGetNum++
-
                         }
                     })
                     if (!isPrizeSet) {
-                        let singlePrize = JSON.parse(JSON.stringify(state.singlePrizeTemplate))
+                        let singlePrize = JSON.parse(
+                            JSON.stringify(state.singlePrizeTemplate)
+                        )
                         singlePrize.prizeName = rollingResult.resultName
                         singlePrize.imgUrl = state.prizeNow.imgUrl
                         singlePrize.prizeGetNum++
@@ -223,7 +217,7 @@ export default new Vuex.Store({
                     }
                     isPlayerSet = true
                 }
-            });
+            })
             if (!isPlayerSet) {
                 // console.log('111');
                 let singlePrize = JSON.parse(JSON.stringify(state.singlePrizeTemplate))
@@ -235,12 +229,10 @@ export default new Vuex.Store({
                 singleRank.playerName = state.playerNow
                 state.playerRank.push(singleRank)
                 // console.log("singlePrize", singlePrize);
-
             }
             // console.log("12345");
-            this.dispatch("setNowPlayerRank")
+            this.dispatch('setNowPlayerRank')
             // console.log("4567");
-
         },
 
         setNowPlayerRank({
@@ -263,25 +255,23 @@ export default new Vuex.Store({
 
             this.commit('setSingleRank', {
                 playerName: state.playerNow,
-                prize: displayPrize
+                prize: displayPrize,
             })
-            
+
             let localPlayersRank = {
                 playerRank: JSON.parse(JSON.stringify(state.playerRank)),
                 playerNow: state.playerNow,
                 playerAmount: state.playerAmount,
-                resultDiceNumArr: JSON.parse(
-                    JSON.stringify(state.resultDiceNumArr)
-                ),
-            };
+                resultDiceNumArr: JSON.parse(JSON.stringify(state.resultDiceNumArr)),
+            }
             // console.log("localPlayersRank: ", localPlayersRank);
             localStorage.setItem(
-                "Bobing_playersRank",
+                'Bobing_playersRank',
                 JSON.stringify(localPlayersRank)
-            );
+            )
             // console.log("Bobing_playersRank: ", localStorage.getItem("Bobing_playersRank"))
         },
     },
 
-    modules: {}
+    modules: {},
 })

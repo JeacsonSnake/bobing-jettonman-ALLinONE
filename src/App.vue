@@ -12,12 +12,10 @@
   text-align: center;
   color: #2c3e50;
 }
-
 .confirmButton {
   background-color: #de5757 !important;
   border-color: #ffecec !important;
 }
-
 .cancelButton {
   &:hover,
   &:focus {
