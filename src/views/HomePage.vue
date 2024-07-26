@@ -148,7 +148,7 @@
         </el-select>
       </div>
 
-      <el-button class="restartFooter" slot="footer" @click="start()"
+      <el-button class="restartFooter" v-slot="footer" @click="start()"
         >选好了！</el-button
       >
     </el-dialog>
@@ -185,7 +185,9 @@
           <i class="el-icon-info" @click="jumpFrontEnd()"></i>
         </el-tooltip>
       </div>
-      <span slot="footer">©Jeacson_She @2023-present all rights reserved.</span>
+      <span v-slot="footer"
+        >©Jeacson_She @2023-present all rights reserved.</span
+      >
     </el-dialog>
 
     <el-dialog
@@ -197,7 +199,7 @@
       <div class="prizeResultSection">
         <img :src="require(`../assets/img/${this.prizeNow.imgUrl}`)" alt="" />
       </div>
-      <span slot="footer" :class="{ poorLuck: poorLuck }">
+      <span v-slot="footer" :class="{ poorLuck: poorLuck }">
         {{ this.prizeNow.prizeName }} !
       </span>
     </el-dialog>
@@ -235,7 +237,7 @@
           </div>
         </div>
 
-        <div slot="footer">
+        <div v-slot="footer">
           <div class="title">即刻开始?</div>
           <el-button class="btn" @click="restartVisible = true"
             >点我!</el-button
