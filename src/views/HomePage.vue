@@ -47,7 +47,7 @@
       <div class="singleRankSection">
         <div class="playerName">
           <span>{{
-            singleRankData.playerName == "个人奖项"
+            singleRankData.playerName == '个人奖项'
               ? singleRankData.playerName
               : `玩家 ${singleRankData.playerName}`
           }}</span>
@@ -82,7 +82,7 @@
         <div>
           下一位玩家为:
           {{
-            playerNow == playerAmount || playerNow == "0"
+            playerNow == playerAmount || playerNow == '0'
               ? `玩家 1`
               : `玩家 ${playerNow + 1}`
           }}
@@ -258,166 +258,166 @@ export default {
       restartVisible: false,
       welcomeVisible: false,
       loadingVisible: true,
-      playerNum: "",
+      playerNum: '',
       playerNumOptions: [
         {
-          value: "1",
-          label: "1",
+          value: '1',
+          label: '1',
         },
         {
-          value: "2",
-          label: "2",
+          value: '2',
+          label: '2',
         },
         {
-          value: "3",
-          label: "3",
+          value: '3',
+          label: '3',
         },
         {
-          value: "4",
-          label: "4",
+          value: '4',
+          label: '4',
         },
         {
-          value: "5",
-          label: "5",
+          value: '5',
+          label: '5',
         },
         {
-          value: "6",
-          label: "6",
+          value: '6',
+          label: '6',
         },
         {
-          value: "7",
-          label: "7",
+          value: '7',
+          label: '7',
         },
         {
-          value: "8",
-          label: "8",
+          value: '8',
+          label: '8',
         },
       ],
-    };
+    }
   },
   computed: {
     rankData: function () {
-      return this.$store.state.playerRank;
+      return this.$store.state.playerRank
     },
     singleRankData: function () {
-      return this.$store.state.singleRank;
+      return this.$store.state.singleRank
     },
     diceNumArr: function () {
-      return this.$store.state.resultDiceNumArr;
+      return this.$store.state.resultDiceNumArr
     },
     playerNow: function () {
-      return this.$store.state.playerNow;
+      return this.$store.state.playerNow
     },
     prizeNow: function () {
-      return this.$store.state.prizeNow;
+      return this.$store.state.prizeNow
     },
     poorLuck: function () {
-      return this.$store.state.poorLuck;
+      return this.$store.state.poorLuck
     },
     playerAmount: function () {
-      return this.$store.state.playerAmount;
+      return this.$store.state.playerAmount
     },
   },
   methods: {
     jumpFrontEnd() {
-      window.open("https://github.com/JeacsonSnake/bobing-jettonman", "_blank");
+      window.open('https://github.com/JeacsonSnake/bobing-jettonman', '_blank')
     },
 
     jumpBackEnd() {
-      window.open("https://github.com/EricZhao666/Bobing", "_blank");
+      window.open('https://github.com/EricZhao666/Bobing', '_blank')
     },
 
     getRan() {
-      this.rankVisible = true;
+      this.rankVisible = true
     },
 
     getRestart() {
-      this.restartVisible = true;
+      this.restartVisible = true
     },
 
     start() {
-      let p = this.playerNum;
-      if (p == "") {
-        this.$message.error("人数尚未确定！");
+      let p = this.playerNum
+      if (p == '') {
+        this.$message.error('人数尚未确定！')
       } else {
-        this.$confirm("你将开启新一轮游戏，确定吗？", "注意", {
+        this.$confirm('你将开启新一轮游戏，确定吗？', '注意', {
           distinguishCancelAndClose: true,
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          confirmButtonClass: "confirmButton",
-          cancelButtonClass: "cancelButton",
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          confirmButtonClass: 'confirmButton',
+          cancelButtonClass: 'cancelButton',
         })
           .then(() => {
             setTimeout(() => {
-              this.restartVisible = false;
-              this.welcomeVisible = false;
-            }, 100);
-            const loading = this.startLoading("创建中...");
+              this.restartVisible = false
+              this.welcomeVisible = false
+            }, 100)
+            const loading = this.startLoading('创建中...')
             setTimeout(() => {
               this.$store
-                .dispatch("getNewRun", p)
+                .dispatch('getNewRun', p)
                 .then(() => {
                   setTimeout(() => {
-                    this.endLoading(loading);
+                    this.endLoading(loading)
                     this.$message({
-                      type: "success",
-                      message: "已创建新一轮游戏!",
-                    });
-                  }, 400);
+                      type: 'success',
+                      message: '已创建新一轮游戏!',
+                    })
+                  }, 400)
                 })
-                .catch((action) => {});
-            }, 300);
+                .catch((action) => {})
+            }, 300)
           })
           .catch((err) => {
             // console.log(err);
-            if (err == "cancel") {
+            if (err == 'cancel') {
               this.$message({
-                type: "info",
-                message: "已取消开启新一轮游戏",
-              });
+                type: 'info',
+                message: '已取消开启新一轮游戏',
+              })
             }
-          });
+          })
       }
     },
 
     getNextPlayerResults() {
       if (this.playerNow == -1) {
-        this.restartVisible = true;
+        this.restartVisible = true
         this.$message({
-          type: "error",
-          message: "The number of players is not set yet!",
-        });
+          type: 'error',
+          message: 'The number of players is not set yet!',
+        })
       } else {
-        const loading = this.startLoading("掷骰入碗...");
+        const loading = this.startLoading('掷骰入碗...')
         setTimeout(() => {
           this.$store
-            .dispatch("getNextResult")
+            .dispatch('getNextResult')
             .then(() => {
               setTimeout(() => {
-                this.endLoading(loading);
-              }, 400);
+                this.endLoading(loading)
+              }, 400)
             })
             .then(() => {
               setTimeout(() => {
-                this.prizeResultVisible = true;
-              }, 700);
-            });
-        }, 300);
+                this.prizeResultVisible = true
+              }, 700)
+            })
+        }, 300)
       }
     },
 
     startLoading(loadingText) {
       const loading = this.$elLoading.service({
         lock: true,
-        target: ".homePage",
+        target: '.homePage',
         text: loadingText,
-        background: "rgba(200, 200, 200, 1)",
-      });
-      return loading;
+        background: 'rgba(200, 200, 200, 1)',
+      })
+      return loading
     },
 
     endLoading(loading) {
-      loading.close();
+      loading.close()
     },
 
     playerRankDataFormatter(row, column, cellValue, index) {
@@ -425,20 +425,20 @@ export default {
       // console.log(column);
       // console.log("cellvalue", cellValue);
       // console.log(index);
-      let formattedCellValue = "";
+      let formattedCellValue = ''
       cellValue.forEach((singlePrizeObj, index) => {
-        let prizeRealName = "";
+        let prizeRealName = ''
         this.$store.state.prizeName.forEach((SingleRealName, index) => {
           if (SingleRealName === singlePrizeObj.prizeName) {
-            prizeRealName = this.$store.state.prizeRealName[index];
+            prizeRealName = this.$store.state.prizeRealName[index]
           }
-        });
-        formattedCellValue += prizeRealName;
-        formattedCellValue += "*";
-        formattedCellValue += singlePrizeObj.prizeGetNum;
-        formattedCellValue += ", ";
-      });
-      return formattedCellValue.slice(0, -2);
+        })
+        formattedCellValue += prizeRealName
+        formattedCellValue += '*'
+        formattedCellValue += singlePrizeObj.prizeGetNum
+        formattedCellValue += ', '
+      })
+      return formattedCellValue.slice(0, -2)
     },
   },
   created() {
@@ -447,43 +447,43 @@ export default {
   },
   mounted() {
     let localPlayersRank = JSON.parse(
-      localStorage.getItem("Bobing_playersRank")
-    );
-    console.log(localPlayersRank);
+      localStorage.getItem('Bobing_playersRank')
+    )
+    console.log(localPlayersRank)
     if (localPlayersRank) {
-      const loading = this.startLoading("正在读取存档...");
+      const loading = this.startLoading('正在读取存档...')
       setTimeout(() => {
-        this.$store.commit("changePlayerAmount", localPlayersRank.playerAmount);
-        this.$store.commit("changePlayerNow", localPlayersRank.playerNow);
-        this.$store.commit("setPlayerRank", localPlayersRank.playerRank);
+        this.$store.commit('changePlayerAmount', localPlayersRank.playerAmount)
+        this.$store.commit('changePlayerNow', localPlayersRank.playerNow)
+        this.$store.commit('setPlayerRank', localPlayersRank.playerRank)
         this.$store.commit(
-          "setResultDiceNumArr",
+          'setResultDiceNumArr',
           localPlayersRank.resultDiceNumArr
-        );
-        this.$store.dispatch("setNowPlayerRank");
-        this.loadingVisible = false;
-      }, 2000);
+        )
+        this.$store.dispatch('setNowPlayerRank')
+        this.loadingVisible = false
+      }, 2000)
       setTimeout(() => {
-        this.endLoading(loading);
-      }, 2500);
+        this.endLoading(loading)
+      }, 2500)
     } else {
-      const loading = this.startLoading("加载中...");
+      const loading = this.startLoading('加载中...')
       setTimeout(() => {
-        this.welcomeVisible = true;
-        this.loadingVisible = false;
-      }, 2000);
+        this.welcomeVisible = true
+        this.loadingVisible = false
+      }, 2000)
       setTimeout(() => {
-        this.endLoading(loading);
-      }, 2500);
+        this.endLoading(loading)
+      }, 2500)
     }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../style/variables.scss";
+@import '../style/variables.scss';
 .homePage {
-  font-family: "HarmonyOS_Sans_SC_Medium", Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'HarmonyOS_Sans_SC_Medium', Avenir, Helvetica, Arial, sans-serif;
   --heightRate: calc(100vh / #{$base-height});
   --widthRate: calc(100vw / #{$base-width});
   width: inherit;
@@ -508,7 +508,7 @@ export default {
         margin: 0 calc(var(--heightRate) * 25);
         padding: 0;
         color: #4d4747;
-        font-family: "HarmonyOS_Sans_SC_Medium";
+        font-family: 'HarmonyOS_Sans_SC_Medium';
         font-size: calc(var(--heightRate) * 30);
       }
     }
@@ -546,7 +546,7 @@ export default {
       overflow: hidden;
 
       .playerName {
-        font-family: "HarmonyOS_Sans_SC_Black";
+        font-family: 'HarmonyOS_Sans_SC_Black';
         margin-top: calc(var(--heightRate) * 17);
         padding-bottom: calc(var(--heightRate) * 12);
         font-size: calc(var(--heightRate) * 60);
@@ -699,7 +699,7 @@ export default {
 
     span {
       font-size: calc(var(--heightRate) * 14);
-      font-family: "HarmonyOS_Sans_SC_Medium";
+      font-family: 'HarmonyOS_Sans_SC_Medium';
     }
   }
 
@@ -723,7 +723,7 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: "HarmonyOS_Sans_SC_Black";
+        font-family: 'HarmonyOS_Sans_SC_Black';
         font-size: calc(var(--heightRate) * 72);
       }
     }
@@ -740,7 +740,7 @@ export default {
     }
 
     .aboutSection {
-      font-family: "HarmonyOS_Sans_SC_Black";
+      font-family: 'HarmonyOS_Sans_SC_Black';
       display: flex;
       justify-content: center;
       align-items: center;
@@ -786,7 +786,7 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: "HarmonyOS_Sans_SC_Bold";
+        font-family: 'HarmonyOS_Sans_SC_Bold';
         font-size: calc(var(--heightRate) * 60);
         color: #757575;
       }
@@ -854,7 +854,7 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: "HarmonyOS_Sans_SC_Black";
+        font-family: 'HarmonyOS_Sans_SC_Black';
         font-size: calc(var(--heightRate) * 72);
         color: #47484c;
       }
@@ -901,7 +901,7 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: "HarmonyOS_Sans_SC_Black";
+        font-family: 'HarmonyOS_Sans_SC_Black';
         font-size: calc(var(--heightRate) * 60);
         line-height: calc(var(--heightRate) * 60);
         color: #47484c;
@@ -916,7 +916,7 @@ export default {
       margin: 0;
       //   width: calc(var(--widthRate) * 224);
       //   height: calc(var(--heightRate) * 40);
-      font-family: "HarmonyOS_Sans_SC_Midium";
+      font-family: 'HarmonyOS_Sans_SC_Midium';
 
       display: flex;
       justify-content: center;
@@ -998,7 +998,7 @@ export default {
       margin: 0;
       padding: 0;
       padding-top: calc(var(--heightRate) * 50);
-      font-family: "HarmonyOS_Sans_SC_Black";
+      font-family: 'HarmonyOS_Sans_SC_Black';
       font-size: calc(var(--heightRate) * 70);
       color: #de5757;
       .poorLuck {
@@ -1033,7 +1033,7 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: "HarmonyOS_Sans_SC_Black";
+        font-family: 'HarmonyOS_Sans_SC_Black';
         font-size: calc(var(--heightRate) * 72);
         color: #757575;
       }
@@ -1068,7 +1068,7 @@ export default {
         align-content: center;
 
         .title {
-          font-family: "HarmonyOS_Sans_SC_Black";
+          font-family: 'HarmonyOS_Sans_SC_Black';
           font-size: calc(var(--heightRate) * 60);
           color: #757575;
           padding-left: calc(var(--widthRate) * 16);
@@ -1108,7 +1108,7 @@ export default {
       font-size: calc(var(--heightRate) * 14);
 
       .title {
-        font-family: "HarmonyOS_Sans_SC_Black";
+        font-family: 'HarmonyOS_Sans_SC_Black';
         font-size: calc(var(--heightRate) * 100);
         color: #757575;
         padding-left: calc(var(--widthRate) * 16);
@@ -1122,7 +1122,7 @@ export default {
         color: #f2f2f2;
         border-color: #4d4747;
         background-color: #de5757;
-        font-family: "HarmonyOS_Sans_SC_Bold";
+        font-family: 'HarmonyOS_Sans_SC_Bold';
         font-size: calc(var(--heightRate) * 80);
         line-height: calc(var(--heightRate) * 80);
         border: calc(var(--heightRate) * 4) solid rgba(71, 72, 76, 1);
@@ -1188,7 +1188,7 @@ export default {
     }
 
     .el-loading-text {
-      font-family: "HarmonyOS_Sans_SC_Black";
+      font-family: 'HarmonyOS_Sans_SC_Black';
       font-size: calc(var(--heightRate) * 60);
       color: #de5757;
     }

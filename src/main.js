@@ -3,18 +3,18 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import {
-    Button,
-    Dialog,
-    Table,
-    TableColumn,
-    Select,
-    Option,
-    Message,
-    MessageBox,
-    Loading,
-    Tooltip
-} from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+  Button,
+  Dialog,
+  Table,
+  TableColumn,
+  Select,
+  Option,
+  Message,
+  MessageBox,
+  Loading,
+  Tooltip,
+} from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 // import fonts
 import './assets/fonts/index.css'
@@ -38,12 +38,12 @@ Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$prompt = MessageBox.prompt
 
-Vue.prototype.$httpRequestList = [];    //管理所有请求中断方法的集合
+Vue.prototype.$httpRequestList = [] //管理所有请求中断方法的集合
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount('#app')
