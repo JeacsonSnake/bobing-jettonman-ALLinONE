@@ -15,23 +15,19 @@
 
     <nav>
       <div class="navBtnGroup">
-        <el-button type="text" :icon="ElIconSData" @click="getRan()">
+        <el-button link :icon="ElIconSData" @click="getRan()">
           排行榜
         </el-button>
-        <el-button type="text" :icon="ElIconRefresh" @click="getRestart()">
+        <el-button link :icon="ElIconRefresh" @click="getRestart()">
           重开一局
         </el-button>
       </div>
       <div class="navBtnGroup">
-        <el-button
-          type="text"
-          :icon="ElIconTickets"
-          @click="rulesVisible = true"
-        >
+        <el-button link :icon="ElIconTickets" @click="rulesVisible = true">
           博饼规则
         </el-button>
         <el-button
-          type="text"
+          link
           :icon="ElIconIceCreamRound"
           @click="aboutVisible = true"
         >
@@ -47,7 +43,7 @@
       <div class="singleRankSection">
         <div class="playerName">
           <span>{{
-            singleRankData.playerName == '个人奖项'
+            singleRankData.playerName == "个人奖项"
               ? singleRankData.playerName
               : `玩家 ${singleRankData.playerName}`
           }}</span>
@@ -55,7 +51,7 @@
         <el-table
           :data="singleRankData.prize"
           class="prizeSection"
-          :height="`calc(var(--heightRate) * 280)`"
+          :height="`calc(var(--heightRate) * 337)`"
           empty-text="还未获奖"
           :show-header="false"
         >
@@ -82,7 +78,7 @@
         <div>
           下一位玩家为:
           {{
-            playerNow == playerAmount || playerNow == '0'
+            playerNow == playerAmount || playerNow == "0"
               ? `玩家 1`
               : `玩家 ${playerNow + 1}`
           }}
@@ -98,103 +94,107 @@
       <span>© Jeacson_She 2023-present All rights Reserved.</span>
     </footer>
 
-    <el-dialog title="Rank: " v-model="rankVisible" class="rankLayer" center>
-      <!-- <div class="rankSection"></div> -->
-      <el-table
-        :data="rankData"
-        class="rankSection"
-        :height="`calc(var(--heightRate) * 800)`"
-        empty-text="No Data yet"
-      >
-        <el-table-column
-          property="playerName"
-          label="玩家名"
-          fixed
-          width="150"
-        ></el-table-column>
-        <el-table-column
-          property="prize"
-          label="获得奖项"
-          :formatter="playerRankDataFormatter"
-        ></el-table-column>
-      </el-table>
-    </el-dialog>
-
-    <el-dialog
-      title="定义玩家数量"
-      v-model="restartVisible"
-      class="restartLayer"
-      center
-    >
-      <div class="restartSection">
-        <el-select
-          v-model="playerNum"
-          placeholder="请选择(最多8人)"
-          :popper-append-to-body="false"
-          size="small"
+    <div class="rankLayer">
+      <el-dialog title="Rank: " v-model="rankVisible" center>
+        <!-- <div class="rankSection"></div> -->
+        <el-table
+          :data="rankData"
+          class="rankSection"
+          :height="`calc(var(--heightRate) * 800)`"
+          empty-text="No Data yet"
         >
-          <el-option
-            v-for="item in playerNumOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+          <el-table-column
+            property="playerName"
+            label="玩家名"
+            fixed
+            width="150"
+          ></el-table-column>
+          <el-table-column
+            property="prize"
+            label="获得奖项"
+            :formatter="playerRankDataFormatter"
+          ></el-table-column>
+        </el-table>
+      </el-dialog>
+    </div>
+
+    <div class="restartLayer">
+      <el-dialog title="定义玩家数量" v-model="restartVisible" center>
+        <div class="restartSection">
+          <el-select
+            placeholder="请选择(最多8人)"
+            v-model="playerNum"
+            :popper-append-to-body="false"
+            size="small"
           >
-          </el-option>
-        </el-select>
-      </div>
+            <el-option
+              v-for="item in playerNumOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
 
-      <template v-slot:footer>
-        <el-button class="restartFooter" @click="start()">选好了！</el-button>
-      </template>
-    </el-dialog>
+        <template v-slot:footer>
+          <el-button class="restartFooter" @click="start()">选好了！</el-button>
+        </template>
+      </el-dialog>
+    </div>
 
-    <el-dialog
-      title="博饼怎么玩？"
-      v-model="rulesVisible"
-      class="rulesLayer"
-      center
-    >
-      <div class="ruleSection">
-        <span class="ruleIntro">
-          例如，在多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家符合下表中的点数，就能赢得奖品。
-        </span>
-        <img src="../../public/image/rule.png" alt="" class="ruleImg" />
-      </div>
-    </el-dialog>
+    <div class="rulesLayer">
+      <el-dialog title="博饼怎么玩？" v-model="rulesVisible" center>
+        <div class="ruleSection">
+          <span class="ruleIntro">
+            博饼的规则如下：多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。
+            具体参见下表：
+          </span>
+          <img src="../../public/image/rule.png" alt="" class="ruleImg" />
+          <span class="ruleIntro">
+            注：由于“状元”等级较为稀有，且在“状元”条件下，由于越靠近表格底部的点数掷出概率越小，因此亦有“在已出现状元的情况下，博到越稀有点数者可以顺走前一状元奖品”的进阶规则。玩的开心！
+          </span>
+        </div>
+      </el-dialog>
+    </div>
 
-    <el-dialog title="关于" v-model="aboutVisible" class="aboutLayer" center>
-      <div class="aboutSection">
-        <span class="aboutSection_Title">页面设计&网页开发: </span>
-        <span class="aboutSection_Name">Jeacson_She</span>
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="Go to Github"
-          placement="top"
-        >
-          <el-icon><el-icon-info /></el-icon>
-        </el-tooltip>
-      </div>
-      <template v-slot:footer>
-        <span>©Jeacson_She @2023-present all rights reserved.</span>
-      </template>
-    </el-dialog>
+    <div class="aboutLayer">
+      <el-dialog title="关于" v-model="aboutVisible" center>
+        <div class="aboutSection">
+          <span class="aboutSection_Title">作者: </span>
+          <span class="aboutSection_Name">Jeacson_Snake</span>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Go to Github"
+            placement="top"
+          >
+            <el-link
+              :underline="false"
+              :icon="ElIconInfo"
+              class="item"
+              @click="jumpFrontEnd()"
+            ></el-link>
+          </el-tooltip>
+        </div>
+        <template v-slot:footer>
+          <span>©Jeacson_She @2023-present all rights reserved.</span>
+        </template>
+      </el-dialog>
+    </div>
 
-    <el-dialog
-      v-model="prizeResultVisible"
-      class="prizeResultLayer"
-      center
-      :modal="false"
-    >
-      <div class="prizeResultSection">
-        <img :src="require(`../assets/img/${this.prizeNow.imgUrl}`)" alt="" />
-      </div>
-      <template v-slot:footer>
-        <span :class="{ poorLuck: poorLuck }">
-          {{ this.prizeNow.prizeName }} !
-        </span>
-      </template>
-    </el-dialog>
+    <div class="prizeResultLayer">
+      <el-dialog v-model="prizeResultVisible" center :modal="false">
+        <div class="prizeResultSection">
+          <img :src="require(`../assets/img/${this.prizeNow.imgUrl}`)" alt="" />
+        </div>
+        <template v-slot:footer>
+          <span :class="{ poorLuck: poorLuck }">
+            {{ this.prizeNow.prizeName }}
+          </span>
+        </template>
+      </el-dialog>
+    </div>
 
     <div class="welcomePage">
       <el-dialog
@@ -243,13 +243,21 @@
 </template>
 
 <script>
+import { shallowRef } from "vue";
 import {
-  Info as ElIconInfo,
-  SData as ElIconSData,
-  Refresh as ElIconRefresh,
-  Tickets as ElIconTickets,
-  IceCreamRound as ElIconIceCreamRound,
-} from '@element-plus/icons'
+  InfoFilled,
+  Histogram,
+  Refresh,
+  Tickets,
+  IceCreamRound,
+} from "@element-plus/icons-vue";
+
+const ElIconInfo = shallowRef(InfoFilled);
+const ElIconSData = shallowRef(Histogram);
+const ElIconRefresh = shallowRef(Refresh);
+const ElIconTickets = shallowRef(Tickets);
+const ElIconIceCreamRound = shallowRef(IceCreamRound);
+
 export default {
   data() {
     return {
@@ -261,173 +269,170 @@ export default {
       restartVisible: false,
       welcomeVisible: false,
       loadingVisible: true,
-      playerNum: '',
+      playerNum: "",
       playerNumOptions: [
         {
-          value: '1',
-          label: '1',
+          value: "1",
+          label: "1",
         },
         {
-          value: '2',
-          label: '2',
+          value: "2",
+          label: "2",
         },
         {
-          value: '3',
-          label: '3',
+          value: "3",
+          label: "3",
         },
         {
-          value: '4',
-          label: '4',
+          value: "4",
+          label: "4",
         },
         {
-          value: '5',
-          label: '5',
+          value: "5",
+          label: "5",
         },
         {
-          value: '6',
-          label: '6',
+          value: "6",
+          label: "6",
         },
         {
-          value: '7',
-          label: '7',
+          value: "7",
+          label: "7",
         },
         {
-          value: '8',
-          label: '8',
+          value: "8",
+          label: "8",
         },
       ],
+      ElIconInfo,
       ElIconSData,
-      ElIconRefresh,
       ElIconTickets,
+      ElIconRefresh,
       ElIconIceCreamRound,
-    }
-  },
-  components: {
-    ElIconInfo,
+    };
   },
   computed: {
     rankData: function () {
-      return this.$store.state.playerRank
+      return this.$store.state.playerRank;
     },
     singleRankData: function () {
-      return this.$store.state.singleRank
+      return this.$store.state.singleRank;
     },
     diceNumArr: function () {
-      return this.$store.state.resultDiceNumArr
+      return this.$store.state.resultDiceNumArr;
     },
     playerNow: function () {
-      return this.$store.state.playerNow
+      return this.$store.state.playerNow;
     },
     prizeNow: function () {
-      return this.$store.state.prizeNow
+      return this.$store.state.prizeNow;
     },
     poorLuck: function () {
-      return this.$store.state.poorLuck
+      return this.$store.state.poorLuck;
     },
     playerAmount: function () {
-      return this.$store.state.playerAmount
+      return this.$store.state.playerAmount;
     },
   },
   methods: {
     jumpFrontEnd() {
-      window.open('https://github.com/JeacsonSnake/bobing-jettonman', '_blank')
-    },
-
-    jumpBackEnd() {
-      window.open('https://github.com/EricZhao666/Bobing', '_blank')
+      window.open(
+        "https://github.com/JeacsonSnake/bobing-jettonman-ALLinONE",
+        "_blank"
+      );
     },
 
     getRan() {
-      this.rankVisible = true
+      this.rankVisible = true;
     },
 
     getRestart() {
-      this.restartVisible = true
+      this.restartVisible = true;
     },
 
     start() {
-      let p = this.playerNum
-      if (p == '') {
-        this.$message.error('人数尚未确定！')
+      let p = this.playerNum;
+      if (p == "") {
+        this.$message.error("人数尚未确定！");
       } else {
-        this.$confirm('你将开启新一轮游戏，确定吗？', '注意', {
+        this.$confirm("你将开启新一轮游戏，确定吗？", "注意", {
           distinguishCancelAndClose: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          confirmButtonClass: 'confirmButton',
-          cancelButtonClass: 'cancelButton',
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          confirmButtonClass: "confirmButton",
+          cancelButtonClass: "cancelButton",
         })
           .then(() => {
             setTimeout(() => {
-              this.restartVisible = false
-              this.welcomeVisible = false
-            }, 100)
-            const loading = this.startLoading('创建中...')
+              this.restartVisible = false;
+              this.welcomeVisible = false;
+            }, 100);
+            const loading = this.startLoading("创建中...");
             setTimeout(() => {
               this.$store
-                .dispatch('getNewRun', p)
+                .dispatch("getNewRun", p)
                 .then(() => {
                   setTimeout(() => {
-                    this.endLoading(loading)
+                    this.endLoading(loading);
                     this.$message({
-                      type: 'success',
-                      message: '已创建新一轮游戏!',
-                    })
-                  }, 400)
+                      type: "success",
+                      message: "已创建新一轮游戏!",
+                    });
+                  }, 400);
                 })
-                .catch((action) => {})
-            }, 300)
+                .catch((action) => {});
+            }, 300);
           })
           .catch((err) => {
             // console.log(err);
-            if (err == 'cancel') {
+            if (err == "cancel") {
               this.$message({
-                type: 'info',
-                message: '已取消开启新一轮游戏',
-              })
+                type: "info",
+                message: "已取消开启新一轮游戏",
+              });
             }
-          })
+          });
       }
     },
 
     getNextPlayerResults() {
       if (this.playerNow == -1) {
-        this.restartVisible = true
+        this.restartVisible = true;
         this.$message({
-          type: 'error',
-          message: 'The number of players is not set yet!',
-        })
+          type: "error",
+          message: "The number of players is not set yet!",
+        });
       } else {
-        const loading = this.startLoading('掷骰入碗...')
+        const loading = this.startLoading("掷骰入碗...");
         setTimeout(() => {
           this.$store
-            .dispatch('getNextResult')
+            .dispatch("getNextResult")
             .then(() => {
               setTimeout(() => {
-                this.endLoading(loading)
-              }, 400)
+                this.endLoading(loading);
+              }, 400);
             })
             .then(() => {
               setTimeout(() => {
-                this.prizeResultVisible = true
-              }, 700)
-            })
-        }, 300)
+                this.prizeResultVisible = true;
+              }, 700);
+            });
+        }, 300);
       }
     },
 
     startLoading(loadingText) {
       const loading = this.$elLoading.service({
         lock: true,
-        target: '.homePage',
+        target: ".homePage",
         text: loadingText,
-        background: 'rgba(200, 200, 200, 1)',
-      })
-      return loading
+        background: "rgba(200, 200, 200, 1)",
+      });
+      return loading;
     },
 
     endLoading(loading) {
-      loading.close()
+      loading.close();
     },
 
     playerRankDataFormatter(row, column, cellValue, index) {
@@ -435,20 +440,20 @@ export default {
       // console.log(column);
       // console.log("cellvalue", cellValue);
       // console.log(index);
-      let formattedCellValue = ''
+      let formattedCellValue = "";
       cellValue.forEach((singlePrizeObj, index) => {
-        let prizeRealName = ''
+        let prizeRealName = "";
         this.$store.state.prizeName.forEach((SingleRealName, index) => {
           if (SingleRealName === singlePrizeObj.prizeName) {
-            prizeRealName = this.$store.state.prizeRealName[index]
+            prizeRealName = this.$store.state.prizeRealName[index];
           }
-        })
-        formattedCellValue += prizeRealName
-        formattedCellValue += '*'
-        formattedCellValue += singlePrizeObj.prizeGetNum
-        formattedCellValue += ', '
-      })
-      return formattedCellValue.slice(0, -2)
+        });
+        formattedCellValue += prizeRealName;
+        formattedCellValue += "*";
+        formattedCellValue += singlePrizeObj.prizeGetNum;
+        formattedCellValue += ", ";
+      });
+      return formattedCellValue.slice(0, -2);
     },
   },
   created() {
@@ -457,49 +462,50 @@ export default {
   },
   mounted() {
     let localPlayersRank = JSON.parse(
-      localStorage.getItem('Bobing_playersRank')
-    )
-    console.log(localPlayersRank)
+      localStorage.getItem("Bobing_playersRank")
+    );
+    console.log(localPlayersRank);
     if (localPlayersRank) {
-      const loading = this.startLoading('正在读取存档...')
+      const loading = this.startLoading("正在读取存档...");
       setTimeout(() => {
-        this.$store.commit('changePlayerAmount', localPlayersRank.playerAmount)
-        this.$store.commit('changePlayerNow', localPlayersRank.playerNow)
-        this.$store.commit('setPlayerRank', localPlayersRank.playerRank)
+        this.$store.commit("changePlayerAmount", localPlayersRank.playerAmount);
+        this.$store.commit("changePlayerNow", localPlayersRank.playerNow);
+        this.$store.commit("setPlayerRank", localPlayersRank.playerRank);
         this.$store.commit(
-          'setResultDiceNumArr',
+          "setResultDiceNumArr",
           localPlayersRank.resultDiceNumArr
-        )
-        this.$store.dispatch('setNowPlayerRank')
-        this.loadingVisible = false
-      }, 2000)
+        );
+        this.$store.dispatch("setNowPlayerRank");
+        this.loadingVisible = false;
+      }, 2000);
       setTimeout(() => {
-        this.endLoading(loading)
-      }, 2500)
+        this.endLoading(loading);
+      }, 2500);
     } else {
-      const loading = this.startLoading('加载中...')
+      const loading = this.startLoading("加载中...");
       setTimeout(() => {
-        this.welcomeVisible = true
-        this.loadingVisible = false
-      }, 2000)
+        this.welcomeVisible = true;
+        this.loadingVisible = false;
+      }, 2000);
       setTimeout(() => {
-        this.endLoading(loading)
-      }, 2500)
+        this.endLoading(loading);
+      }, 2500);
     }
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '../style/variables.scss';
+@import "../style/variables.scss";
 .homePage {
-  font-family: 'HarmonyOS_Sans_SC_Medium', Avenir, Helvetica, Arial, sans-serif;
+  font-family: "HarmonyOS_Sans_SC_Medium", Avenir, Helvetica, Arial, sans-serif;
   --heightRate: calc(100vh / #{$base-height});
   --widthRate: calc(100vw / #{$base-width});
   width: inherit;
   height: 100vh;
   background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
   background-color: rgba(242, 242, 242, 0.5);
+
   nav {
     width: calc(var(--widthRate) * 1920);
     height: calc(var(--heightRate) * 77);
@@ -517,7 +523,7 @@ export default {
         margin: 0 calc(var(--heightRate) * 25);
         padding: 0;
         color: #4d4747;
-        font-family: 'HarmonyOS_Sans_SC_Medium';
+        font-family: "HarmonyOS_Sans_SC_Medium";
         font-size: calc(var(--heightRate) * 30);
       }
     }
@@ -555,7 +561,7 @@ export default {
       overflow: hidden;
 
       .playerName {
-        font-family: 'HarmonyOS_Sans_SC_Black';
+        font-family: "HarmonyOS_Sans_SC_Black";
         margin-top: calc(var(--heightRate) * 17);
         padding-bottom: calc(var(--heightRate) * 12);
         font-size: calc(var(--heightRate) * 60);
@@ -569,60 +575,67 @@ export default {
         border-radius: calc(var(--heightRate) * 40) calc(var(--heightRate) * 40)
           0 0;
         background-color: #dfdfdf;
+        align-items: center;
+        justify-content: center;
 
-        ::v-deep .el-table__body-wrapper {
-          &::-webkit-scrollbar {
-            width: calc(var(--heightRate) * 8); /*滚动条宽度*/
-          }
-
-          &::-webkit-scrollbar-track {
-            border-radius: calc(
-              var(--heightRate) * 1
-            ); /*滚动条的背景区域的圆角*/
-            background-color: #e5e5e5; /*滚动条的背景颜色*/
-          }
-
-          &::-webkit-scrollbar-corner {
-            background-color: #f0f0f0;
-          }
-
-          &::-webkit-scrollbar-thumb {
-            border-radius: 4px; /*滚动条的圆角*/
-            background-color: #c5c5c5; /*滚动条的背景颜色*/
-          }
-
-          .el-table__body {
-            width: inherit !important;
-            display: flex;
-            justify-content: center;
-            colgroup {
-              display: none;
+        :deep(.el-table__inner-wrapper) {
+          .el-table__body-wrapper {
+            &::-webkit-scrollbar {
+              width: calc(var(--heightRate) * 8); /*滚动条宽度*/
             }
 
-            tbody tr {
-              background-color: #dfdfdf;
-              .el-table__cell {
-                border-bottom: 1px solid rgb(191, 195, 202);
-              }
-              td {
-                &:first-child .cell {
-                  width: calc(var(--widthRate) * 185);
-                  display: flex;
-                  justify-content: center;
-                }
+            &::-webkit-scrollbar-track {
+              border-radius: calc(
+                var(--heightRate) * 1
+              ); /*滚动条的背景区域的圆角*/
+              background-color: #e5e5e5; /*滚动条的背景颜色*/
+            }
 
-                &:last-child .cell {
-                  width: calc(var(--widthRate) * 132);
-                  display: flex;
-                  justify-content: center;
-                  font-size: calc(var(--heightRate) * 40);
+            &::-webkit-scrollbar-corner {
+              background-color: #f0f0f0;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              border-radius: 4px; /*滚动条的圆角*/
+              background-color: #c5c5c5; /*滚动条的背景颜色*/
+            }
+
+            .el-scrollbar
+              .el-scrollbar__wrap
+              .el-scrollbar__view
+              .el-table__body {
+              width: inherit !important;
+              display: flex;
+              justify-content: center;
+              colgroup {
+                display: none;
+              }
+
+              tbody tr {
+                background-color: #dfdfdf;
+                .el-table__cell {
+                  border-bottom: 1px solid rgb(191, 195, 202);
+                }
+                td {
+                  &:first-child .cell {
+                    width: calc(var(--widthRate) * 185);
+                    display: flex;
+                    justify-content: center;
+                  }
+
+                  &:last-child .cell {
+                    width: calc(var(--widthRate) * 132);
+                    display: flex;
+                    justify-content: center;
+                    font-size: calc(var(--heightRate) * 40);
+                  }
                 }
               }
             }
-          }
 
-          .el-table__empty-block {
-            width: 100% !important;
+            .el-table__empty-block {
+              width: 100% !important;
+            }
           }
         }
       }
@@ -670,7 +683,7 @@ export default {
       align-items: center;
       flex-direction: column;
 
-      ::v-deep .el-button {
+      :deep(.el-button) {
         width: inherit;
         padding: 0;
         height: calc(var(--heightRate) * 260);
@@ -702,18 +715,8 @@ export default {
     }
   }
 
-  footer {
-    margin-top: calc(var(--heightRate) * 141);
-    background-color: #ccccccb0;
-
-    span {
-      font-size: calc(var(--heightRate) * 14);
-      font-family: 'HarmonyOS_Sans_SC_Medium';
-    }
-  }
-
   .aboutLayer {
-    ::v-deep .el-dialog {
+    :deep(.el-dialog) {
       width: calc(var(--widthRate) * 1280);
       height: calc(var(--heightRate) * 960);
       margin-top: calc(var(--heightRate) * 60) !important;
@@ -723,7 +726,7 @@ export default {
       background: rgba(240, 240, 240, 1);
     }
 
-    ::v-deep .el-dialog__header {
+    :deep(.el-dialog__header) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 100);
       .el-dialog__headerbtn:focus .el-dialog__close,
@@ -732,24 +735,24 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: 'HarmonyOS_Sans_SC_Black';
+        font-family: "HarmonyOS_Sans_SC_Black";
         font-size: calc(var(--heightRate) * 72);
       }
     }
 
-    ::v-deep .el-dialog__body {
+    :deep(.el-dialog__body) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 193);
     }
 
-    ::v-deep .el-dialog__footer {
+    :deep(.el-dialog__footer) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 140);
       font-size: calc(var(--heightRate) * 14);
     }
 
     .aboutSection {
-      font-family: 'HarmonyOS_Sans_SC_Black';
+      font-family: "HarmonyOS_Sans_SC_Black";
       display: flex;
       justify-content: center;
       align-items: center;
@@ -770,12 +773,15 @@ export default {
 
       .item {
         cursor: pointer;
+        text-shadow: calc(var(--heightRate) * 3) calc(var(--heightRate) * 2)
+          calc(var(--heightRate) * 9) rgba(0, 0, 0, 0.25);
+        font-size: calc(var(--heightRate) * 48);
       }
     }
   }
 
   .rulesLayer {
-    ::v-deep .el-dialog {
+    :deep(.el-dialog) {
       width: calc(var(--widthRate) * 1280);
       height: calc(var(--heightRate) * 1430);
       margin-top: calc(var(--heightRate) * 60) !important;
@@ -785,7 +791,7 @@ export default {
       background: rgba(240, 240, 240, 1);
     }
 
-    ::v-deep .el-dialog__header {
+    :deep(.el-dialog__header) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 100);
 
@@ -795,13 +801,13 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: 'HarmonyOS_Sans_SC_Bold';
+        font-family: "HarmonyOS_Sans_SC_Bold";
         font-size: calc(var(--heightRate) * 60);
         color: #757575;
       }
     }
 
-    ::v-deep .el-dialog__body {
+    :deep(.el-dialog__body) {
       padding: 0;
       margin: 0;
       display: flex;
@@ -822,7 +828,7 @@ export default {
       align-items: center;
 
       .ruleIntro {
-        padding: calc(var(--heightRate) * 10) 0;
+        padding: calc(var(--heightRate) * 10) calc(var(--heightRate) * 10);
         word-wrap: break-word;
         word-break: normal;
       }
@@ -833,7 +839,7 @@ export default {
       }
     }
 
-    ::v-deep .el-dialog__footer {
+    :deep(.el-dialog__footer) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 140);
       font-size: calc(var(--heightRate) * 14);
@@ -841,7 +847,7 @@ export default {
   }
 
   .rankLayer {
-    ::v-deep .el-dialog {
+    :deep(.el-dialog) {
       width: calc(var(--widthRate) * 1280);
       height: calc(var(--heightRate) * 960);
       margin-top: calc(var(--heightRate) * 60) !important;
@@ -851,7 +857,7 @@ export default {
       border-radius: calc(var(--heightRate) * 20);
     }
 
-    ::v-deep .el-dialog__header {
+    :deep(.el-dialog__header) {
       display: flex;
       padding: 0;
       padding-top: calc(var(--heightRate) * 32);
@@ -863,13 +869,13 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: 'HarmonyOS_Sans_SC_Black';
+        font-family: "HarmonyOS_Sans_SC_Black";
         font-size: calc(var(--heightRate) * 72);
         color: #47484c;
       }
     }
 
-    ::v-deep .el-dialog__body {
+    :deep(.el-dialog__body) {
       padding: calc(var(--heightRate) * 30);
       padding-top: calc(var(--heightRate) * 40);
       margin: 0;
@@ -887,7 +893,7 @@ export default {
   }
 
   .restartLayer {
-    ::v-deep .el-dialog {
+    :deep(.el-dialog) {
       width: calc(var(--widthRate) * 420);
       height: calc(var(--heightRate) * 550);
       margin: 0;
@@ -898,7 +904,7 @@ export default {
       border-radius: calc(var(--heightRate) * 20);
     }
 
-    ::v-deep .el-dialog__header {
+    :deep(.el-dialog__header) {
       display: flex;
       padding: 0;
       padding-top: calc(var(--heightRate) * 60);
@@ -910,7 +916,7 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: 'HarmonyOS_Sans_SC_Black';
+        font-family: "HarmonyOS_Sans_SC_Black";
         font-size: calc(var(--heightRate) * 60);
         line-height: calc(var(--heightRate) * 60);
         color: #47484c;
@@ -920,15 +926,19 @@ export default {
       }
     }
 
-    ::v-deep .el-dialog__body {
+    :deep(.el-dialog__body) {
       padding: 0;
       margin: 0;
       //   width: calc(var(--widthRate) * 224);
       //   height: calc(var(--heightRate) * 40);
-      font-family: 'HarmonyOS_Sans_SC_Midium';
+      font-family: "HarmonyOS_Sans_SC_Midium";
 
       display: flex;
       justify-content: center;
+
+      .el-select {
+        width: calc(var(--widthRate) * 220);
+      }
 
       .el-input__inner {
         // width: calc(var(--widthRate) * 224);
@@ -956,7 +966,7 @@ export default {
       }
     }
 
-    ::v-deep .el-dialog__footer {
+    :deep(.el-dialog__footer) {
       margin: 0;
       padding: 0;
       padding-top: calc(var(--heightRate) * 70);
@@ -971,7 +981,7 @@ export default {
   }
 
   .prizeResultLayer {
-    ::v-deep .el-dialog {
+    :deep(.el-dialog) {
       width: calc(var(--widthRate) * 420);
       height: calc(var(--heightRate) * 550);
       margin: 0;
@@ -986,14 +996,14 @@ export default {
       justify-content: center;
     }
 
-    ::v-deep .el-dialog__header {
+    :deep(.el-dialog__header) {
       .el-dialog__headerbtn:focus .el-dialog__close,
       .el-dialog__headerbtn:hover .el-dialog__close {
         color: #de5757;
       }
     }
 
-    ::v-deep .el-dialog__body,
+    :deep(.el-dialog__body),
     .prizeResultSection {
       padding: 0;
       margin: 0;
@@ -1003,13 +1013,15 @@ export default {
       justify-content: center;
     }
 
-    ::v-deep .el-dialog__footer {
-      margin: 0;
-      padding: 0;
-      padding-top: calc(var(--heightRate) * 50);
-      font-family: 'HarmonyOS_Sans_SC_Black';
-      font-size: calc(var(--heightRate) * 70);
-      color: #de5757;
+    :deep(.el-dialog__footer) {
+      span {
+        margin: 0;
+        padding: 0;
+        padding-top: calc(var(--heightRate) * 50);
+        font-family: "HarmonyOS_Sans_SC_Black";
+        font-size: calc(var(--heightRate) * 70);
+        color: #de5757;
+      }
       .poorLuck {
         color: #757575;
       }
@@ -1017,12 +1029,12 @@ export default {
   }
 
   .welcomePage {
-    ::v-deep .el-dialog__wrapper {
+    :deep(.el-overlay) {
       background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
       background-color: rgb(228, 228, 228);
     }
 
-    ::v-deep .el-dialog {
+    :deep(.el-dialog) {
       width: calc(var(--widthRate) * 1280);
       height: calc(var(--heightRate) * 2357);
       margin-top: calc(var(--heightRate) * 60) !important;
@@ -1032,7 +1044,7 @@ export default {
       background: rgba(240, 240, 240, 1);
     }
 
-    ::v-deep .el-dialog__header {
+    :deep(.el-dialog__header) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 100);
 
@@ -1042,13 +1054,13 @@ export default {
       }
 
       .el-dialog__title {
-        font-family: 'HarmonyOS_Sans_SC_Black';
+        font-family: "HarmonyOS_Sans_SC_Black";
         font-size: calc(var(--heightRate) * 72);
         color: #757575;
       }
     }
 
-    ::v-deep .el-dialog__body {
+    :deep(.el-dialog__body) {
       padding: 0;
       margin: 0;
       display: flex;
@@ -1077,7 +1089,7 @@ export default {
         align-content: center;
 
         .title {
-          font-family: 'HarmonyOS_Sans_SC_Black';
+          font-family: "HarmonyOS_Sans_SC_Black";
           font-size: calc(var(--heightRate) * 60);
           color: #757575;
           padding-left: calc(var(--widthRate) * 16);
@@ -1111,13 +1123,13 @@ export default {
       }
     }
 
-    ::v-deep .el-dialog__footer {
+    :deep(.el-dialog__footer) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 25);
       font-size: calc(var(--heightRate) * 14);
 
       .title {
-        font-family: 'HarmonyOS_Sans_SC_Black';
+        font-family: "HarmonyOS_Sans_SC_Black";
         font-size: calc(var(--heightRate) * 100);
         color: #757575;
         padding-left: calc(var(--widthRate) * 16);
@@ -1131,7 +1143,7 @@ export default {
         color: #f2f2f2;
         border-color: #4d4747;
         background-color: #de5757;
-        font-family: 'HarmonyOS_Sans_SC_Bold';
+        font-family: "HarmonyOS_Sans_SC_Bold";
         font-size: calc(var(--heightRate) * 80);
         line-height: calc(var(--heightRate) * 80);
         border: calc(var(--heightRate) * 4) solid rgba(71, 72, 76, 1);
@@ -1147,14 +1159,14 @@ export default {
   }
 
   .loadingPage {
-    ::v-deep .el-dialog__wrapper {
+    :deep(.el-overlay-dialog) {
       background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
       background-color: rgb(228, 228, 228);
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    ::v-deep .el-dialog {
+    :deep(.el-dialog) {
       width: calc(var(--widthRate) * 1280);
       height: inherit;
       margin-top: calc(var(--heightRate) * 30) !important;
@@ -1163,7 +1175,7 @@ export default {
       border-radius: calc(var(--heightRate) * 20);
       background: rgba(240, 240, 240, 1);
     }
-    ::v-deep .el-dialog__header {
+    :deep(.el-dialog__header) {
       padding: 0;
     }
     .ruleImg {
@@ -1172,7 +1184,7 @@ export default {
     }
   }
 
-  ::v-deep .el-loading-spinner {
+  :deep(.el-loading-spinner) {
     width: calc(var(--widthRate) * 420);
     height: calc(var(--heightRate) * 550);
     top: calc(50% - var(--widthRate) * 210);
@@ -1197,9 +1209,23 @@ export default {
     }
 
     .el-loading-text {
-      font-family: 'HarmonyOS_Sans_SC_Black';
+      font-family: "HarmonyOS_Sans_SC_Black";
       font-size: calc(var(--heightRate) * 60);
       color: #de5757;
+    }
+  }
+
+  footer {
+    margin-top: calc(var(--heightRate) * 121);
+    height: calc(var(--heightRate) * 50);
+    background-color: #ccccccb0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-size: calc(var(--heightRate) * 17);
+      font-family: "HarmonyOS_Sans_SC_Medium";
     }
   }
 }
