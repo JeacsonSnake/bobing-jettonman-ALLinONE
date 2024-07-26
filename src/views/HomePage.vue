@@ -2,7 +2,7 @@
   <div class="homePage">
     <div class="loadingPage" v-if="loadingVisible">
       <el-dialog
-        v-model:visible="loadingVisible"
+        v-model="loadingVisible"
         class="welcomeLayer"
         center
         :show-close="false"
@@ -15,24 +15,24 @@
 
     <nav>
       <div class="navBtnGroup">
-        <el-button type="text" icon="el-icon-s-data" @click="getRan()">
+        <el-button type="text" :icon="ElIconSData" @click="getRan()">
           排行榜
         </el-button>
-        <el-button type="text" icon="el-icon-refresh" @click="getRestart()">
+        <el-button type="text" :icon="ElIconRefresh" @click="getRestart()">
           重开一局
         </el-button>
       </div>
       <div class="navBtnGroup">
         <el-button
           type="text"
-          icon="el-icon-tickets"
+          :icon="ElIconTickets"
           @click="rulesVisible = true"
         >
           博饼规则
         </el-button>
         <el-button
           type="text"
-          icon="el-icon-ice-cream-round"
+          :icon="ElIconIceCreamRound"
           @click="aboutVisible = true"
         >
           关于
@@ -98,12 +98,7 @@
       <span>© Jeacson_She 2023-present All rights Reserved.</span>
     </footer>
 
-    <el-dialog
-      title="Rank: "
-      v-model:visible="rankVisible"
-      class="rankLayer"
-      center
-    >
+    <el-dialog title="Rank: " v-model="rankVisible" class="rankLayer" center>
       <!-- <div class="rankSection"></div> -->
       <el-table
         :data="rankData"
@@ -127,13 +122,13 @@
 
     <el-dialog
       title="定义玩家数量"
-      v-model:visible="restartVisible"
+      v-model="restartVisible"
       class="restartLayer"
       center
     >
       <div class="restartSection">
         <el-select
-          v-model:value="playerNum"
+          v-model="playerNum"
           placeholder="请选择(最多8人)"
           :popper-append-to-body="false"
           size="small"
@@ -155,7 +150,7 @@
 
     <el-dialog
       title="博饼怎么玩？"
-      v-model:visible="rulesVisible"
+      v-model="rulesVisible"
       class="rulesLayer"
       center
     >
@@ -167,12 +162,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog
-      title="关于"
-      v-model:visible="aboutVisible"
-      class="aboutLayer"
-      center
-    >
+    <el-dialog title="关于" v-model="aboutVisible" class="aboutLayer" center>
       <div class="aboutSection">
         <span class="aboutSection_Title">页面设计&网页开发: </span>
         <span class="aboutSection_Name">Jeacson_She</span>
@@ -182,7 +172,7 @@
           content="Go to Github"
           placement="top"
         >
-          <i class="el-icon-info" @click="jumpFrontEnd()"></i>
+          <el-icon><el-icon-info /></el-icon>
         </el-tooltip>
       </div>
       <template v-slot:footer>
@@ -191,7 +181,7 @@
     </el-dialog>
 
     <el-dialog
-      v-model:visible="prizeResultVisible"
+      v-model="prizeResultVisible"
       class="prizeResultLayer"
       center
       :modal="false"
@@ -209,7 +199,7 @@
     <div class="welcomePage">
       <el-dialog
         title="欢迎来到博饼页面!"
-        v-model:visible="welcomeVisible"
+        v-model="welcomeVisible"
         class="welcomeLayer"
         center
         :show-close="false"
@@ -253,6 +243,13 @@
 </template>
 
 <script>
+import {
+  Info as ElIconInfo,
+  SData as ElIconSData,
+  Refresh as ElIconRefresh,
+  Tickets as ElIconTickets,
+  IceCreamRound as ElIconIceCreamRound,
+} from '@element-plus/icons'
 export default {
   data() {
     return {
@@ -299,7 +296,14 @@ export default {
           label: '8',
         },
       ],
+      ElIconSData,
+      ElIconRefresh,
+      ElIconTickets,
+      ElIconIceCreamRound,
     }
+  },
+  components: {
+    ElIconInfo,
   },
   computed: {
     rankData: function () {

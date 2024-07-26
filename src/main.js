@@ -3,17 +3,17 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import {
-  Button,
-  Dialog,
-  Table,
-  TableColumn,
-  Select,
-  Option,
-  Message,
-  MessageBox,
-  Loading,
-  Tooltip,
-} from 'element-ui'
+  ElButton as Button,
+  ElDialog as Dialog,
+  ElTable as Table,
+  ElTableColumn as TableColumn,
+  ElSelect as Select,
+  ElOption as Option,
+  ElMessage as Message,
+  ElMessageBox as MessageBox,
+  ElLoading as Loading,
+  ElTooltip as Tooltip,
+} from 'element-plus'
 import 'element-ui/lib/theme-chalk/index.css'
 
 // import fonts
