@@ -195,7 +195,19 @@ export const store = createStore({
                         singlePrize.prizeName = rollingResult.resultName
                         singlePrize.imgUrl = state.prizeNow.imgUrl
                         singlePrize.prizeGetNum++
-                        singleRankObj.prize.push(singlePrize)
+
+                        // Find the correct index to insert the new prize based on prizeNameAll
+                        let newPrizeIndex = state.prizeName.indexOf(rollingResult.resultName)
+                        let insertIndex = singleRankObj.prize.findIndex(prize =>
+                            state.prizeName.indexOf(prize.prizeName) < newPrizeIndex
+                        );
+                        if (insertIndex === -1) {
+                            singleRankObj.prize.push(singlePrize); // If no such index is found, append to the end
+                        } else {
+                            singleRankObj.prize.splice(insertIndex, 0, singlePrize); // Insert at the correct position
+                        }
+
+                        // singleRankObj.prize.push(singlePrize)
                     }
                     isPlayerSet = true
                 }
