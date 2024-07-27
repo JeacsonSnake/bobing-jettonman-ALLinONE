@@ -5,7 +5,7 @@ import {
 } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
-const path = require("path");
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -22,6 +22,12 @@ export default defineConfig({
         alias: {
             "@": path.resolve(__dirname, "./src"),
         },
+    },
+    server: {
+        cors: {
+            origin: '*',
+            credentials: true,
+        }
     },
     optimizeDeps: {
         esbuildOptions: {

@@ -2,6 +2,7 @@
   "name": "bobing-jettonman",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -25,7 +26,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^5.4.1",
-    "@vitejs/plugin-vue": "^5.1.0",
+    "@vitejs/plugin-vue": "^3.0.0",
     "cz-git": "^1.9.4",
     "style-loader": "^4.0.0",
     "vite": "^5.3.5",
