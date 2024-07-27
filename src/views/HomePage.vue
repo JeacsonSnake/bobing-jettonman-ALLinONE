@@ -343,7 +343,7 @@ export default {
     },
 
     getDiseImg(imgUrl) {
-      return new URL("../assets/img/" + String(imgUrl), import.meta.url).href;
+      return `${import.meta.env.BASE_URL}image/${imgUrl}`;
     },
 
     getDiceImgByIndex(index) {
