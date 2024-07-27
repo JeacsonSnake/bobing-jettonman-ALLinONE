@@ -104,7 +104,7 @@ export const store = createStore({
                 playerName,
                 prize,
             }
-            console.log('state.singleRank', state.singleRank)
+            // console.log('state.singleRank', state.singleRank)
         },
         clearResultDiceNumArr(state) {
             state.resultDiceNumArr = []
@@ -125,7 +125,7 @@ export const store = createStore({
                 localStorage.getItem('Bobing_playersRank')
             )
             if (localPlayersRank) {
-                console.log('删掉了')
+                // console.log('删掉了')
                 localStorage.removeItem('Bobing_playersRank')
             }
             commit('changePlayerAmount', playerNum)
