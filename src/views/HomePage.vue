@@ -58,7 +58,7 @@
           <el-table-column property="imgUrl" width="40">
             <template v-slot="scope">
               <img
-                :src="require(`../assets/img/${scope.row.imgUrl}`)"
+                :src="getDiseImg(scope.row.imgUrl)"
                 alt=""
                 width="40"
                 height="40"
@@ -71,7 +71,7 @@
       </div>
       <div class="diceDisplaySection">
         <div class="diceImgSection" v-for="(item, index) in diceNumArr">
-          <img :src="require(`../assets/img/dice/DICE-${item}.svg`)" alt="" />
+          <img :src="getDiceImgByIndex(item)" alt="" />
         </div>
       </div>
       <div class="rollButtonSection">
@@ -186,7 +186,7 @@
     <div class="prizeResultLayer">
       <el-dialog v-model="prizeResultVisible" center :modal="false">
         <div class="prizeResultSection">
-          <img :src="require(`../assets/img/${this.prizeNow.imgUrl}`)" alt="" />
+          <img :src="getDiseImg(this.prizeNow.imgUrl)" alt="" />
         </div>
         <template v-slot:footer>
           <span :class="{ poorLuck: poorLuck }">
@@ -342,6 +342,15 @@ export default {
       );
     },
 
+    getDiseImg(imgUrl) {
+      return new URL("../assets/img/" + String(imgUrl), import.meta.url).href;
+    },
+
+    getDiceImgByIndex(index) {
+      let imgUrl = "dice/DICE-" + index + ".svg";
+      return this.getDiseImg(imgUrl);
+    },
+
     getRan() {
       this.rankVisible = true;
     },
@@ -464,7 +473,7 @@ export default {
     let localPlayersRank = JSON.parse(
       localStorage.getItem("Bobing_playersRank")
     );
-    console.log(localPlayersRank);
+    // console.log(localPlayersRank);
     if (localPlayersRank) {
       const loading = this.startLoading("正在读取存档...");
       setTimeout(() => {
@@ -503,7 +512,7 @@ export default {
   --widthRate: calc(100vw / #{$base-width});
   width: inherit;
   height: 100vh;
-  background-image: "../../public/image/homepage_background_img.png";
+  background-image: url("../../public/image/homepage_background_img.png");
   background-color: rgba(242, 242, 242, 0.5);
 
   nav {
@@ -1028,7 +1037,7 @@ export default {
 
   .welcomePage {
     :deep(.el-overlay) {
-      background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
+      background-image: url("../../public/image/homepage_background_img.png");
       background-color: rgb(228, 228, 228);
     }
 
@@ -1158,7 +1167,7 @@ export default {
 
   .loadingPage {
     :deep(.el-overlay-dialog) {
-      background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
+      background-image: url("../../public/image/homepage_background_img.png");
       background-color: rgb(228, 228, 228);
       display: flex;
       justify-content: center;
