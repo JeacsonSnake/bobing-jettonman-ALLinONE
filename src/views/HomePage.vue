@@ -198,7 +198,7 @@
 
     <div class="welcomePage">
       <el-dialog
-        title="欢迎来到博饼页面!"
+        title="欢迎来到博饼·状元筹!"
         v-model="welcomeVisible"
         class="welcomeLayer"
         center
@@ -503,7 +503,7 @@ export default {
   --widthRate: calc(100vw / #{$base-width});
   width: inherit;
   height: 100vh;
-  background-image: url(https://img.js.design/assets/img/61f2081bc03e983a077fd038.png#49767ac507f1808d28b1122464ebb4e1);
+  background-image: "../../public/image/homepage_background_img.png";
   background-color: rgba(242, 242, 242, 0.5);
 
   nav {
