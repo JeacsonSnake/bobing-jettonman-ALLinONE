@@ -147,13 +147,6 @@ export const store = createStore({
             } else {
                 state.playerNow++
             }
-            // getResult 返回结果
-            /*
-                      {
-                          resultName: 与prizeName中变量名一致
-                          resultNum: "123532" 字符串
-                      }
-                  */
             let rollingResult = getResult(state.isONFirst)
             // console.log(`rollingResult`, rollingResult);
             state.prizeName.forEach((p, i) => {
@@ -179,17 +172,6 @@ export const store = createStore({
                 this.dispatch('setNowPlayerRank')
                 return
             }
-            /*
-                      singlePrizeTemplate: {
-                          prizeName: "",
-                          imgUrl: "",
-                          prizeGetNum: 0
-                      }
-                      singleRankTemplate: {
-                          playerName: "",
-                          prize: []
-                      },
-                  */
             let isPlayerSet = false
             let isPrizeSet = false
             state.playerRank.forEach((singleRankObj, index, playerRank) => {

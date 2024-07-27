@@ -581,14 +581,12 @@ export default {
         :deep(.el-table__inner-wrapper) {
           .el-table__body-wrapper {
             &::-webkit-scrollbar {
-              width: calc(var(--heightRate) * 8); /*滚动条宽度*/
+              width: calc(var(--heightRate) * 8);
             }
 
             &::-webkit-scrollbar-track {
-              border-radius: calc(
-                var(--heightRate) * 1
-              ); /*滚动条的背景区域的圆角*/
-              background-color: #e5e5e5; /*滚动条的背景颜色*/
+              border-radius: calc(var(--heightRate) * 1);
+              background-color: #e5e5e5;
             }
 
             &::-webkit-scrollbar-corner {
@@ -596,8 +594,8 @@ export default {
             }
 
             &::-webkit-scrollbar-thumb {
-              border-radius: 4px; /*滚动条的圆角*/
-              background-color: #c5c5c5; /*滚动条的背景颜色*/
+              border-radius: 4px;
+              background-color: #c5c5c5;
             }
 
             .el-scrollbar
