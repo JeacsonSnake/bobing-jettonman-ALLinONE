@@ -16,80 +16,82 @@
     <nav>
       <div class="navBtnGroup">
         <el-button link :icon="ElIconSData" @click="getRan()">
-          排行榜
+          <span class="navBtnText">排行榜</span>
         </el-button>
         <el-button link :icon="ElIconRefresh" @click="getRestart()">
-          重开一局
+          <span class="navBtnText">重开一局</span>
         </el-button>
       </div>
       <div class="navBtnGroup">
         <el-button link :icon="ElIconTickets" @click="rulesVisible = true">
-          博饼规则
+          <span class="navBtnText">博饼规则</span>
         </el-button>
         <el-button
           link
           :icon="ElIconIceCreamRound"
           @click="aboutVisible = true"
         >
-          关于
+          <span class="navBtnText">关于</span>
         </el-button>
       </div>
     </nav>
 
-    <div class="titleImgSection">
-      <img src="../../public/image/title.png" alt="" class="titleImg" />
+    <div class="mobileSpecificSection">
+      <div class="titleImgSection">
+        <img src="../../public/image/title.png" alt="" class="titleImg" />
+      </div>
+      <div class="bodySection">
+        <div class="singleRankSection">
+          <div class="playerName">
+            <span>{{
+              singleRankData.playerName == "个人奖项"
+                ? singleRankData.playerName
+                : `玩家 ${singleRankData.playerName}`
+            }}</span>
+          </div>
+          <el-table
+            :data="singleRankData.prize"
+            class="prizeSection"
+            :height="`calc(var(--heightRate) * 337)`"
+            empty-text="还未获奖"
+            :show-header="false"
+          >
+            <el-table-column property="imgUrl" width="40">
+              <template v-slot="scope">
+                <img
+                  :src="getDiseImg(scope.row.imgUrl)"
+                  alt=""
+                  width="40"
+                  height="40"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column property="prizeGetNum" width="100">
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="diceDisplaySection">
+          <div class="diceImgSection" v-for="(item, index) in diceNumArr">
+            <img :src="getDiceImgByIndex(item)" alt="" />
+          </div>
+        </div>
+        <div class="rollButtonSection">
+          <div>
+            下一位玩家为:
+            {{
+              playerNow == playerAmount || playerNow == "0"
+                ? `玩家 1`
+                : `玩家 ${playerNow + 1}`
+            }}
+          </div>
+          <el-button @click="getNextPlayerResults()">
+            <span>掷骰开博</span>
+            <span>下一位!</span>
+          </el-button>
+        </div>
+      </div>
     </div>
-    <div class="bodySection">
-      <div class="singleRankSection">
-        <div class="playerName">
-          <span>{{
-            singleRankData.playerName == "个人奖项"
-              ? singleRankData.playerName
-              : `玩家 ${singleRankData.playerName}`
-          }}</span>
-        </div>
-        <el-table
-          :data="singleRankData.prize"
-          class="prizeSection"
-          :height="`calc(var(--heightRate) * 337)`"
-          empty-text="还未获奖"
-          :show-header="false"
-        >
-          <el-table-column property="imgUrl" width="40">
-            <template v-slot="scope">
-              <img
-                :src="getDiseImg(scope.row.imgUrl)"
-                alt=""
-                width="40"
-                height="40"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column property="prizeGetNum" width="100">
-          </el-table-column>
-        </el-table>
-      </div>
-      <div class="diceDisplaySection">
-        <div class="diceImgSection" v-for="(item, index) in diceNumArr">
-          <img :src="getDiceImgByIndex(item)" alt="" />
-        </div>
-      </div>
-      <div class="rollButtonSection">
-        <div>
-          下一位玩家为:
-          {{
-            playerNow == playerAmount || playerNow == "0"
-              ? `玩家 1`
-              : `玩家 ${playerNow + 1}`
-          }}
-        </div>
-        <el-button @click="getNextPlayerResults()">
-          掷骰开博
-          <br />
-          下一位！
-        </el-button>
-      </div>
-    </div>
+
     <footer>
       <span>© Jeacson_She 2023-present All rights Reserved.</span>
     </footer>
@@ -517,7 +519,7 @@ export default {
 
   nav {
     width: calc(var(--widthRate) * 1920);
-    height: calc(var(--heightRate) * 77);
+    height: calc(var(--heightRate) * 62);
     background: rgba(204, 204, 204, 0);
     border-bottom: 1px solid rgb(0, 0, 0);
     display: flex;
@@ -526,7 +528,8 @@ export default {
     align-items: center;
 
     .navBtnGroup {
-      height: calc(var(--heightRate) * 30);
+      height: inherit;
+      display: flex;
 
       button {
         margin: 0 calc(var(--heightRate) * 25);
@@ -535,30 +538,68 @@ export default {
         font-family: "HarmonyOS_Sans_SC_Medium";
         font-size: calc(var(--heightRate) * 30);
       }
+
+      .navBtnText {
+        display: inline;
+        @media (aspect-ratio < calc(830 / 1080)) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .mobileSpecificSection {
+    @media (aspect-ratio < calc(1100 / 1080)) {
+      display: flex;
+      flex-direction: column;
     }
   }
 
   .titleImgSection {
-    width: calc(var(--widthRate) * 1920);
-    height: calc(var(--heightRate) * 374);
+    width: inherit;
+    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
 
     .titleImg {
-      width: calc(var(--widthRate) * 1120);
-      height: calc(var(--heightRate) * 330);
+      max-width: calc(var(--widthRate) * 1120);
+      max-height: calc(var(--heightRate) * 330);
+      padding: calc(var(--heightRate) * 22) 0;
+      @media (aspect-ratio < calc(1100 / 1080)) {
+        padding: calc(var(--heightRate) * 10) 0;
+        max-width: calc(var(--widthRate) * 1350);
+        max-height: calc(var(--heightRate) * 330);
+      }
     }
   }
 
   .bodySection {
     width: calc(var(--widthRate) * 1920);
-    height: calc(var(--heightRate) * 456);
+    height: calc(var(--heightRate) * 520);
+    margin-top: calc(var(--heightRate) * 30);
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    @media (aspect-ratio < calc(1100 / 1080)) {
+      height: calc(var(--heightRate) * 695);
+      margin-top: calc(var(--heightRate) * 15);
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+
+    @media (aspect-ratio < calc(980 / 1080)) {
+      height: calc(var(--heightRate) * 695);
+    }
+
+    @media (aspect-ratio < calc(600 / 1079)) {
+      //   height: calc(var(--heightRate) * 800);
+    }
 
     .singleRankSection {
       width: calc(var(--widthRate) * 322);
-      margin-left: calc(var(--widthRate) * 56);
+      //   margin-left: calc(var(--widthRate) * 56);
       background-color: rgba(204, 204, 204, 1);
       border: calc(var(--heightRate) * 2) solid rgba(77, 71, 71, 1);
       box-shadow: 9px 15px 44px rgba(0, 0, 0, 0.25);
@@ -568,6 +609,9 @@ export default {
       justify-content: flex-start;
       align-items: center;
       overflow: hidden;
+      @media (aspect-ratio < calc(1821 / 1080)) {
+        display: none;
+      }
 
       .playerName {
         font-family: "HarmonyOS_Sans_SC_Black";
@@ -625,16 +669,20 @@ export default {
                 }
                 td {
                   &:first-child .cell {
+                    height: calc(var(--heightRate) * 57);
                     width: calc(var(--widthRate) * 185);
                     display: flex;
                     justify-content: center;
+                    align-items: center;
                   }
 
                   &:last-child .cell {
+                    height: calc(var(--heightRate) * 57);
                     width: calc(var(--widthRate) * 132);
                     display: flex;
                     justify-content: center;
                     font-size: calc(var(--heightRate) * 40);
+                    align-items: center;
                   }
                 }
               }
@@ -650,50 +698,87 @@ export default {
 
     .diceDisplaySection {
       width: calc(var(--widthRate) * 1000);
-      margin-left: calc(var(--widthRate) * 82);
       background-color: rgba(204, 204, 204, 1);
       border: calc(var(--heightRate) * 2) solid rgba(71, 72, 76, 1);
       box-shadow: 8px 10px 32px rgba(0, 0, 0, 0.25);
       border-radius: calc(var(--heightRate) * 20);
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+      justify-items: center;
+      align-items: center;
 
-      div:nth-child(-n + 3) {
-        margin-top: calc(var(--heightRate) * 20);
+      @media (aspect-ratio < calc(1100 / 1080)) {
+        width: calc(var(--widthRate) * 1050);
+        height: calc(var(--heightRate) * 400);
+        flex-direction: column;
       }
 
-      div:nth-child(1),
-      div:nth-child(4) {
-        margin-left: calc(var(--widthRate) * 62);
+      @media (aspect-ratio < calc(980 / 1080)) {
+        width: calc(var(--widthRate) * 1200);
+        height: calc(var(--heightRate) * 400);
       }
 
-      div:nth-child(2),
-      div:nth-child(3),
-      div:nth-child(5),
-      div:nth-child(6) {
-        margin-left: calc(var(--widthRate) * 169);
+      @media (aspect-ratio < calc(800 / 1079)) {
+        width: calc(var(--widthRate) * 1400);
+        height: calc(var(--heightRate) * 400);
+      }
+
+      @media (aspect-ratio < calc(600 / 1079)) {
+        width: calc(var(--widthRate) * 1650);
+        height: calc(var(--heightRate) * 340);
       }
 
       .diceImgSection {
-        width: calc(var(--heightRate) * 200);
-        height: calc(var(--heightRate) * 200);
+        max-width: calc(var(--heightRate) * 200);
+        padding: calc(var(--heightRate) * 20);
         display: flex;
+        text-align: center;
+        @media (aspect-ratio < calc(1821 / 1080)) {
+          padding: calc(var(--heightRate) * 15);
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
 
     .rollButtonSection {
       width: calc(var(--widthRate) * 300);
-      margin-left: calc(var(--widthRate) * 82);
+      height: calc(var(--heightRate) * 330);
+      //   margin-left: calc(var(--widthRate) * 82);
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      @media (aspect-ratio < calc(1821 / 1080)) {
+        width: calc(var(--widthRate) * 500);
+      }
 
+      @media (aspect-ratio < calc(1100 / 1080)) {
+        width: calc(var(--widthRate) * 650);
+        height: calc(var(--heightRate) * 250);
+        flex-direction: column;
+      }
+
+      @media (aspect-ratio < calc(980 / 1080)) {
+        height: calc(var(--heightRate) * 250);
+        width: calc(var(--widthRate) * 850);
+      }
+
+      @media (aspect-ratio < calc(770 / 1080)) {
+        width: calc(var(--widthRate) * 1050);
+      }
+
+      @media (aspect-ratio < calc(600 / 1079)) {
+        width: calc(var(--widthRate) * 1050);
+      }
       :deep(.el-button) {
         width: inherit;
         padding: 0;
-        height: calc(var(--heightRate) * 260);
+        height: inherit;
         border-radius: calc(var(--heightRate) * 20);
         background: rgba(222, 87, 87, 1);
         border: 1px solid rgba(71, 72, 76, 1);
@@ -709,14 +794,18 @@ export default {
           word-break: normal;
           justify-content: center;
           width: auto;
-          display: block;
+          display: flex;
           white-space: pre-wrap;
           word-wrap: break-word;
-          width: calc(var(--widthRate) * 270);
+          width: inherit;
           height: calc(var(--heightRate) * 180);
           font-size: calc(var(--heightRate) * 64);
           color: rgba(242, 242, 242, 1);
           line-height: calc(var(--heightRate) * 100);
+          flex-direction: column;
+          @media (aspect-ratio < calc(500 / 1080)) {
+            font-size: calc(var(--heightRate) * 50);
+          }
         }
       }
     }
@@ -901,14 +990,32 @@ export default {
 
   .restartLayer {
     :deep(.el-dialog) {
-      width: calc(var(--widthRate) * 420);
-      height: calc(var(--heightRate) * 550);
       margin: 0;
-      margin-top: calc(var(--heightRate) * 265) !important;
-      margin-bottom: calc(var(--heightRate) * 265) !important;
-      margin-left: calc(var(--widthRate) * 750);
       background-color: #f0f0f0;
       border-radius: calc(var(--heightRate) * 20);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: calc(var(--widthRate) * 420);
+      min-height: calc(var(--heightRate) * 550);
+      @media (aspect-ratio < calc(2020 / 1080)) {
+        max-width: calc(var(--widthRate) * 420);
+      }
+      @media (aspect-ratio < calc(1800 / 1080)) {
+        padding: calc(var(--heightRate) * 10) 0;
+        max-width: calc(var(--widthRate) * 600);
+      }
+      @media (aspect-ratio < calc(1100 / 1080)) {
+        max-width: calc(var(--widthRate) * 800);
+      }
+      @media (aspect-ratio < calc(860 / 1080)) {
+        min-width: calc(var(--widthRate) * 1120);
+      }
+      @media (aspect-ratio < calc(580 / 1080)) {
+        min-width: calc(var(--widthRate) * 1720);
+        min-height: calc(var(--heightRate) * 350);
+      }
     }
 
     :deep(.el-dialog__header) {
@@ -930,6 +1037,15 @@ export default {
         width: calc(var(--widthRate) * 245);
         height: calc(var(--heightRate) * 215);
         word-break: normal;
+        @media (aspect-ratio < calc(1850 / 1080)) {
+          font-size: calc(var(--heightRate) * 60);
+        }
+        @media (aspect-ratio < calc(860 / 1080)) {
+          font-size: calc(var(--heightRate) * 54);
+        }
+        @media (aspect-ratio < calc(580 / 1080)) {
+          font-size: calc(var(--heightRate) * 45);
+        }
       }
     }
 
@@ -989,18 +1105,36 @@ export default {
 
   .prizeResultLayer {
     :deep(.el-dialog) {
-      width: calc(var(--widthRate) * 420);
-      height: calc(var(--heightRate) * 550);
+      max-width: calc(var(--widthRate) * 420);
+      min-height: calc(var(--heightRate) * 550);
       margin: 0;
-      margin-top: calc(var(--heightRate) * 265) !important;
-      margin-bottom: calc(var(--heightRate) * 265) !important;
-      margin-left: calc(var(--widthRate) * 750);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: #f0f0f0;
       border-radius: calc(var(--heightRate) * 20);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      @media (aspect-ratio < calc(2020 / 1080)) {
+        max-width: calc(var(--widthRate) * 420);
+      }
+      @media (aspect-ratio < calc(1800 / 1080)) {
+        padding: calc(var(--heightRate) * 10) 0;
+        max-width: calc(var(--widthRate) * 600);
+      }
+      @media (aspect-ratio < calc(1100 / 1080)) {
+        max-width: calc(var(--widthRate) * 800);
+      }
+      @media (aspect-ratio < calc(860 / 1080)) {
+        min-width: calc(var(--widthRate) * 1120);
+      }
+      @media (aspect-ratio < calc(580 / 1080)) {
+        min-width: calc(var(--widthRate) * 1720);
+        min-height: calc(var(--heightRate) * 350);
+      }
     }
 
     :deep(.el-dialog__header) {
@@ -1010,14 +1144,44 @@ export default {
       }
     }
 
-    :deep(.el-dialog__body),
-    .prizeResultSection {
+    :deep(.el-dialog__body) {
       padding: 0;
       margin: 0;
+      padding: calc(var(--heightRate) * 40) 0;
       width: calc(var(--widthRate) * 250);
       height: calc(var(--heightRate) * 250);
-      display: flex;
-      justify-content: center;
+      @media (aspect-ratio < calc(2020 / 1080)) {
+        width: calc(var(--widthRate) * 300);
+        // height: calc(var(--heightRate) * 300);
+      }
+      @media (aspect-ratio < calc(1800 / 1080)) {
+        width: calc(var(--widthRate) * 400);
+        height: calc(var(--heightRate) * 270);
+      }
+      @media (aspect-ratio < calc(1100 / 1080)) {
+        width: calc(var(--widthRate) * 550);
+        height: calc(var(--heightRate) * 300);
+      }
+      @media (aspect-ratio < calc(860 / 1080)) {
+        width: calc(var(--widthRate) * 750);
+        height: calc(var(--heightRate) * 250);
+      }
+      @media (aspect-ratio < calc(580 / 1080)) {
+        width: calc(var(--widthRate) * 850);
+        height: calc(var(--heightRate) * 250);
+      }
+      .prizeResultSection {
+        width: inherit;
+        height: inherit;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
 
     :deep(.el-dialog__footer) {
@@ -1025,9 +1189,18 @@ export default {
         margin: 0;
         padding: 0;
         padding-top: calc(var(--heightRate) * 50);
+        color: #de5757;
         font-family: "HarmonyOS_Sans_SC_Black";
         font-size: calc(var(--heightRate) * 70);
-        color: #de5757;
+        @media (aspect-ratio < calc(1850 / 1080)) {
+          font-size: calc(var(--heightRate) * 60);
+        }
+        @media (aspect-ratio < calc(860 / 1080)) {
+          font-size: calc(var(--heightRate) * 54);
+        }
+        @media (aspect-ratio < calc(580 / 1080)) {
+          font-size: calc(var(--heightRate) * 45);
+        }
       }
       .poorLuck {
         color: #757575;
@@ -1192,10 +1365,12 @@ export default {
   }
 
   :deep(.el-loading-spinner) {
-    width: calc(var(--widthRate) * 420);
-    height: calc(var(--heightRate) * 550);
-    top: calc(50% - var(--widthRate) * 210);
-    left: calc(50% - var(--heightRate) * 225);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: calc(var(--widthRate) * 420);
+    min-height: calc(var(--heightRate) * 550);
     background-color: #f0f0f0;
     display: flex;
     flex-direction: column;
@@ -1206,6 +1381,22 @@ export default {
     box-shadow: calc(var(--heightRate) * 6) calc(var(--heightRate) * 30)
       calc(var(--heightRate) * 52) 0 #383737d2;
 
+    @media (aspect-ratio < calc(2020 / 1080)) {
+      max-width: calc(var(--widthRate) * 420);
+    }
+    @media (aspect-ratio < calc(1800 / 1080)) {
+      padding: calc(var(--heightRate) * 10) 0;
+      max-width: calc(var(--widthRate) * 600);
+    }
+    @media (aspect-ratio < calc(1100 / 1080)) {
+      max-width: calc(var(--widthRate) * 800);
+    }
+    @media (aspect-ratio < calc(860 / 1080)) {
+      max-width: calc(var(--widthRate) * 1120);
+    }
+    @media (aspect-ratio < calc(580 / 1080)) {
+      max-width: calc(var(--widthRate) * 1520);
+    }
     .circular {
       width: calc(var(--heightRate) * 180);
       height: calc(var(--heightRate) * 180);
@@ -1223,12 +1414,15 @@ export default {
   }
 
   footer {
-    margin-top: calc(var(--heightRate) * 121);
+    // margin-top: calc(var(--heightRate) * 121);
     height: calc(var(--heightRate) * 50);
+    width: 100vw;
     background-color: #ccccccb0;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    bottom: 0;
 
     span {
       font-size: calc(var(--heightRate) * 17);
