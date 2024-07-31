@@ -148,6 +148,38 @@
             具体参见下表：
           </span>
           <img src="../../public/image/rule.png" alt="" class="ruleImg" />
+          <div class="ruleImg">
+            <el-table :data="ruleData" stripe border>
+              <el-table-column
+                prop="prize"
+                label="奖项"
+                min-width="15%"
+                fixed
+              />
+              <el-table-column prop="name" label="具体名称" min-width="25%" />
+              <el-table-column
+                prop="diceNumArr"
+                label="骰子拟合图"
+                min-width="30%"
+              >
+                <template #default="scope">
+                  <div
+                    class="diceImgSection"
+                    v-for="(item, index) in scope.row.diceNumArr"
+                    :key="index"
+                  >
+                    <img :src="getDiceImgByIndex(item)" alt="" />
+                  </div>
+                </template>
+              </el-table-column>
+
+              <el-table-column
+                prop="description"
+                label="描述"
+                show-overflow-tooltip
+              />
+            </el-table>
+          </div>
           <span class="ruleIntro">
             注：由于“状元”等级较为稀有，且在“状元”条件下，由于越靠近表格底部的点数掷出概率越小，因此亦有“在已出现状元的情况下，博到越稀有点数者可以顺走前一状元奖品”的进阶规则。玩的开心！
           </span>
@@ -299,6 +331,14 @@ export default {
         {
           value: "8",
           label: "8",
+        },
+      ],
+      ruleData: [
+        {
+          prize: "12987122",
+          name: "Tom",
+          diceNumArr: ["2", "1"],
+          description: "3.2",
         },
       ],
       ElIconInfo,
@@ -873,12 +913,17 @@ export default {
   }
 
   .rulesLayer {
+    position: fixed;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    // transform: translate(-50%, -50%);
     :deep(.el-dialog) {
       width: calc(var(--widthRate) * 1280);
-      height: calc(var(--heightRate) * 1430);
-      margin-top: calc(var(--heightRate) * 60) !important;
-      margin-bottom: calc(var(--heightRate) * 60) !important;
-      margin-left: calc(var(--widthRate) * 320);
+      height: calc(var(--heightRate) * 1930);
+      //   margin-top: calc(var(--heightRate) * 60) !important;
+      //   margin-bottom: calc(var(--heightRate) * 60) !important;
+      //   margin-left: calc(var(--widthRate) * 320);
       border-radius: calc(var(--heightRate) * 20);
       background: rgba(240, 240, 240, 1);
     }
@@ -911,23 +956,170 @@ export default {
       padding: 0;
       margin: 0;
       width: calc(var(--widthRate) * 1110);
-      height: calc(var(--heightRate) * 1210);
+      height: calc(var(--heightRate) * 1610);
       border-radius: calc(var(--heightRate) * 20);
       border: 2px solid rgba(77, 71, 71, 1);
       display: flex;
       flex-direction: column;
       align-content: center;
       align-items: center;
+      @media (aspect-ratio < calc(1100 / 1080)) {
+        font-size: calc(var(--heightRate) * 17);
+      }
+
+      @media (aspect-ratio < calc(980 / 1080)) {
+        font-size: calc(var(--heightRate) * 14);
+      }
+
+      @media (aspect-ratio < calc(800 / 1079)) {
+        font-size: calc(var(--heightRate) * 12);
+      }
+
+      @media (aspect-ratio < calc(600 / 1079)) {
+        font-size: calc(var(--heightRate) * 10);
+      }
 
       .ruleIntro {
         padding: calc(var(--heightRate) * 10) calc(var(--heightRate) * 10);
         word-wrap: break-word;
         word-break: normal;
+        font-size: calc(var(--heightRate) * 20);
+        @media (aspect-ratio < calc(1100 / 1080)) {
+          font-size: calc(var(--heightRate) * 17);
+        }
+
+        @media (aspect-ratio < calc(980 / 1080)) {
+          font-size: calc(var(--heightRate) * 14);
+        }
+
+        @media (aspect-ratio < calc(800 / 1079)) {
+          font-size: calc(var(--heightRate) * 12);
+        }
+
+        @media (aspect-ratio < calc(600 / 1079)) {
+          font-size: calc(var(--heightRate) * 10);
+        }
       }
 
       .ruleImg {
         width: calc(var(--widthRate) * 1053);
-        height: calc(var(--heightRate) * 1040);
+        height: calc(var(--heightRate) * 3040);
+        // border-radius: 20px;
+
+        :deep(.el-table--border) {
+          background-color: transparent;
+          ::before,
+          ::after {
+            display: none;
+          }
+        }
+
+        :deep(.el-table--border)::before,
+        :deep(.el-table--border)::after {
+          display: none;
+        }
+
+        :deep(.el-table) {
+          background-color: transparent;
+          ::before,
+          ::after {
+            display: none;
+          }
+          .el-table__inner-wrapper {
+            border: calc(var(--heightRate) * 3) solid #4d4747;
+            border-radius: calc(var(--heightRate) * 15);
+            background-color: transparent;
+          }
+          tr {
+            background-color: transparent;
+          }
+          .el-table__border-left-patch {
+            display: none;
+          }
+          .el-table__header {
+            background-color: transparent;
+
+            :last-child {
+              border-right: none !important;
+            }
+            .el-table__cell {
+              background-color: transparent;
+
+              font-size: calc(var(--heightRate) * 20);
+              border-right: calc(var(--heightRate) * 2) solid #4d4747;
+              border-bottom: calc(var(--heightRate) * 2) solid #4d4747;
+              .cell {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: calc(var(--heightRate) * 30);
+                line-height: calc(var(--heightRate) * 30);
+                color: #4d4747;
+              }
+              @media (aspect-ratio < calc(1100 / 1080)) {
+                font-size: calc(var(--heightRate) * 17);
+              }
+
+              @media (aspect-ratio < calc(980 / 1080)) {
+                font-size: calc(var(--heightRate) * 14);
+              }
+
+              @media (aspect-ratio < calc(800 / 1079)) {
+                font-size: calc(var(--heightRate) * 12);
+              }
+
+              @media (aspect-ratio < calc(600 / 1079)) {
+                font-size: calc(var(--heightRate) * 10);
+              }
+            }
+          }
+          .el-table__body {
+            border-radius: calc(var(--heightRate) * 15);
+
+            tbody {
+              border-radius: calc(var(--heightRate) * 15);
+            }
+            tr:hover > td.el-table__cell {
+              background-color: #dfdfdf;
+            }
+            tr:hover > td:first-child {
+              border-radius: 0 0 0 calc(var(--heightRate) * 15);
+            }
+            tr:hover > td:last-child {
+              border-radius: 0 0 calc(var(--heightRate) * 15) 0;
+            }
+            :last-child {
+              border-right: none !important;
+            }
+            .el-table__cell {
+              border-right: calc(var(--heightRate) * 2) solid #4d4747;
+              .cell {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: calc(var(--heightRate) * 15);
+                line-height: calc(var(--heightRate) * 30);
+                color: #4d4747;
+              }
+
+              @media (aspect-ratio < calc(1100 / 1080)) {
+                font-size: calc(var(--heightRate) * 17);
+              }
+
+              @media (aspect-ratio < calc(980 / 1080)) {
+                font-size: calc(var(--heightRate) * 14);
+              }
+
+              @media (aspect-ratio < calc(800 / 1079)) {
+                font-size: calc(var(--heightRate) * 12);
+              }
+
+              @media (aspect-ratio < calc(600 / 1079)) {
+                font-size: calc(var(--heightRate) * 10);
+              }
+            }
+          }
+        }
       }
     }
 
