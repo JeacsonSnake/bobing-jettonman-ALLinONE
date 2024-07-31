@@ -123,7 +123,6 @@
             placeholder="请选择(最多8人)"
             v-model="playerNum"
             :popper-append-to-body="false"
-            size="small"
           >
             <el-option
               v-for="item in playerNumOptions"
@@ -136,7 +135,7 @@
         </div>
 
         <template v-slot:footer>
-          <el-button class="restartFooter" @click="start()">选好了！</el-button>
+          <el-button class="restartFooter" @click="start()">选好了!</el-button>
         </template>
       </el-dialog>
     </div>
@@ -1013,21 +1012,20 @@ export default {
       max-width: calc(var(--widthRate) * 420);
       min-height: calc(var(--heightRate) * 550);
       @media (aspect-ratio < calc(2020 / 1080)) {
-        max-width: calc(var(--widthRate) * 420);
+        max-width: calc(var(--widthRate) * 500);
       }
       @media (aspect-ratio < calc(1800 / 1080)) {
-        padding: calc(var(--heightRate) * 10) 0;
         max-width: calc(var(--widthRate) * 600);
       }
-      @media (aspect-ratio < calc(1100 / 1080)) {
+      @media (aspect-ratio < calc(1400 / 1080)) {
         max-width: calc(var(--widthRate) * 800);
       }
-      @media (aspect-ratio < calc(860 / 1080)) {
+      @media (aspect-ratio < calc(1000 / 1080)) {
         min-width: calc(var(--widthRate) * 1120);
       }
-      @media (aspect-ratio < calc(580 / 1080)) {
-        min-width: calc(var(--widthRate) * 1720);
-        min-height: calc(var(--heightRate) * 350);
+      @media (aspect-ratio < calc(790 / 1080)) {
+        min-width: calc(var(--widthRate) * 1520);
+        // min-height: calc(var(--heightRate) * 350);
       }
     }
 
@@ -1047,8 +1045,8 @@ export default {
         font-size: calc(var(--heightRate) * 60);
         line-height: calc(var(--heightRate) * 60);
         color: #47484c;
-        width: calc(var(--widthRate) * 245);
-        height: calc(var(--heightRate) * 215);
+        width: inherit;
+        padding-bottom: calc(var(--heightRate) * 50);
         word-break: normal;
         @media (aspect-ratio < calc(1850 / 1080)) {
           font-size: calc(var(--heightRate) * 60);
@@ -1063,7 +1061,8 @@ export default {
     }
 
     :deep(.el-dialog__body) {
-      padding: 0;
+      padding: calc(var(--heightRate) * 20) 0;
+      height: calc(var(--heightRate) * 160);
       margin: 0;
       //   width: calc(var(--widthRate) * 224);
       //   height: calc(var(--heightRate) * 40);
@@ -1071,16 +1070,51 @@ export default {
 
       display: flex;
       justify-content: center;
-
+      .restartSection {
+        display: flex;
+        align-items: center;
+      }
       .el-select {
-        width: calc(var(--widthRate) * 220);
+        --el-color-primary: #de5757;
+        width: calc(var(--widthRate) * 360);
+        height: calc(var(--heightRate) * 64);
+        line-height: calc(var(--heightRate) * 39);
+        @media (aspect-ratio < calc(2020 / 1080)) {
+          width: calc(var(--widthRate) * 380);
+        }
+        @media (aspect-ratio < calc(1800 / 1080)) {
+          width: calc(var(--widthRate) * 470);
+        }
+        @media (aspect-ratio < calc(1400 / 1080)) {
+          width: calc(var(--widthRate) * 650);
+        }
+        @media (aspect-ratio < calc(1000 / 1080)) {
+          width: calc(var(--widthRate) * 920);
+        }
+        @media (aspect-ratio < calc(790 / 1080)) {
+          width: calc(var(--widthRate) * 1120);
+        }
+        @media (aspect-ratio < calc(580 / 1080)) {
+          width: calc(var(--widthRate) * 1320);
+        }
+        .el-select__wrapper {
+          height: inherit;
+          font-size: calc(var(--heightRate) * 39);
+          line-height: calc(var(--heightRate) * 39);
+          @media (aspect-ratio < calc(790 / 1080)) {
+            font-size: calc(var(--heightRate) * 35);
+          }
+          @media (aspect-ratio < calc(580 / 1080)) {
+            font-size: calc(var(--heightRate) * 32);
+          }
+        }
       }
 
       .el-input__inner {
         // width: calc(var(--widthRate) * 224);
         // height: calc(var(--heightRate) * 40);
-        font-size: calc(var(--heightRate) * 14);
-        line-height: calc(var(--heightRate) * 14);
+        font-size: calc(var(--heightRate) * 150);
+        line-height: calc(var(--heightRate) * 150);
         padding: 0;
         padding-right: calc(var(--widthRate) * 14);
         padding-left: calc(var(--widthRate) * 14);
@@ -1105,7 +1139,37 @@ export default {
     :deep(.el-dialog__footer) {
       margin: 0;
       padding: 0;
-      padding-top: calc(var(--heightRate) * 70);
+      //   padding-top: calc(var(--heightRate) * 70);
+      height: calc(var(--heightRate) * 130);
+      .restartFooter {
+        width: calc(var(--widthRate) * 200);
+        height: inherit;
+        border-radius: calc(var(--heightRate) * 15);
+        font-size: calc(var(--heightRate) * 39);
+        @media (aspect-ratio < calc(2020 / 1080)) {
+          width: calc(var(--widthRate) * 220);
+        }
+        @media (aspect-ratio < calc(1800 / 1080)) {
+          width: calc(var(--widthRate) * 300);
+        }
+        @media (aspect-ratio < calc(1400 / 1080)) {
+          width: calc(var(--widthRate) * 400);
+        }
+        @media (aspect-ratio < calc(1000 / 1080)) {
+          width: calc(var(--widthRate) * 560);
+        }
+        @media (aspect-ratio < calc(790 / 1080)) {
+          width: calc(var(--widthRate) * 650);
+        }
+        @media (aspect-ratio < calc(580 / 1080)) {
+          width: calc(var(--widthRate) * 820);
+        }
+      }
+
+      .el-button {
+        margin: 0;
+        padding: 0;
+      }
 
       .el-button:focus,
       .el-button:hover {
