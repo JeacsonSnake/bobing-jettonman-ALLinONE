@@ -693,6 +693,7 @@ export default {
 
     .diceDisplaySection {
       width: calc(var(--widthRate) * 1000);
+      height: calc(var(--heightRate) * 480);
       background-color: rgba(204, 204, 204, 1);
       border: calc(var(--heightRate) * 2) solid rgba(71, 72, 76, 1);
       box-shadow: 8px 10px 32px rgba(0, 0, 0, 0.25);
