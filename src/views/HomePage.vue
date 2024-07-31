@@ -99,22 +99,18 @@
     <div class="rankLayer">
       <el-dialog title="Rank: " v-model="rankVisible" center>
         <!-- <div class="rankSection"></div> -->
-        <el-table
-          :data="rankData"
-          class="rankSection"
-          :height="`calc(var(--heightRate) * 800)`"
-          empty-text="No Data yet"
-        >
+        <el-table :data="rankData" class="rankSection" empty-text="No Data yet">
           <el-table-column
             property="playerName"
             label="玩家名"
             fixed
-            width="150"
+            min-width="50%"
           ></el-table-column>
           <el-table-column
             property="prize"
             label="获得奖项"
             :formatter="playerRankDataFormatter"
+            show-overflow-tooltip
           ></el-table-column>
         </el-table>
       </el-dialog>
@@ -944,13 +940,21 @@ export default {
 
   .rankLayer {
     :deep(.el-dialog) {
+      position: fixed;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: calc(var(--widthRate) * 1280);
       height: calc(var(--heightRate) * 960);
-      margin-top: calc(var(--heightRate) * 60) !important;
-      margin-bottom: calc(var(--heightRate) * 60) !important;
-      margin-left: calc(var(--widthRate) * 320);
       background-color: #f0f0f0;
       border-radius: calc(var(--heightRate) * 20);
+      @media (aspect-ratio < calc(860 / 1080)) {
+        min-width: calc(var(--widthRate) * 1450);
+      }
+      @media (aspect-ratio < calc(680 / 1080)) {
+        min-width: calc(var(--widthRate) * 1920);
+        height: calc(var(--heightRate) * 760);
+      }
     }
 
     :deep(.el-dialog__header) {
@@ -974,9 +978,18 @@ export default {
     :deep(.el-dialog__body) {
       padding: calc(var(--heightRate) * 30);
       padding-top: calc(var(--heightRate) * 40);
+      height: calc(var(--heightRate) * 800);
       margin: 0;
       display: flex;
       justify-content: center;
+
+      @media (aspect-ratio < calc(680 / 1080)) {
+        height: calc(var(--heightRate) * 600);
+      }
+
+      .rankSection {
+        height: inherit;
+      }
 
       .el-table--fit {
         border-radius: calc(var(--heightRate) * 20);
