@@ -147,29 +147,24 @@
             博饼的规则如下：多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。
             具体参见下表：
           </span>
-          <img src="../../public/image/rule.png" alt="" class="ruleImg" />
+          <!-- <img src="../../public/image/rule.png" alt="" class="ruleImg" /> -->
           <div class="ruleImg">
-            <el-table :data="ruleData" stripe border>
-              <el-table-column
-                prop="prize"
-                label="奖项"
-                min-width="15%"
-                fixed
-              />
-              <el-table-column prop="name" label="具体名称" min-width="25%" />
+            <el-table :data="ruleData" style="width: 100%">
+              <el-table-column prop="prize" label="奖项" min-width="10%" />
+              <el-table-column prop="name" label="具体名称" min-width="15%" />
               <el-table-column
                 prop="diceNumArr"
                 label="骰子拟合图"
-                min-width="30%"
+                min-width="25%"
               >
                 <template #default="scope">
-                  <div
-                    class="diceImgSection"
+                  <img
+                    :src="getDiceImgByIndex(item)"
                     v-for="(item, index) in scope.row.diceNumArr"
                     :key="index"
-                  >
-                    <img :src="getDiceImgByIndex(item)" alt="" />
-                  </div>
+                    :alt="`index + ' '`"
+                    class="diceImg"
+                  />
                 </template>
               </el-table-column>
 
@@ -177,6 +172,7 @@
                 prop="description"
                 label="描述"
                 show-overflow-tooltip
+                min-width="50%"
               />
             </el-table>
           </div>
@@ -335,10 +331,76 @@ export default {
       ],
       ruleData: [
         {
-          prize: "12987122",
-          name: "Tom",
-          diceNumArr: ["2", "1"],
-          description: "3.2",
+          prize: "秀才",
+          name: "一秀",
+          diceNumArr: ["4"],
+          description: "六个骰子中有一个四",
+        },
+        {
+          prize: "举人",
+          name: "二举",
+          diceNumArr: ["4", "4"],
+          description: "六个骰子中有两个四",
+        },
+        {
+          prize: "进士",
+          name: "四进",
+          diceNumArr: ["2", "2", "2", "2"],
+          description: "六个骰子中有四个除了四以外的相同点数",
+        },
+        {
+          prize: "探花",
+          name: "三红",
+          diceNumArr: ["4", "4", "4"],
+          description: "六个骰子中有三个四",
+        },
+        {
+          prize: "榜眼",
+          name: "对堂",
+          diceNumArr: ["1", "2", "3", "4", "5", "6"],
+          description: "六个骰子顺序排出",
+        },
+        {
+          prize: "状元",
+          name: "四点红",
+          diceNumArr: ["4", "4", "4", "4"],
+          description: "六个骰子中有四个四",
+        },
+        {
+          prize: "状元",
+          name: "五子登科",
+          diceNumArr: ["2", "2", "2", "2", "2"],
+          description: "六个骰子中有五个除了四、一以外的相同点数",
+        },
+        {
+          prize: "状元",
+          name: "五王",
+          diceNumArr: ["4", "4", "4", "4", "4"],
+          description: "六个骰子中有五个四",
+        },
+        {
+          prize: "状元",
+          name: "六博黑",
+          diceNumArr: ["2", "2", "2", "2", "2", "2"],
+          description: "六个骰子中有六个除了四、一以外的相同点数",
+        },
+        {
+          prize: "状元",
+          name: "遍地锦",
+          diceNumArr: ["1", "1", "1", "1", "1", "1"],
+          description: "六个骰子皆为一",
+        },
+        {
+          prize: "状元",
+          name: "六博红",
+          diceNumArr: ["4", "4", "4", "4", "4", "4"],
+          description: "六个骰子皆为四",
+        },
+        {
+          prize: "状元",
+          name: "状元插金花",
+          diceNumArr: ["4", "4", "4", "4", "4", "4"],
+          description: "六个骰子中有四个四与两个一",
         },
       ],
       ElIconInfo,
@@ -628,7 +690,7 @@ export default {
       height: calc(var(--heightRate) * 695);
     }
 
-    @media (aspect-ratio < calc(600 / 1079)) {
+    @media (aspect-ratio < calc(600 / 1080)) {
       //   height: calc(var(--heightRate) * 800);
     }
 
@@ -755,12 +817,12 @@ export default {
         height: calc(var(--heightRate) * 400);
       }
 
-      @media (aspect-ratio < calc(800 / 1079)) {
+      @media (aspect-ratio < calc(800 / 1080)) {
         width: calc(var(--widthRate) * 1400);
         height: calc(var(--heightRate) * 400);
       }
 
-      @media (aspect-ratio < calc(600 / 1079)) {
+      @media (aspect-ratio < calc(600 / 1080)) {
         width: calc(var(--widthRate) * 1650);
         height: calc(var(--heightRate) * 340);
       }
@@ -808,7 +870,7 @@ export default {
         width: calc(var(--widthRate) * 1050);
       }
 
-      @media (aspect-ratio < calc(600 / 1079)) {
+      @media (aspect-ratio < calc(600 / 1080)) {
         width: calc(var(--widthRate) * 1050);
       }
       :deep(.el-button) {
@@ -915,22 +977,60 @@ export default {
   .rulesLayer {
     position: fixed;
     z-index: 10;
-    top: 50%;
-    left: 50%;
-    // transform: translate(-50%, -50%);
     :deep(.el-dialog) {
+      padding: 0;
+      margin: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: calc(var(--widthRate) * 1280);
-      height: calc(var(--heightRate) * 1930);
+      height: calc(var(--heightRate) * 1000);
       //   margin-top: calc(var(--heightRate) * 60) !important;
       //   margin-bottom: calc(var(--heightRate) * 60) !important;
       //   margin-left: calc(var(--widthRate) * 320);
       border-radius: calc(var(--heightRate) * 20);
       background: rgba(240, 240, 240, 1);
+      @media (aspect-ratio < calc(2300 / 1080)) {
+        height: calc(var(--heightRate) * 960);
+      }
+      @media (aspect-ratio < calc(2145 / 1080)) {
+        height: calc(var(--heightRate) * 980);
+      }
+      @media (aspect-ratio < calc(1390 / 1080)) {
+        height: calc(var(--heightRate) * 930);
+      }
+      @media (aspect-ratio < calc(1300 / 1080)) {
+        width: calc(var(--widthRate) * 1680);
+        height: calc(var(--heightRate) * 890);
+      }
+      @media (aspect-ratio < calc(980 / 1080)) {
+        width: calc(var(--widthRate) * 1680);
+      }
+      @media (aspect-ratio < calc(800 / 1080)) {
+        width: calc(var(--widthRate) * 1800);
+        height: calc(var(--heightRate) * 850);
+      }
+      @media (aspect-ratio < calc(730 / 1080)) {
+        height: calc(var(--heightRate) * 810);
+      }
+      @media (aspect-ratio < calc(600 / 1080)) {
+        height: calc(var(--heightRate) * 750);
+      }
     }
 
     :deep(.el-dialog__header) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 0;
-      padding-top: calc(var(--heightRate) * 100);
+      height: calc(var(--heightRate) * 80);
+      line-height: calc(var(--heightRate) * 80);
+      padding-top: calc(var(--heightRate) * 30);
+      padding-bottom: calc(var(--heightRate) * 5);
+      @media (aspect-ratio < calc(800 / 1080)) {
+        height: calc(var(--heightRate) * 60);
+        line-height: calc(var(--heightRate) * 60);
+      }
 
       .el-dialog__headerbtn:focus .el-dialog__close,
       .el-dialog__headerbtn:hover .el-dialog__close {
@@ -939,8 +1039,15 @@ export default {
 
       .el-dialog__title {
         font-family: "HarmonyOS_Sans_SC_Bold";
-        font-size: calc(var(--heightRate) * 60);
+        height: calc(var(--heightRate) * 80);
+        line-height: calc(var(--heightRate) * 80);
+        font-size: calc(var(--heightRate) * 80);
         color: #757575;
+        @media (aspect-ratio < calc(800 / 1080)) {
+          height: calc(var(--heightRate) * 60);
+          line-height: calc(var(--heightRate) * 60);
+          font-size: calc(var(--heightRate) * 60);
+        }
       }
     }
 
@@ -950,33 +1057,64 @@ export default {
       display: flex;
       justify-content: center;
       padding-top: calc(var(--heightRate) * 20);
+      padding-bottom: calc(var(--heightRate) * 20);
+      width: inherit;
+      height: calc(var(--heightRate) * 840);
+      @media (aspect-ratio < calc(1390 / 1080)) {
+        height: calc(var(--heightRate) * 800);
+      }
+      @media (aspect-ratio < calc(1300 / 1080)) {
+        width: calc(var(--widthRate) * 1680);
+      }
+
+      @media (aspect-ratio < calc(980 / 1080)) {
+        width: calc(var(--widthRate) * 1680);
+      }
+      @media (aspect-ratio < calc(800 / 1080)) {
+        width: calc(var(--widthRate) * 1800);
+      }
     }
 
     .ruleSection {
       padding: 0;
       margin: 0;
       width: calc(var(--widthRate) * 1110);
-      height: calc(var(--heightRate) * 1610);
+      height: calc(var(--heightRate) * 840);
       border-radius: calc(var(--heightRate) * 20);
       border: 2px solid rgba(77, 71, 71, 1);
       display: flex;
       flex-direction: column;
       align-content: center;
       align-items: center;
-      @media (aspect-ratio < calc(1100 / 1080)) {
-        font-size: calc(var(--heightRate) * 17);
+      @media (aspect-ratio < calc(2300 / 1080)) {
+        height: calc(var(--heightRate) * 780);
+      }
+      @media (aspect-ratio < calc(2145 / 1080)) {
+        height: calc(var(--heightRate) * 800);
+      }
+      @media (aspect-ratio < calc(1455 / 1080)) {
+        height: calc(var(--heightRate) * 820);
+      }
+      @media (aspect-ratio < calc(1390 / 1080)) {
+        height: calc(var(--heightRate) * 780);
       }
 
-      @media (aspect-ratio < calc(980 / 1080)) {
-        font-size: calc(var(--heightRate) * 14);
+      @media (aspect-ratio < calc(1300 / 1080)) {
+        width: calc(var(--widthRate) * 1590);
+        height: calc(var(--heightRate) * 730);
       }
 
-      @media (aspect-ratio < calc(800 / 1079)) {
-        font-size: calc(var(--heightRate) * 12);
+      @media (aspect-ratio < calc(800 / 1080)) {
+        width: calc(var(--widthRate) * 1680);
+        height: calc(var(--heightRate) * 680);
       }
 
-      @media (aspect-ratio < calc(600 / 1079)) {
-        font-size: calc(var(--heightRate) * 10);
+      @media (aspect-ratio < calc(730 / 1080)) {
+        height: calc(var(--heightRate) * 655);
+      }
+
+      @media (aspect-ratio < calc(600 / 1080)) {
+        height: calc(var(--heightRate) * 600);
       }
 
       .ruleIntro {
@@ -988,134 +1126,184 @@ export default {
           font-size: calc(var(--heightRate) * 17);
         }
 
-        @media (aspect-ratio < calc(980 / 1080)) {
-          font-size: calc(var(--heightRate) * 14);
+        @media (aspect-ratio < calc(885 / 1080)) {
+          font-size: calc(var(--heightRate) * 15);
         }
 
-        @media (aspect-ratio < calc(800 / 1079)) {
+        @media (aspect-ratio < calc(800 / 1080)) {
           font-size: calc(var(--heightRate) * 12);
-        }
-
-        @media (aspect-ratio < calc(600 / 1079)) {
-          font-size: calc(var(--heightRate) * 10);
         }
       }
 
       .ruleImg {
         width: calc(var(--widthRate) * 1053);
-        height: calc(var(--heightRate) * 3040);
-        // border-radius: 20px;
-
-        :deep(.el-table--border) {
-          background-color: transparent;
-          ::before,
-          ::after {
-            display: none;
-          }
+        height: calc(var(--heightRate) * 690);
+        @media (aspect-ratio < calc(2300 / 1080)) {
+          height: calc(var(--heightRate) * 630);
+        }
+        @media (aspect-ratio < calc(1390 / 1080)) {
+          height: calc(var(--heightRate) * 550);
+        }
+        @media (aspect-ratio < calc(1300 / 1080)) {
+          width: calc(var(--widthRate) * 1550);
+          height: calc(var(--heightRate) * 560);
+        }
+        @media (aspect-ratio < calc(980 / 1080)) {
+          height: calc(var(--heightRate) * 550);
         }
 
-        :deep(.el-table--border)::before,
-        :deep(.el-table--border)::after {
-          display: none;
+        @media (aspect-ratio < calc(800 / 1080)) {
+          width: calc(var(--widthRate) * 1650);
+          height: calc(var(--heightRate) * 555);
+        }
+        @media (aspect-ratio < calc(730 / 1080)) {
+          height: calc(var(--heightRate) * 530);
+        }
+        @media (aspect-ratio < calc(600 / 1080)) {
+          height: calc(var(--heightRate) * 450);
         }
 
         :deep(.el-table) {
+          border: calc(var(--heightRate) * 4) solid #c5c5c5;
+          border-radius: calc(var(--heightRate) * 10);
           background-color: transparent;
-          ::before,
-          ::after {
-            display: none;
-          }
           .el-table__inner-wrapper {
-            border: calc(var(--heightRate) * 3) solid #4d4747;
-            border-radius: calc(var(--heightRate) * 15);
-            background-color: transparent;
-          }
-          tr {
-            background-color: transparent;
-          }
-          .el-table__border-left-patch {
-            display: none;
-          }
-          .el-table__header {
-            background-color: transparent;
-
-            :last-child {
-              border-right: none !important;
+            .el-table__header-wrapper {
+              .el-table__header {
+                tr {
+                  th {
+                    .cell {
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      flex-wrap: nowrap;
+                      flex-direction: row;
+                      line-height: calc(var(--heightRate) * 50);
+                      height: calc(var(--heightRate) * 50);
+                      color: #4d4747;
+                      font-size: calc(var(--heightRate) * 40);
+                      @media (aspect-ratio < calc(2300 / 1080)) {
+                        line-height: calc(var(--heightRate) * 40);
+                        height: calc(var(--heightRate) * 40);
+                        font-size: calc(var(--heightRate) * 30);
+                      }
+                      @media (aspect-ratio < calc(1770 / 1080)) {
+                        line-height: calc(var(--heightRate) * 32);
+                        height: calc(var(--heightRate) * 32);
+                        font-size: calc(var(--heightRate) * 25);
+                      }
+                      @media (aspect-ratio < calc(1530 / 1080)) {
+                        line-height: calc(var(--heightRate) * 30);
+                        height: calc(var(--heightRate) * 30);
+                        font-size: calc(var(--heightRate) * 22);
+                      }
+                      @media (aspect-ratio < calc(1390 / 1080)) {
+                        line-height: calc(var(--heightRate) * 28);
+                        height: calc(var(--heightRate) * 28);
+                        font-size: calc(var(--heightRate) * 20);
+                      }
+                      @media (aspect-ratio < calc(1300 / 1080)) {
+                        line-height: calc(var(--heightRate) * 30);
+                        height: calc(var(--heightRate) * 30);
+                        font-size: calc(var(--heightRate) * 22);
+                      }
+                      @media (aspect-ratio < calc(950 / 1080)) {
+                        line-height: calc(var(--heightRate) * 30);
+                        height: calc(var(--heightRate) * 30);
+                        font-size: calc(var(--heightRate) * 20);
+                      }
+                      @media (aspect-ratio < calc(950 / 1080)) {
+                        line-height: calc(var(--heightRate) * 30);
+                        height: calc(var(--heightRate) * 30);
+                        font-size: calc(var(--heightRate) * 17);
+                      }
+                      @media (aspect-ratio < calc(730 / 1080)) {
+                        line-height: calc(var(--heightRate) * 23);
+                        height: calc(var(--heightRate) * 23);
+                        font-size: calc(var(--heightRate) * 15);
+                      }
+                      @media (aspect-ratio < calc(665 / 1080)) {
+                        line-height: calc(var(--heightRate) * 23);
+                        height: calc(var(--heightRate) * 23);
+                        font-size: calc(var(--heightRate) * 13);
+                      }
+                      @media (aspect-ratio < calc(600 / 1080)) {
+                        line-height: calc(var(--heightRate) * 23);
+                        height: calc(var(--heightRate) * 23);
+                        font-size: calc(var(--heightRate) * 10);
+                      }
+                    }
+                  }
+                }
+              }
             }
-            .el-table__cell {
-              background-color: transparent;
+            .el-table__body-wrapper {
+              .el-table__row {
+                td > .cell {
+                  line-height: calc(var(--heightRate) * 35);
+                  height: calc(var(--heightRate) * 35);
+                  color: #4d4747;
+                  font-size: calc(var(--heightRate) * 24);
+                  @media (aspect-ratio < calc(2300 / 1080)) {
+                    line-height: calc(var(--heightRate) * 30);
+                    height: calc(var(--heightRate) * 30);
+                    font-size: calc(var(--heightRate) * 20);
+                  }
+                  @media (aspect-ratio < calc(2000 / 1080)) {
+                    line-height: calc(var(--heightRate) * 28);
+                    height: calc(var(--heightRate) * 28);
+                    font-size: calc(var(--heightRate) * 18);
+                  }
 
-              font-size: calc(var(--heightRate) * 20);
-              border-right: calc(var(--heightRate) * 2) solid #4d4747;
-              border-bottom: calc(var(--heightRate) * 2) solid #4d4747;
-              .cell {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: calc(var(--heightRate) * 30);
-                line-height: calc(var(--heightRate) * 30);
-                color: #4d4747;
-              }
-              @media (aspect-ratio < calc(1100 / 1080)) {
-                font-size: calc(var(--heightRate) * 17);
-              }
-
-              @media (aspect-ratio < calc(980 / 1080)) {
-                font-size: calc(var(--heightRate) * 14);
-              }
-
-              @media (aspect-ratio < calc(800 / 1079)) {
-                font-size: calc(var(--heightRate) * 12);
-              }
-
-              @media (aspect-ratio < calc(600 / 1079)) {
-                font-size: calc(var(--heightRate) * 10);
-              }
-            }
-          }
-          .el-table__body {
-            border-radius: calc(var(--heightRate) * 15);
-
-            tbody {
-              border-radius: calc(var(--heightRate) * 15);
-            }
-            tr:hover > td.el-table__cell {
-              background-color: #dfdfdf;
-            }
-            tr:hover > td:first-child {
-              border-radius: 0 0 0 calc(var(--heightRate) * 15);
-            }
-            tr:hover > td:last-child {
-              border-radius: 0 0 calc(var(--heightRate) * 15) 0;
-            }
-            :last-child {
-              border-right: none !important;
-            }
-            .el-table__cell {
-              border-right: calc(var(--heightRate) * 2) solid #4d4747;
-              .cell {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: calc(var(--heightRate) * 15);
-                line-height: calc(var(--heightRate) * 30);
-                color: #4d4747;
-              }
-
-              @media (aspect-ratio < calc(1100 / 1080)) {
-                font-size: calc(var(--heightRate) * 17);
-              }
-
-              @media (aspect-ratio < calc(980 / 1080)) {
-                font-size: calc(var(--heightRate) * 14);
-              }
-
-              @media (aspect-ratio < calc(800 / 1079)) {
-                font-size: calc(var(--heightRate) * 12);
-              }
-
-              @media (aspect-ratio < calc(600 / 1079)) {
-                font-size: calc(var(--heightRate) * 10);
+                  @media (aspect-ratio < calc(1390 / 1080)) {
+                    line-height: calc(var(--heightRate) * 25);
+                    height: calc(var(--heightRate) * 25);
+                    font-size: calc(var(--heightRate) * 17);
+                  }
+                  @media (aspect-ratio < calc(730 / 1080)) {
+                    line-height: calc(var(--heightRate) * 23);
+                    height: calc(var(--heightRate) * 23);
+                    font-size: calc(var(--heightRate) * 13);
+                  }
+                  @media (aspect-ratio < calc(600 / 1080)) {
+                    line-height: calc(var(--heightRate) * 17);
+                    height: calc(var(--heightRate) * 17);
+                    font-size: calc(var(--heightRate) * 10);
+                  }
+                }
+                :nth-child(3) > .cell {
+                  img {
+                    height: calc(var(--heightRate) * 35);
+                    padding-right: calc(var(--widthRate) * 10);
+                    @media (aspect-ratio < calc(2530 / 1080)) {
+                      height: calc(var(--heightRate) * 32);
+                    }
+                    @media (aspect-ratio < calc(2300 / 1080)) {
+                      height: calc(var(--heightRate) * 30);
+                    }
+                    @media (aspect-ratio < calc(2000 / 1080)) {
+                      height: calc(var(--heightRate) * 28);
+                    }
+                    @media (aspect-ratio < calc(1840 / 1080)) {
+                      height: calc(var(--heightRate) * 23);
+                    }
+                    @media (aspect-ratio < calc(1570 / 1080)) {
+                      height: calc(var(--heightRate) * 20);
+                    }
+                    @media (aspect-ratio < calc(1390 / 1080)) {
+                      height: calc(var(--heightRate) * 17);
+                    }
+                    @media (aspect-ratio < calc(1220 / 1080)) {
+                      height: calc(var(--heightRate) * 15);
+                    }
+                    @media (aspect-ratio < calc(640 / 1080)) {
+                      height: calc(var(--heightRate) * 13);
+                    }
+                    @media (aspect-ratio < calc(600 / 1080)) {
+                      height: calc(var(--heightRate) * 7);
+                    }
+                  }
+                }
               }
             }
           }
