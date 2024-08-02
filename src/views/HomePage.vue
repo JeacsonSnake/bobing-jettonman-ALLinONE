@@ -144,8 +144,8 @@
       <el-dialog title="博饼怎么玩?" v-model="rulesVisible" center>
         <div class="ruleSection">
           <span class="ruleIntro">
-            博饼的规则如下：多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。
-            具体参见下表：
+            博饼的规则如下:多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。
+            具体参见下表:
           </span>
           <!-- <img src="../../public/image/rule.png" alt="" class="ruleImg" /> -->
           <div class="ruleImg">
@@ -177,7 +177,7 @@
             </el-table>
           </div>
           <span class="ruleIntro">
-            注：由于“状元”等级较为稀有，且在“状元”条件下，由于越靠近表格底部的点数掷出概率越小，因此亦有“在已出现状元的情况下，博到越稀有点数者可以顺走前一状元奖品”的进阶规则。玩的开心！
+            注:由于“状元”等级较为稀有，且在“状元”条件下，由于越靠近表格底部的点数掷出概率越小，因此亦有“在已出现状元的情况下，博到越稀有点数者可以顺走前一状元奖品”的进阶规则。玩的开心!
           </span>
         </div>
       </el-dialog>
@@ -233,7 +233,7 @@
       >
         <div class="welcomeSection">
           <div class="rootSection">
-            <span class="title">啥是博饼？</span>
+            <span class="title">啥是博饼?</span>
             <div class="info">
               <span class="intro">
                 "博饼
@@ -461,9 +461,9 @@ export default {
     start() {
       let p = this.playerNum;
       if (p == "") {
-        this.$message.error("人数尚未确定！");
+        this.$message.error("人数尚未确定!");
       } else {
-        this.$confirm("你将开启新一轮游戏，确定吗？", "注意", {
+        this.$confirm("你将开启新一轮游戏，确定吗?", "注意", {
           distinguishCancelAndClose: true,
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -913,18 +913,33 @@ export default {
 
   .aboutLayer {
     :deep(.el-dialog) {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-content: center;
+      justify-content: space-around;
+      align-items: center;
       width: calc(var(--widthRate) * 1280);
       height: calc(var(--heightRate) * 960);
-      margin-top: calc(var(--heightRate) * 60) !important;
-      margin-bottom: calc(var(--heightRate) * 60) !important;
-      margin-left: calc(var(--widthRate) * 320);
+      margin: 0;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       border-radius: calc(var(--heightRate) * 20);
       background: rgba(240, 240, 240, 1);
+      @media (aspect-ratio < calc(1100 / 1080)) {
+        width: calc(var(--widthRate) * 1650);
+        height: calc(var(--heightRate) * 750);
+      }
+      @media (aspect-ratio < calc(750 / 1080)) {
+        width: calc(var(--widthRate) * 1850);
+        height: calc(var(--heightRate) * 750);
+      }
     }
 
     :deep(.el-dialog__header) {
       padding: 0;
-      padding-top: calc(var(--heightRate) * 100);
       .el-dialog__headerbtn:focus .el-dialog__close,
       .el-dialog__headerbtn:hover .el-dialog__close {
         color: #de5757;
@@ -932,19 +947,29 @@ export default {
 
       .el-dialog__title {
         font-family: "HarmonyOS_Sans_SC_Black";
-        font-size: calc(var(--heightRate) * 72);
+        height: calc(var(--heightRate) * 100);
+        line-height: calc(var(--heightRate) * 100);
+        font-size: calc(var(--heightRate) * 100);
+        @media (aspect-ratio < calc(1660 / 1080)) {
+          font-size: calc(var(--heightRate) * 72);
+          height: calc(var(--heightRate) * 72);
+          line-height: calc(var(--heightRate) * 72);
+        }
       }
     }
 
     :deep(.el-dialog__body) {
       padding: 0;
-      padding-top: calc(var(--heightRate) * 193);
+      @media (aspect-ratio < calc(1100 / 1080)) {
+      }
     }
 
     :deep(.el-dialog__footer) {
       padding: 0;
-      padding-top: calc(var(--heightRate) * 140);
-      font-size: calc(var(--heightRate) * 14);
+      padding-top: calc(var(--heightRate) * 80);
+      font-size: 0.5rem;
+      height: 0.5rem;
+      line-height: 0.5rem;
     }
 
     .aboutSection {
@@ -954,9 +979,14 @@ export default {
       align-items: center;
       margin-bottom: calc(var(--heightRate) * 80);
       font-size: calc(var(--heightRate) * 48);
-
+      @media (aspect-ratio < calc(750 / 1080)) {
+        font-size: calc(var(--heightRate) * 48);
+      }
+      @media (aspect-ratio < calc(570 / 1080)) {
+        font-size: calc(var(--heightRate) * 36);
+      }
       .aboutSection_Title {
-        padding-right: calc(var(--heightRate) * 80);
+        padding-right: calc(var(--heightRate) * 30);
       }
 
       .aboutSection_Name {
