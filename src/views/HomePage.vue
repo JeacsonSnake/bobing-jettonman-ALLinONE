@@ -233,11 +233,10 @@
       >
         <div class="welcomeSection">
           <div class="rootSection">
-            <span class="title">啥是博饼?</span>
+            <span class="title">什么是博饼?</span>
             <div class="info">
               <span class="intro">
-                "博饼
-                "是闽南地区在中秋节的一种传统习俗，它最早起源于福建厦门，后盛行于闽南地区和台湾省。游戏规则简单、公平，充满竞技悬念和生活情趣。一直深受分布在世界各地的广大群众喜爱。
+                "博饼"是闽南地区在中秋节的一种传统习俗，它最早起源于福建厦门，后盛行于闽南地区和台湾省。其作为节日游戏，规则简单、公平，充满竞技悬念和生活情趣。一直深受分布在世界各地的广大群众喜爱。
               </span>
             </div>
           </div>
@@ -245,11 +244,45 @@
             <span class="title">怎么玩?</span>
             <div class="info mb">
               <span class="intro">
-                很简单。例如，在多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。
-                <br />
-                如果玩家符合下表中的点数，就能赢得奖品。
+                博饼的规则如下:多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。
+                具体参见下表:
               </span>
-              <img src="../../public/image/rule.png" alt="" class="ruleImg" />
+              <!-- <img src="../../public/image/rule.png" alt="" class="ruleImg" /> -->
+              <div class="ruleImg">
+                <el-table :data="ruleData" style="width: 100%">
+                  <el-table-column prop="prize" label="奖项" min-width="15%" />
+                  <el-table-column
+                    prop="name"
+                    label="具体名称"
+                    min-width="20%"
+                  />
+                  <el-table-column
+                    prop="diceNumArr"
+                    label="骰子拟合图"
+                    min-width="30%"
+                  >
+                    <template #default="scope">
+                      <img
+                        :src="getDiceImgByIndex(item)"
+                        v-for="(item, index) in scope.row.diceNumArr"
+                        :key="index"
+                        :alt="`index + ' '`"
+                        class="diceImg"
+                      />
+                    </template>
+                  </el-table-column>
+
+                  <el-table-column
+                    prop="description"
+                    label="描述"
+                    show-overflow-tooltip
+                    min-width="35%"
+                  />
+                </el-table>
+              </div>
+              <span class="intro">
+                注:由于“状元”等级较为稀有，且在“状元”条件下，由于越靠近表格底部的点数掷出概率越小，因此亦有“在已出现状元的情况下，博到越稀有点数者可以顺走前一状元奖品”的进阶规则。
+              </span>
             </div>
           </div>
         </div>
@@ -1709,6 +1742,9 @@ export default {
   }
 
   .welcomePage {
+    height: fit-content;
+    height: -moz-fit-content;
+    padding-bottom: calc(var(--heightRate) * 20);
     :deep(.el-overlay) {
       background-image: url("../../public/image/homepage_background_img.png");
       background-color: rgb(228, 228, 228);
@@ -1716,17 +1752,52 @@ export default {
 
     :deep(.el-dialog) {
       width: calc(var(--widthRate) * 1280);
-      height: calc(var(--heightRate) * 2357);
-      margin-top: calc(var(--heightRate) * 60) !important;
-      margin-bottom: calc(var(--heightRate) * 60) !important;
-      margin-left: calc(var(--widthRate) * 320);
+      height: fit-content;
+      height: -moz-fit-content;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 90%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       border-radius: calc(var(--heightRate) * 20);
       background: rgba(240, 240, 240, 1);
+      @media (aspect-ratio < calc(1950 / 1080)) {
+        top: 85%;
+      }
+      @media (aspect-ratio < calc(1300 / 1080)) {
+        width: calc(var(--widthRate) * 1680);
+        top: 85%;
+      }
+      @media (aspect-ratio < calc(980 / 1080)) {
+        width: calc(var(--widthRate) * 1880);
+      }
+      @media (aspect-ratio < calc(800 / 1080)) {
+        width: calc(var(--widthRate) * 1800);
+        top: 80%;
+      }
+      @media (aspect-ratio < calc(600 / 1080)) {
+        top: 70%;
+      }
+      @media (height < 1080px) {
+        top: 80%;
+      }
+      @media (height < 912px) {
+        top: 90%;
+      }
+      @media (height < 860px) {
+        top: 100%;
+      }
     }
 
     :deep(.el-dialog__header) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 100);
+      height: fit-content;
+      height: -moz-fit-content;
+      @media (aspect-ratio < calc(800 / 1080)) {
+        padding-top: calc(var(--heightRate) * 60);
+      }
 
       .el-dialog__headerbtn:focus .el-dialog__close,
       .el-dialog__headerbtn:hover .el-dialog__close {
@@ -1737,22 +1808,46 @@ export default {
         font-family: "HarmonyOS_Sans_SC_Black";
         font-size: calc(var(--heightRate) * 72);
         color: #757575;
+        @media (aspect-ratio < calc(980 / 1080)) {
+          font-size: calc(var(--heightRate) * 65);
+        }
+        @media (aspect-ratio < calc(800 / 1080)) {
+          font-size: calc(var(--heightRate) * 58);
+        }
+        @media (aspect-ratio < calc(660 / 1080)) {
+          font-size: calc(var(--heightRate) * 50);
+        }
+        @media (aspect-ratio < calc(550 / 1080)) {
+          font-size: calc(var(--heightRate) * 40);
+        }
+        @media (aspect-ratio < calc(460 / 1080)) {
+          font-size: calc(var(--heightRate) * 30);
+        }
       }
     }
 
     :deep(.el-dialog__body) {
       padding: 0;
       margin: 0;
+      width: inherit;
+      height: fit-content;
+      height: -moz-fit-content;
       display: flex;
       justify-content: center;
       padding-top: calc(var(--heightRate) * 66);
+      padding-bottom: calc(var(--heightRate) * 20);
+      @media (aspect-ratio < calc(800 / 1080)) {
+        padding-top: calc(var(--heightRate) * 30);
+      }
     }
 
     .welcomeSection {
       padding: 0;
       margin: 0;
-      width: calc(var(--widthRate) * 1110);
-      height: calc(var(--heightRate) * 1550);
+      width: fit-content;
+      width: -moz-fit-content;
+      height: fit-content;
+      height: -moz-fit-content;
 
       display: flex;
       flex-direction: column;
@@ -1773,6 +1868,15 @@ export default {
           font-size: calc(var(--heightRate) * 60);
           color: #757575;
           padding-left: calc(var(--widthRate) * 16);
+          @media (aspect-ratio < calc(980 / 1080)) {
+            font-size: calc(var(--heightRate) * 58);
+          }
+          @media (aspect-ratio < calc(800 / 1080)) {
+            font-size: calc(var(--heightRate) * 50);
+          }
+          @media (aspect-ratio < calc(660 / 1080)) {
+            font-size: calc(var(--heightRate) * 45);
+          }
         }
 
         .info {
@@ -1784,22 +1888,245 @@ export default {
 
         .intro {
           width: calc(var(--widthRate) * 1070);
-          padding: calc(var(--heightRate) * 10) 0;
+          padding: calc(var(--heightRate) * 10) 0 calc(var(--heightRate) * 10)
+            calc(var(--widthRate) * 10);
           word-wrap: break-word;
           word-break: normal;
+          @media (aspect-ratio < calc(1300 / 1080)) {
+            width: calc(var(--widthRate) * 1400);
+          }
+          @media (aspect-ratio < calc(980 / 1080)) {
+            width: calc(var(--widthRate) * 1560);
+          }
         }
       }
 
       .ruleSection {
         margin-top: calc(var(--heightRate) * 52);
+        @media (aspect-ratio < calc(800 / 1080)) {
+          margin-top: calc(var(--heightRate) * 30);
+        }
         .mb {
           margin-bottom: calc(var(--heightRate) * 20);
         }
       }
 
+      //   .ruleImg {
+      //     width: calc(var(--widthRate) * 1053);
+      //     height: calc(var(--heightRate) * 1040);
+      //   }
       .ruleImg {
         width: calc(var(--widthRate) * 1053);
-        height: calc(var(--heightRate) * 1040);
+        height: fit-content;
+        height: -moz-fit-content;
+        @media (aspect-ratio < calc(1300 / 1080)) {
+          width: calc(var(--widthRate) * 1400);
+          margin: 0 calc(var(--widthRate) * 20) 0 calc(var(--widthRate) * 20);
+        }
+
+        @media (aspect-ratio < calc(980 / 1080)) {
+          width: calc(var(--widthRate) * 1600);
+          margin: 0 calc(var(--widthRate) * 20) 0 calc(var(--widthRate) * 20);
+        }
+
+        :deep(.el-table) {
+          border: calc(var(--heightRate) * 4) solid #c5c5c5;
+          border-radius: calc(var(--heightRate) * 10);
+          background-color: transparent;
+          tr {
+            background-color: #f0f0f0;
+          }
+          th {
+            background-color: #f0f0f0;
+          }
+          .el-table__inner-wrapper {
+            .el-table__header-wrapper {
+              .el-table__header {
+                tr {
+                  th {
+                    border-left: calc(var(--widthRate) * 2) solid #c5c5c5;
+                    border-bottom: calc(var(--widthRate) * 2) solid #c5c5c5;
+                    &:first-child {
+                      border-left: 0;
+                    }
+                    &:last-child > td {
+                      border-bottom: 0;
+                    }
+                    .cell {
+                      padding: 0;
+                      margin: 0;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      flex-wrap: nowrap;
+                      flex-direction: row;
+                      line-height: calc(var(--heightRate) * 50);
+                      height: calc(var(--heightRate) * 50);
+                      color: #4d4747;
+                      font-size: calc(var(--heightRate) * 40);
+                      @media (aspect-ratio < calc(2300 / 1080)) {
+                        line-height: calc(var(--heightRate) * 40);
+                        height: calc(var(--heightRate) * 40);
+                        font-size: calc(var(--heightRate) * 30);
+                      }
+                      @media (aspect-ratio < calc(1770 / 1080)) {
+                        line-height: calc(var(--heightRate) * 32);
+                        height: calc(var(--heightRate) * 32);
+                        font-size: calc(var(--heightRate) * 25);
+                      }
+                      @media (aspect-ratio < calc(1530 / 1080)) {
+                        line-height: calc(var(--heightRate) * 30);
+                        height: calc(var(--heightRate) * 30);
+                        font-size: calc(var(--heightRate) * 22);
+                      }
+                      @media (aspect-ratio < calc(1390 / 1080)) {
+                        line-height: calc(var(--heightRate) * 28);
+                        height: calc(var(--heightRate) * 28);
+                        font-size: calc(var(--heightRate) * 20);
+                      }
+                      @media (aspect-ratio < calc(1300 / 1080)) {
+                        line-height: calc(var(--heightRate) * 25);
+                        height: calc(var(--heightRate) * 25);
+                        font-size: calc(var(--heightRate) * 15);
+                      }
+                      @media (aspect-ratio < calc(980 / 1080)) {
+                        line-height: calc(var(--heightRate) * 30);
+                        height: calc(var(--heightRate) * 30);
+                        font-size: calc(var(--heightRate) * 20);
+                      }
+                      @media (aspect-ratio < calc(950 / 1080)) {
+                        line-height: calc(var(--heightRate) * 30);
+                        height: calc(var(--heightRate) * 30);
+                        font-size: calc(var(--heightRate) * 17);
+                      }
+                      @media (aspect-ratio < calc(730 / 1080)) {
+                        line-height: calc(var(--heightRate) * 23);
+                        height: calc(var(--heightRate) * 23);
+                        font-size: calc(var(--heightRate) * 15);
+                      }
+                      @media (aspect-ratio < calc(665 / 1080)) {
+                        ine-height: 1rem;
+                        height: 1rem;
+                        font-size: 0.8rem;
+                      }
+                      @media (aspect-ratio < calc(520 / 1080)) {
+                        line-height: 0.7rem;
+                        height: 0.7rem;
+                        font-size: 0.7rem;
+                      }
+                      @media (aspect-ratio < calc(420 / 1080)) {
+                        line-height: 0.7rem;
+                        height: 0.7rem;
+                        font-size: 0.4rem;
+                      }
+                      @media (aspect-ratio < calc(330 / 1080)) {
+                        line-height: 0.4rem;
+                        height: 0.4rem;
+                        font-size: 0.3rem;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            .el-table__body-wrapper {
+              .el-table__row {
+                td {
+                  border-left: calc(var(--widthRate) * 2) solid #c5c5c5;
+                  border-bottom: calc(var(--widthRate) * 2) solid #c5c5c5;
+                  &:first-child {
+                    border-left: 0;
+                    .cell {
+                      padding-left: 0;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      flex-wrap: nowrap;
+                      flex-direction: row;
+                    }
+                  }
+                }
+                &:last-child > td {
+                  border-bottom: 0;
+                }
+                td > .cell {
+                  padding: 0;
+                  margin: 0;
+                  line-height: calc(var(--heightRate) * 35);
+                  height: calc(var(--heightRate) * 35);
+                  padding-left: calc(var(--widthRate) * 35);
+                  color: #4d4747;
+                  font-size: calc(var(--heightRate) * 24);
+                  @media (aspect-ratio < calc(2300 / 1080)) {
+                    line-height: calc(var(--heightRate) * 30);
+                    height: calc(var(--heightRate) * 30);
+                    font-size: calc(var(--heightRate) * 20);
+                  }
+                  @media (aspect-ratio < calc(2000 / 1080)) {
+                    line-height: calc(var(--heightRate) * 28);
+                    height: calc(var(--heightRate) * 28);
+                    font-size: calc(var(--heightRate) * 18);
+                  }
+
+                  @media (aspect-ratio < calc(1390 / 1080)) {
+                    line-height: calc(var(--heightRate) * 25);
+                    height: calc(var(--heightRate) * 25);
+                    font-size: calc(var(--heightRate) * 17);
+                  }
+                  @media (aspect-ratio < calc(730 / 1080)) {
+                    line-height: calc(var(--heightRate) * 23);
+                    height: calc(var(--heightRate) * 23);
+                    font-size: calc(var(--heightRate) * 13);
+                  }
+                  @media (aspect-ratio < calc(600 / 1080)) {
+                    line-height: calc(var(--heightRate) * 17);
+                    height: calc(var(--heightRate) * 17);
+                    font-size: calc(var(--heightRate) * 10);
+                  }
+                }
+                :nth-child(2) > .cell {
+                  @media (aspect-ratio < calc(730 / 1080)) {
+                    width: max-content;
+                  }
+                }
+                :nth-child(3) > .cell {
+                  img {
+                    height: calc(var(--heightRate) * 35);
+                    padding-right: calc(var(--widthRate) * 10);
+                    @media (aspect-ratio < calc(2530 / 1080)) {
+                      height: calc(var(--heightRate) * 32);
+                    }
+                    @media (aspect-ratio < calc(2300 / 1080)) {
+                      height: calc(var(--heightRate) * 30);
+                    }
+                    @media (aspect-ratio < calc(2000 / 1080)) {
+                      height: calc(var(--heightRate) * 28);
+                    }
+                    @media (aspect-ratio < calc(1840 / 1080)) {
+                      height: calc(var(--heightRate) * 23);
+                    }
+                    @media (aspect-ratio < calc(1570 / 1080)) {
+                      height: calc(var(--heightRate) * 20);
+                    }
+                    @media (aspect-ratio < calc(1390 / 1080)) {
+                      height: calc(var(--heightRate) * 17);
+                    }
+                    @media (aspect-ratio < calc(640 / 1080)) {
+                      width: max-content;
+                      height: calc(var(--heightRate) * 15);
+                    }
+                    @media (aspect-ratio < calc(540 / 1080)) {
+                      height: calc(var(--heightRate) * 12);
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .el-popper {
+            font-size: 0.7rem;
+          }
+        }
       }
     }
 
@@ -1813,13 +2140,24 @@ export default {
         font-size: calc(var(--heightRate) * 100);
         color: #757575;
         padding-left: calc(var(--widthRate) * 16);
-        padding-bottom: calc(var(--heightRate) * 100);
+        padding-bottom: calc(var(--heightRate) * 60);
+        @media (aspect-ratio < calc(700 / 1080)) {
+          font-size: calc(var(--heightRate) * 58);
+          padding-bottom: calc(var(--heightRate) * 40);
+        }
+        @media (aspect-ratio < calc(560 / 1080)) {
+          font-size: calc(var(--heightRate) * 50);
+        }
+        @media (aspect-ratio < calc(460 / 1080)) {
+          font-size: calc(var(--heightRate) * 40);
+        }
       }
 
       .btn {
-        width: calc(var(--widthRate) * 555);
-        height: calc(var(--heightRate) * 120);
+        width: calc(var(--widthRate) * 300);
+        height: calc(var(--heightRate) * 185);
         padding: 0;
+        margin-bottom: calc(var(--heightRate) * 60);
         color: #f2f2f2;
         border-color: #4d4747;
         background-color: #de5757;
@@ -1827,6 +2165,21 @@ export default {
         font-size: calc(var(--heightRate) * 80);
         line-height: calc(var(--heightRate) * 80);
         border: calc(var(--heightRate) * 4) solid rgba(71, 72, 76, 1);
+        border-radius: calc(var(--heightRate) * 30);
+        @media (aspect-ratio < calc(1700 / 1080)) {
+          width: calc(var(--widthRate) * 500);
+        }
+        @media (aspect-ratio < calc(1000 / 1080)) {
+          width: calc(var(--widthRate) * 600);
+        }
+        @media (aspect-ratio < calc(700 / 1080)) {
+          font-size: calc(var(--heightRate) * 58);
+          height: calc(var(--heightRate) * 135);
+        }
+        @media (aspect-ratio < calc(560 / 1080)) {
+          font-size: calc(var(--heightRate) * 50);
+          height: calc(var(--heightRate) * 105);
+        }
       }
 
       .el-button:focus,
