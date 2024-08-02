@@ -1367,7 +1367,8 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       width: calc(var(--widthRate) * 1280);
-      height: calc(var(--heightRate) * 960);
+      height: fit-content;
+      height: -moz-fit-content;
       background-color: #f0f0f0;
       border-radius: calc(var(--heightRate) * 20);
       @media (aspect-ratio < calc(860 / 1080)) {
@@ -1375,7 +1376,6 @@ export default {
       }
       @media (aspect-ratio < calc(680 / 1080)) {
         min-width: calc(var(--widthRate) * 1920);
-        height: calc(var(--heightRate) * 760);
       }
     }
 
@@ -1413,7 +1413,7 @@ export default {
         height: inherit;
       }
 
-      .el-table--fit {
+      .el-table {
         border-radius: calc(var(--heightRate) * 20);
       }
 
