@@ -97,9 +97,13 @@
     </footer>
 
     <div class="rankLayer">
-      <el-dialog title="Rank: " v-model="rankVisible" center>
+      <el-dialog title="排行榜" v-model="rankVisible" center>
         <!-- <div class="rankSection"></div> -->
-        <el-table :data="rankData" class="rankSection" empty-text="No Data yet">
+        <el-table
+          :data="rankData"
+          class="rankSection"
+          empty-text="目前无人获奖"
+        >
           <el-table-column
             property="playerName"
             label="玩家名"
@@ -749,7 +753,7 @@ export default {
         font-family: "HarmonyOS_Sans_SC_Black";
         margin-top: calc(var(--heightRate) * 17);
         padding-bottom: calc(var(--heightRate) * 12);
-        font-size: calc(var(--heightRate) * 60);
+        font-size: calc(var(--heightRate) * 54);
         width: calc(var(--widthRate) * 242);
         height: calc(var(--heightRate) * 90);
         // border-bottom: calc(var(--heightRate) * 3) solid rgba(166, 166, 166, 1);
@@ -821,7 +825,10 @@ export default {
             }
 
             .el-table__empty-block {
-              width: 100% !important;
+              //   width: 100% !important;
+              line-height: calc(var(--heightRate) * 36);
+              height: calc(var(--heightRate) * 36);
+              font-size: calc(var(--heightRate) * 36);
             }
           }
         }
