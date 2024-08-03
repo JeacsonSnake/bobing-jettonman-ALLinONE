@@ -305,202 +305,158 @@
 </template>
 
 <script>
-import { shallowRef } from "vue";
+import { ref, reactive, computed, onMounted, onBeforeMount, readonly } from "vue";
+import { useStore } from "vuex";
+import { ElMessage, ElMessageBox } from 'element-plus'
 import {
-  InfoFilled,
-  Histogram,
-  Refresh,
-  Tickets,
-  IceCreamRound,
+  InfoFilled as ElIconInfo,
+  Histogram as ElIconSData,
+  Refresh as ElIconRefresh,
+  Tickets as ElIconTickets,
+  IceCreamRound as ElIconIceCreamRound,
 } from "@element-plus/icons-vue";
 
-const ElIconInfo = shallowRef(InfoFilled);
-const ElIconSData = shallowRef(Histogram);
-const ElIconRefresh = shallowRef(Refresh);
-const ElIconTickets = shallowRef(Tickets);
-const ElIconIceCreamRound = shallowRef(IceCreamRound);
+import { ElLoading } from "element-plus";
 
 export default {
-  data() {
-    return {
-      loading: false,
-      prizeResultVisible: false,
-      aboutVisible: false,
-      rulesVisible: false,
-      rankVisible: false,
-      restartVisible: false,
-      welcomeVisible: false,
-      loadingVisible: true,
-      playerNum: "",
-      playerNumOptions: [
-        {
-          value: "1",
-          label: "1",
-        },
-        {
-          value: "2",
-          label: "2",
-        },
-        {
-          value: "3",
-          label: "3",
-        },
-        {
-          value: "4",
-          label: "4",
-        },
-        {
-          value: "5",
-          label: "5",
-        },
-        {
-          value: "6",
-          label: "6",
-        },
-        {
-          value: "7",
-          label: "7",
-        },
-        {
-          value: "8",
-          label: "8",
-        },
-      ],
-      ruleData: [
-        {
-          prize: "秀才",
-          name: "一秀",
-          diceNumArr: ["4"],
-          description: "六个骰子中有且仅有一个骰子点数为四",
-        },
-        {
-          prize: "举人",
-          name: "二举",
-          diceNumArr: ["4", "4"],
-          description: "六个骰子中有且仅有两个骰子点数为四",
-        },
-        {
-          prize: "进士",
-          name: "四进",
-          diceNumArr: ["2", "2", "2", "2"],
-          description: "六个骰子中有四个骰子拥有除了四以外的相同点数",
-        },
-        {
-          prize: "探花",
-          name: "三红",
-          diceNumArr: ["4", "4", "4"],
-          description: "六个骰子中有三个骰子点数为四",
-        },
-        {
-          prize: "榜眼",
-          name: "对堂",
-          diceNumArr: ["1", "2", "3", "4", "5", "6"],
-          description: "六个骰子点数按顺序排出",
-        },
-        {
-          prize: "状元",
-          name: "四点红",
-          diceNumArr: ["4", "4", "4", "4"],
-          description: "六个骰子中有四个骰子点数为四",
-        },
-        {
-          prize: "状元",
-          name: "五子登科",
-          diceNumArr: ["2", "2", "2", "2", "2"],
-          description: "六个骰子中有五个骰子拥有除了四、一以外的相同点数",
-        },
-        {
-          prize: "状元",
-          name: "五王",
-          diceNumArr: ["4", "4", "4", "4", "4"],
-          description: "六个骰子中有五个骰子点数为四",
-        },
-        {
-          prize: "状元",
-          name: "六博黑",
-          diceNumArr: ["2", "2", "2", "2", "2", "2"],
-          description: "六个骰子皆拥有除了四、一以外的相同点数",
-        },
-        {
-          prize: "状元",
-          name: "遍地锦",
-          diceNumArr: ["1", "1", "1", "1", "1", "1"],
-          description: "六个骰子点数皆为一",
-        },
-        {
-          prize: "状元",
-          name: "六博红",
-          diceNumArr: ["4", "4", "4", "4", "4", "4"],
-          description: "六个骰子点数皆为四",
-        },
-        {
-          prize: "状元",
-          name: "状元插金花",
-          diceNumArr: ["4", "4", "4", "4", "1", "1"],
-          description: "六个骰子中有四个骰子点数为四，且剩余两个骰子点数为一",
-        },
-      ],
-      ElIconInfo,
-      ElIconSData,
-      ElIconTickets,
-      ElIconRefresh,
-      ElIconIceCreamRound,
-    };
-  },
-  computed: {
-    rankData: function () {
-      return this.$store.state.playerRank;
-    },
-    singleRankData: function () {
-      return this.$store.state.singleRank;
-    },
-    diceNumArr: function () {
-      return this.$store.state.resultDiceNumArr;
-    },
-    playerNow: function () {
-      return this.$store.state.playerNow;
-    },
-    prizeNow: function () {
-      return this.$store.state.prizeNow;
-    },
-    poorLuck: function () {
-      return this.$store.state.poorLuck;
-    },
-    playerAmount: function () {
-      return this.$store.state.playerAmount;
-    },
-  },
-  methods: {
-    jumpFrontEnd() {
+    
+  setup() {
+    const store = useStore();
+    
+    const prizeResultVisible=ref(false);
+    const aboutVisible=ref(false);
+    const rulesVisible=ref(false);
+    const rankVisible=ref(false);
+    const restartVisible=ref(false);
+    const welcomeVisible=ref(false);
+    const loadingVisible=ref(true);
+    const playerNum=ref("");
+
+    const playerNumOptions = readonly([
+        { value: "1", label: "1" },
+        { value: "2", label: "2" },
+        { value: "3", label: "3" },
+        { value: "4", label: "4" },
+        { value: "5", label: "5" },
+        { value: "6", label: "6" },
+        { value: "7", label: "7" },
+        { value: "8", label: "8" },
+    ]);
+
+        
+    const ruleData = readonly([
+            {
+                prize: "秀才",
+                name: "一秀",
+                diceNumArr: ["4"],
+                description: "六个骰子中有且仅有一个骰子点数为四",
+            },
+            {
+                prize: "举人",
+                name: "二举",
+                diceNumArr: ["4", "4"],
+                description: "六个骰子中有且仅有两个骰子点数为四",
+            },
+            {
+                prize: "进士",
+                name: "四进",
+                diceNumArr: ["2", "2", "2", "2"],
+                description: "六个骰子中有四个骰子拥有除了四以外的相同点数",
+            },
+            {
+                prize: "探花",
+                name: "三红",
+                diceNumArr: ["4", "4", "4"],
+                description: "六个骰子中有三个骰子点数为四",
+            },
+            {
+                prize: "榜眼",
+                name: "对堂",
+                diceNumArr: ["1", "2", "3", "4", "5", "6"],
+                description: "六个骰子点数按顺序排出",
+            },
+            {
+                prize: "状元",
+                name: "四点红",
+                diceNumArr: ["4", "4", "4", "4"],
+                description: "六个骰子中有四个骰子点数为四",
+            },
+            {
+                prize: "状元",
+                name: "五子登科",
+                diceNumArr: ["2", "2", "2", "2", "2"],
+                description: "六个骰子中有五个骰子拥有除了四、一以外的相同点数",
+            },
+            {
+                prize: "状元",
+                name: "五王",
+                diceNumArr: ["4", "4", "4", "4", "4"],
+                description: "六个骰子中有五个骰子点数为四",
+            },
+            {
+                prize: "状元",
+                name: "六博黑",
+                diceNumArr: ["2", "2", "2", "2", "2", "2"],
+                description: "六个骰子皆拥有除了四、一以外的相同点数",
+            },
+            {
+                prize: "状元",
+                name: "遍地锦",
+                diceNumArr: ["1", "1", "1", "1", "1", "1"],
+                description: "六个骰子点数皆为一",
+            },
+            {
+                prize: "状元",
+                name: "六博红",
+                diceNumArr: ["4", "4", "4", "4", "4", "4"],
+                description: "六个骰子点数皆为四",
+            },
+            {
+                prize: "状元",
+                name: "状元插金花",
+                diceNumArr: ["4", "4", "4", "4", "1", "1"],
+                description: "六个骰子中有四个骰子点数为四，且剩余两个骰子点数为一",
+            },
+      ]);
+
+    const rankData = computed(() => store.state.playerRank);
+    const singleRankData = computed(() => store.state.singleRank);
+    const diceNumArr = computed(() => store.state.resultDiceNumArr);
+    const playerNow = computed(() => store.state.playerNow);
+    const prizeNow = computed(() => store.state.prizeNow);
+    const poorLuck = computed(() => store.state.poorLuck);
+    const playerAmount = computed(() => store.state.playerAmount);
+
+    const jumpFrontEnd = () => {
       window.open(
         "https://github.com/JeacsonSnake/bobing-jettonman-ALLinONE",
         "_blank"
       );
-    },
+    };
 
-    getDiseImg(imgUrl) {
+    const getDiseImg = (imgUrl) => {
       return `${import.meta.env.BASE_URL}image/${imgUrl}`;
-    },
+    };
 
-    getDiceImgByIndex(index) {
+    const getDiceImgByIndex = (index) => {
       let imgUrl = "dice/DICE-" + index + ".svg";
-      return this.getDiseImg(imgUrl);
-    },
+      return getDiseImg(imgUrl);
+    };
 
-    getRan() {
-      this.rankVisible = true;
-    },
+    const getRan = () => {
+       rankVisible.value = true;
+    };
 
-    getRestart() {
-      this.restartVisible = true;
-    },
+    const getRestart = () => {
+       restartVisible.value = true;
+    };
 
-    start() {
-      let p = this.playerNum;
+    const start = () => {
+      let p =  playerNum.value;
       if (p == "") {
-        this.$message.error("人数尚未确定!");
+        ElMessage.error("人数尚未确定!");
       } else {
-        this.$confirm("你将开启新一轮游戏，确定吗?", "注意", {
+        ElMessageBox.confirm("你将开启新一轮游戏，确定吗?", "注意", {
           distinguishCancelAndClose: true,
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -509,17 +465,17 @@ export default {
         })
           .then(() => {
             setTimeout(() => {
-              this.restartVisible = false;
-              this.welcomeVisible = false;
+               restartVisible.value = false;
+               welcomeVisible.value = false;
             }, 100);
-            const loading = this.startLoading("创建中...");
+            const loading = startLoading("创建中...");
             setTimeout(() => {
-              this.$store
+              store
                 .dispatch("getNewRun", p)
                 .then(() => {
                   setTimeout(() => {
-                    this.endLoading(loading);
-                    this.$message({
+                    endLoading(loading);
+                    ElMessage({
                       type: "success",
                       message: "已创建新一轮游戏!",
                     });
@@ -529,68 +485,63 @@ export default {
             }, 300);
           })
           .catch((err) => {
-            // console.log(err);
             if (err == "cancel") {
-              this.$message({
+              ElMessage({
                 type: "info",
                 message: "已取消开启新一轮游戏",
               });
             }
           });
       }
-    },
+    };
 
-    getNextPlayerResults() {
-      if (this.playerNow == -1) {
-        this.restartVisible = true;
-        this.$message({
+    const getNextPlayerResults = () => {
+      if (playerNow.value == -1) {
+         restartVisible.value = true;
+        ElMessage({
           type: "error",
           message: "The number of players is not set yet!",
         });
       } else {
-        const loading = this.startLoading("掷骰入碗...");
+        const loading = startLoading("掷骰入碗...");
         setTimeout(() => {
-          this.$store
+          store
             .dispatch("getNextResult")
             .then(() => {
               setTimeout(() => {
-                this.endLoading(loading);
+                endLoading(loading);
               }, 400);
             })
             .then(() => {
               setTimeout(() => {
-                this.prizeResultVisible = true;
+                 prizeResultVisible.value = true;
               }, 700);
             });
         }, 300);
       }
-    },
+    };
 
-    startLoading(loadingText) {
-      const loading = this.$elLoading.service({
+    const startLoading = (loadingText) => {
+      const loading = ElLoading.service({
         lock: true,
         target: ".homePage",
         text: loadingText,
         background: "rgba(200, 200, 200, 1)",
       });
       return loading;
-    },
+    };
 
-    endLoading(loading) {
+    const endLoading = (loading) => {
       loading.close();
-    },
+    };
 
-    playerRankDataFormatter(row, column, cellValue, index) {
-      // console.log(row);
-      // console.log(column);
-      // console.log("cellvalue", cellValue);
-      // console.log(index);
+    const playerRankDataFormatter = (row, column, cellValue, index) => {
       let formattedCellValue = "";
-      cellValue.forEach((singlePrizeObj, index) => {
+      cellValue.forEach((singlePrizeObj) => {
         let prizeRealName = "";
-        this.$store.state.prizeName.forEach((SingleRealName, index) => {
+        store.state.prizeName.forEach((SingleRealName, index) => {
           if (SingleRealName === singlePrizeObj.prizeName) {
-            prizeRealName = this.$store.state.prizeRealName[index];
+            prizeRealName = store.state.prizeRealName[index];
           }
         });
         formattedCellValue += prizeRealName;
@@ -599,43 +550,79 @@ export default {
         formattedCellValue += ", ";
       });
       return formattedCellValue.slice(0, -2);
-    },
-  },
-  created() {
-    // this.restartVisible = true;
-    // this.loadingVisible = true;
-  },
-  mounted() {
-    let localPlayersRank = JSON.parse(
-      localStorage.getItem("Bobing_playersRank")
-    );
-    // console.log(localPlayersRank);
-    if (localPlayersRank) {
-      const loading = this.startLoading("正在读取存档...");
-      setTimeout(() => {
-        this.$store.commit("changePlayerAmount", localPlayersRank.playerAmount);
-        this.$store.commit("changePlayerNow", localPlayersRank.playerNow);
-        this.$store.commit("setPlayerRank", localPlayersRank.playerRank);
-        this.$store.commit(
-          "setResultDiceNumArr",
-          localPlayersRank.resultDiceNumArr
+    };
+
+    onBeforeMount(() => {
+      // this.restartVisible = true;
+      // this.loadingVisible = true;
+    }),
+    
+      onMounted(() => {
+        let localPlayersRank = JSON.parse(
+          localStorage.getItem("Bobing_playersRank")
         );
-        this.$store.dispatch("setNowPlayerRank");
-        this.loadingVisible = false;
-      }, 2000);
-      setTimeout(() => {
-        this.endLoading(loading);
-      }, 2500);
-    } else {
-      const loading = this.startLoading("加载中...");
-      setTimeout(() => {
-        this.welcomeVisible = true;
-        this.loadingVisible = false;
-      }, 2000);
-      setTimeout(() => {
-        this.endLoading(loading);
-      }, 2500);
-    }
+        if (localPlayersRank) {
+          const loading = startLoading("正在读取存档...");
+          setTimeout(() => {
+            store.commit("changePlayerAmount", localPlayersRank.playerAmount);
+            store.commit("changePlayerNow", localPlayersRank.playerNow);
+            store.commit("setPlayerRank", localPlayersRank.playerRank);
+            store.commit(
+              "setResultDiceNumArr",
+              localPlayersRank.resultDiceNumArr
+            );
+            store.dispatch("setNowPlayerRank");
+             loadingVisible.value = false;
+          }, 2000);
+          setTimeout(() => {
+            endLoading(loading);
+          }, 2500);
+        } else {
+          const loading = startLoading("加载中...");
+          setTimeout(() => {
+             welcomeVisible.value = true;
+             loadingVisible.value = false;
+          }, 2000);
+          setTimeout(() => {
+            endLoading(loading);
+          }, 2500);
+        }
+      });
+
+    return {
+        prizeResultVisible,
+        aboutVisible,
+        rulesVisible,
+        rankVisible,
+        restartVisible,
+        welcomeVisible,
+        loadingVisible,
+        playerNum,
+        playerNumOptions,
+      ruleData,
+      ElIconInfo,
+      ElIconSData,
+      ElIconRefresh,
+      ElIconTickets,
+      ElIconIceCreamRound,
+      rankData,
+      singleRankData,
+      diceNumArr,
+      playerNow,
+      prizeNow,
+      poorLuck,
+      playerAmount,
+      jumpFrontEnd,
+      getDiseImg,
+      getDiceImgByIndex,
+      getRan,
+      getRestart,
+      start,
+      getNextPlayerResults,
+      startLoading,
+      endLoading,
+      playerRankDataFormatter,
+    };
   },
 };
 </script>
