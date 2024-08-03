@@ -148,7 +148,7 @@
       <el-dialog title="博饼怎么玩?" v-model="rulesVisible" center>
         <div class="ruleSection">
           <span class="ruleIntro">
-            博饼的规则如下:多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。
+            博饼的规则如下:多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。若投出骰子点数符合多个等级，则以获得的最好等级为准。
             具体参见下表:
           </span>
           <!-- <img src="../../public/image/rule.png" alt="" class="ruleImg" /> -->
@@ -240,7 +240,7 @@
             <span class="title">什么是博饼?</span>
             <div class="info">
               <span class="intro">
-                "博饼"是闽南地区在中秋节的一种传统习俗，它最早起源于福建厦门，后盛行于闽南地区和台湾省。其作为节日游戏，规则简单、公平，充满竞技悬念和生活情趣。一直深受分布在世界各地的广大群众喜爱。
+                "博饼"是闽南地区在中秋节的一种传统习俗，它最早起源于福建厦门，后盛行于闽南地区和台湾省。其作为节日游戏，规则简单、公平，充满竞技悬念和生活情趣，一直深受分布在世界各地的广大群众喜爱。
               </span>
             </div>
           </div>
@@ -248,7 +248,7 @@
             <span class="title">怎么玩?</span>
             <div class="info mb">
               <span class="intro">
-                博饼的规则如下:多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。
+                博饼的规则如下:多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。若投出骰子点数符合多个等级，则以获得的最好等级为准。
                 具体参见下表:
               </span>
               <!-- <img src="../../public/image/rule.png" alt="" class="ruleImg" /> -->
@@ -294,9 +294,9 @@
         <template v-slot:footer>
           <div>
             <div class="title">即刻开始?</div>
-            <el-button class="btn" @click="restartVisible = true"
-              >点我!</el-button
-            >
+            <el-button class="btn" @click="restartVisible = true">
+              开始游戏
+            </el-button>
           </div>
         </template>
       </el-dialog>
@@ -371,73 +371,73 @@ export default {
           prize: "秀才",
           name: "一秀",
           diceNumArr: ["4"],
-          description: "六个骰子中有一个四",
+          description: "六个骰子中有且仅有一个骰子点数为四",
         },
         {
           prize: "举人",
           name: "二举",
           diceNumArr: ["4", "4"],
-          description: "六个骰子中有两个四",
+          description: "六个骰子中有且仅有两个骰子点数为四",
         },
         {
           prize: "进士",
           name: "四进",
           diceNumArr: ["2", "2", "2", "2"],
-          description: "六个骰子中有四个除了四以外的相同点数",
+          description: "六个骰子中有四个骰子拥有除了四以外的相同点数",
         },
         {
           prize: "探花",
           name: "三红",
           diceNumArr: ["4", "4", "4"],
-          description: "六个骰子中有三个四",
+          description: "六个骰子中有三个骰子点数为四",
         },
         {
           prize: "榜眼",
           name: "对堂",
           diceNumArr: ["1", "2", "3", "4", "5", "6"],
-          description: "六个骰子顺序排出",
+          description: "六个骰子点数按顺序排出",
         },
         {
           prize: "状元",
           name: "四点红",
           diceNumArr: ["4", "4", "4", "4"],
-          description: "六个骰子中有四个四",
+          description: "六个骰子中有四个骰子点数为四",
         },
         {
           prize: "状元",
           name: "五子登科",
           diceNumArr: ["2", "2", "2", "2", "2"],
-          description: "六个骰子中有五个除了四、一以外的相同点数",
+          description: "六个骰子中有五个骰子拥有除了四、一以外的相同点数",
         },
         {
           prize: "状元",
           name: "五王",
           diceNumArr: ["4", "4", "4", "4", "4"],
-          description: "六个骰子中有五个四",
+          description: "六个骰子中有五个骰子点数为四",
         },
         {
           prize: "状元",
           name: "六博黑",
           diceNumArr: ["2", "2", "2", "2", "2", "2"],
-          description: "六个骰子中有六个除了四、一以外的相同点数",
+          description: "六个骰子皆拥有除了四、一以外的相同点数",
         },
         {
           prize: "状元",
           name: "遍地锦",
           diceNumArr: ["1", "1", "1", "1", "1", "1"],
-          description: "六个骰子皆为一",
+          description: "六个骰子点数皆为一",
         },
         {
           prize: "状元",
           name: "六博红",
           diceNumArr: ["4", "4", "4", "4", "4", "4"],
-          description: "六个骰子皆为四",
+          description: "六个骰子点数皆为四",
         },
         {
           prize: "状元",
           name: "状元插金花",
-          diceNumArr: ["4", "4", "4", "4", "4", "4"],
-          description: "六个骰子中有四个四与两个一",
+          diceNumArr: ["4", "4", "4", "4", "1", "1"],
+          description: "六个骰子中有四个骰子点数为四，且剩余两个骰子点数为一",
         },
       ],
       ElIconInfo,
@@ -2161,8 +2161,10 @@ export default {
       }
 
       .btn {
-        width: calc(var(--widthRate) * 300);
-        height: calc(var(--heightRate) * 185);
+        width: fit-content;
+        height: fit-content;
+        width: -moz-fit-content;
+        height: -moz-fit-content;
         padding: 0;
         margin-bottom: calc(var(--heightRate) * 60);
         color: #f2f2f2;
@@ -2173,19 +2175,16 @@ export default {
         line-height: calc(var(--heightRate) * 80);
         border: calc(var(--heightRate) * 4) solid rgba(71, 72, 76, 1);
         border-radius: calc(var(--heightRate) * 30);
-        @media (aspect-ratio < calc(1700 / 1080)) {
-          width: calc(var(--widthRate) * 500);
-        }
-        @media (aspect-ratio < calc(1000 / 1080)) {
-          width: calc(var(--widthRate) * 600);
-        }
+
         @media (aspect-ratio < calc(700 / 1080)) {
           font-size: calc(var(--heightRate) * 58);
-          height: calc(var(--heightRate) * 135);
         }
         @media (aspect-ratio < calc(560 / 1080)) {
           font-size: calc(var(--heightRate) * 50);
-          height: calc(var(--heightRate) * 105);
+        }
+
+        span {
+          padding: calc(var(--heightRate) * 30);
         }
       }
 
