@@ -16,7 +16,7 @@ export default defineConfig({
             additionalLegacyPolyfills: ['regenerator-runtime/runtime']
         })
     ],
-    base: '/bobing-jettonman-ALLinONE/',
+    base: '/',
     resolve: {
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
         alias: {
