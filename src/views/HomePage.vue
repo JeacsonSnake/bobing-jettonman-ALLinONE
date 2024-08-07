@@ -907,7 +907,7 @@ export default {
         padding: 0;
         height: inherit;
         border-radius: calc(var(--heightRate) * 20);
-        background: rgba(222, 87, 87, 1);
+        background: #de5757;
         border: 1px solid rgba(71, 72, 76, 1);
         word-wrap: break-word;
         word-break: normal;
@@ -1252,7 +1252,7 @@ export default {
                         font-size: calc(var(--heightRate) * 15);
                       }
                       @media (aspect-ratio < calc(665 / 1080)) {
-                        ine-height: 1rem;
+                        line-height: 1rem;
                         height: 1rem;
                         font-size: 0.8rem;
                       }
@@ -1999,7 +1999,7 @@ export default {
                         font-size: calc(var(--heightRate) * 15);
                       }
                       @media (aspect-ratio < calc(665 / 1080)) {
-                        ine-height: 1rem;
+                        line-height: 1rem;
                         height: 1rem;
                         font-size: 0.8rem;
                       }

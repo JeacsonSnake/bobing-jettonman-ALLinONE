@@ -11,6 +11,6 @@ const routes = [{
 }, ]
 
 export const router = createRouter({
-    history: createWebHistory('/bobing-jettonman-ALLinONE/'),
+    history: createWebHistory('/'),
     routes: routes,
 })
