@@ -215,11 +215,11 @@
     <div class="prizeResultLayer">
       <el-dialog v-model="prizeResultVisible" center :modal="false">
         <div class="prizeResultSection">
-          <img :src="getDiseImg(this.prizeNow.imgUrl)" alt="" />
+          <img :src="getDiseImg(prizeNow.imgUrl)" alt="" />
         </div>
         <template v-slot:footer>
           <span :class="{ poorLuck: poorLuck }">
-            {{ this.prizeNow.prizeName }}
+            {{ prizeNow.prizeName }}
           </span>
         </template>
       </el-dialog>
@@ -304,10 +304,10 @@
   </div>
 </template>
 
-<script>
-import { ref, reactive, computed, onMounted, onBeforeMount, readonly } from "vue";
+<script lang="ts">
+import { ref, reactive, computed, onMounted, onBeforeMount, readonly, type ComponentOptionsBase, type ComponentPublicInstance, type Ref } from "vue";
 import { useStore } from "vuex";
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, type LoadingParentElement } from 'element-plus'
 import {
   InfoFilled as ElIconInfo,
   Histogram as ElIconSData,
@@ -434,11 +434,11 @@ export default {
       );
     };
 
-    const getDiseImg = (imgUrl) => {
+    const getDiseImg = (imgUrl:string) => {
       return `${import.meta.env.BASE_URL}image/${imgUrl}`;
     };
 
-    const getDiceImgByIndex = (index) => {
+    const getDiceImgByIndex = (index:string) => {
       let imgUrl = "dice/DICE-" + index + ".svg";
       return getDiseImg(imgUrl);
     };
@@ -521,7 +521,7 @@ export default {
       }
     };
 
-    const startLoading = (loadingText) => {
+    const startLoading = (loadingText:string) => {
       const loading = ElLoading.service({
         lock: true,
         target: ".homePage",
@@ -531,15 +531,15 @@ export default {
       return loading;
     };
 
-    const endLoading = (loading) => {
+    const endLoading = (loading: { setText?: (text: string) => void; removeElLoadingChild?: () => void; close: any; handleAfterLeave?: () => void; vm?: ComponentPublicInstance<{}, {}, {}, {}, {}, {}, {}, {}, false, ComponentOptionsBase<any, any, any, any, any, any, any, any, any, {}, {}, string, {}>, {}, {}>; $el?: HTMLElement; originalPosition?: Ref<string>; originalOverflow?: Ref<string>; visible?: Ref<boolean>; parent?: Ref<LoadingParentElement>; background?: Ref<string>; svg?: Ref<string>; svgViewBox?: Ref<string>; spinner?: Ref<string | boolean>; text?: Ref<string>; fullscreen?: Ref<boolean>; lock?: Ref<boolean>; customClass?: Ref<string>; target?: Ref<HTMLElement>; beforeClose?: Ref<(() => boolean) | undefined> | undefined; closed?: Ref<(() => void) | undefined> | undefined; }) => {
       loading.close();
     };
 
-    const playerRankDataFormatter = (row, column, cellValue, index) => {
+    const playerRankDataFormatter = (row: any, column: any, cellValue: any[], index: any) => {
       let formattedCellValue = "";
-      cellValue.forEach((singlePrizeObj) => {
+      cellValue.forEach((singlePrizeObj: { prizeName: any; prizeGetNum: string; }) => {
         let prizeRealName = "";
-        store.state.prizeName.forEach((SingleRealName, index) => {
+        store.state.prizeName.forEach((SingleRealName: any, index: string | number) => {
           if (SingleRealName === singlePrizeObj.prizeName) {
             prizeRealName = store.state.prizeRealName[index];
           }
@@ -557,11 +557,10 @@ export default {
       // this.loadingVisible = true;
     }),
     
-      onMounted(() => {
-        let localPlayersRank = JSON.parse(
-          localStorage.getItem("Bobing_playersRank")
-        );
-        if (localPlayersRank) {
+    onMounted(() => {
+        let localPlayersRankJSON = localStorage.getItem("Bobing_playersRank")
+        if (localPlayersRankJSON) {
+            let localPlayersRank = JSON.parse(localPlayersRankJSON);
           const loading = startLoading("正在读取存档...");
           setTimeout(() => {
             store.commit("changePlayerAmount", localPlayersRank.playerAmount);

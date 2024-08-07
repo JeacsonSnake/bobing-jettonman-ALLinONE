@@ -1,5 +1,4 @@
 // vite.config.js
-
 import {
     defineConfig
 } from 'vite'
@@ -16,6 +15,13 @@ export default defineConfig({
             additionalLegacyPolyfills: ['regenerator-runtime/runtime']
         })
     ],
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@import "src/style/variables.scss";`
+            }
+        }
+    },
     base: '/',
     resolve: {
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],

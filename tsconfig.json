@@ -1,0 +1,39 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "esnext",
+        "strict": true, // Enable all strict type-checking options
+        "jsx": "preserve",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "baseUrl": "./",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable",
+            "scripthost",
+        ],
+        "allowSyntheticDefaultImports": true,
+        "isolatedModules": true,
+        "jsxImportSource": "vue",
+        "types": ["vite/client"],
+        "verbatimModuleSyntax": true,
+    },
+    "include": [
+        "src/**/*.ts", 
+        "src/**/*.d.ts", 
+        "src/**/*.tsx", 
+        "src/**/*.vue", 
+        "vite-env.d.ts",
+        "src/vuex-shim.d.ts",
+        "src/main.js"
+    ],
+    "exclude": ["node_modules"],
+}
