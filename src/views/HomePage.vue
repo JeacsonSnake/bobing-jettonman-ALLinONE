@@ -632,7 +632,7 @@ export default {
   font-family: "HarmonyOS_Sans_SC_Medium", Avenir, Helvetica, Arial, sans-serif;
   --heightRate: calc(100vh / #{$base-height});
   --widthRate: calc(100vw / #{$base-width});
-  width: inherit;
+  width: 100vw;
   height: 100vh;
   background-image: url("../../public/image/homepage_background_img.png");
   background-color: rgba(242, 242, 242, 0.5);
@@ -1814,7 +1814,7 @@ export default {
           font-size: calc(var(--heightRate) * 40);
         }
         @media (aspect-ratio < calc(460 / 1080)) {
-          font-size: calc(var(--heightRate) * 30);
+          font-size: 2rem;
         }
       }
     }
