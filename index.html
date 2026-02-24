@@ -3,9 +3,75 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- 移动端适配：禁止缩放，适配微信内置浏览器 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <!-- 微信内置浏览器全屏模式 -->
+    <meta name="x5-fullscreen" content="true" />
+    <meta name="full-screen" content="yes" />
+    <!-- 禁止电话号码自动检测 -->
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <!-- 苹果工具栏和状态栏设置 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <!-- 主题色 -->
+    <meta name="theme-color" content="#de5757" />
     <link rel="icon" href="/favicon.ico" />
     <title>Bobing-Jettonman 博饼·状元筹</title>
+    <style>
+      /* 移动端基础重置 */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+      }
+      
+      html {
+        /* 禁止文字缩放 */
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        /* 禁止弹性滚动（iOS） */
+        overscroll-behavior: none;
+        /* 禁止选中文字 */
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      
+      /* 微信内置浏览器特殊处理 */
+      body.wechat-browser {
+        /* 微信内嵌页高度计算修正 */
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+      
+      /* 移动端弹性盒布局优化 */
+      @supports (-webkit-touch-callout: none) {
+        /* iOS 设备 */
+        .ios-device {
+          /* 修复 iOS 底部安全区域 */
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+      }
+      
+      .el-popper {
+        .el-select-dropdown {
+          .el-scrollbar {
+            .el-select-dropdown__wrap {
+              .el-select-dropdown__list {
+                .is-selected {
+                  color: #de5757;
+                }
+              }
+            }
+          }
+        }
+      }
+    </style>
   </head>
   <body>
     <noscript>
@@ -19,24 +85,4 @@
     <!-- <script type="module" src="/src/main.js"></script> -->
     <script type="module" src="/src/main.ts"></script>
   </body>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    .el-popper {
-      .el-select-dropdown {
-        .el-scrollbar {
-          .el-select-dropdown__wrap {
-            .el-select-dropdown__list {
-              .is-selected {
-                color: #de5757;
-              }
-            }
-          }
-        }
-      }
-    }
-  </style>
 </html>

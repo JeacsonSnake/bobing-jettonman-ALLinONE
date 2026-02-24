@@ -18,7 +18,10 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
-                additionalData: `@import "src/style/variables.scss";`
+                additionalData: `
+                    @import "src/style/variables.scss";
+                    @import "src/style/mobile-mixins.scss";
+                `
             }
         }
     },
@@ -33,7 +36,10 @@ export default defineConfig({
         cors: {
             origin: '*',
             credentials: true,
-        }
+        },
+        // 添加移动端开发时的 host 配置
+        host: '0.0.0.0',
+        port: 5173
     },
     optimizeDeps: {
         esbuildOptions: {
@@ -45,7 +51,11 @@ export default defineConfig({
         minify: 'terser', // Ensure minification is compatible with ES5
         rollupOptions: {
             output: {
-                // Optional: customize the output format if needed
+                // 代码分割优化
+                manualChunks: {
+                    'element-plus': ['element-plus'],
+                    'vue-vendor': ['vue', 'vue-router', 'vuex']
+                }
             }
         }
     }

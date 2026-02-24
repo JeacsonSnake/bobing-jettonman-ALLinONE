@@ -30,4 +30,7 @@
     outline: 0;
   }
 }
+
+// 导入移动端样式覆盖
+@import "./style/mobile-overrides.scss";
 </style>

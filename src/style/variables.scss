@@ -1,3 +1,90 @@
-// Define the initial browser resolution
+// ========== 基准分辨率设置 ==========
+
+// PC 端基准分辨率
 $base-width: 1920;
 $base-height: 1080;
+
+// 移动端基准分辨率（iPhone X/11/12/13/14 标准尺寸）
+$mobile-base-width: 375;
+$mobile-base-height: 812;
+
+// 小平板基准分辨率
+$tablet-base-width: 768;
+$tablet-base-height: 1024;
+
+// ========== 适配比例变量 ==========
+
+// PC 端比例
+$width-rate: calc(100vw / #{$base-width});
+$height-rate: calc(100vh / #{$base-height});
+
+// 移动端比例（使用 vw/vh 或 CSS 变量）
+$mobile-width-rate: calc(100vw / #{$mobile-base-width});
+$mobile-height-rate: calc(var(--vh, 1vh) * 100 / #{$mobile-base-height});
+
+// ========== 颜色变量 ==========
+
+$primary-color: #de5757;
+$primary-light: #ffecec;
+$primary-dark: #ad3e3e;
+$text-primary: #2c3e50;
+$text-secondary: #4d4747;
+$bg-light: #f0f0f0;
+$bg-gray: #dfdfdf;
+$border-color: #c5c5c5;
+
+// ========== 字体大小变量 ==========
+
+// PC 端字体大小
+$font-size-xs: calc(var(--heightRate) * 14);
+$font-size-sm: calc(var(--heightRate) * 17);
+$font-size-md: calc(var(--heightRate) * 24);
+$font-size-lg: calc(var(--heightRate) * 36);
+$font-size-xl: calc(var(--heightRate) * 48);
+$font-size-xxl: calc(var(--heightRate) * 64);
+
+// 移动端字体大小（使用 rem 或 vw）
+$mobile-font-xs: 0.75rem;   // 12px
+$mobile-font-sm: 0.875rem;  // 14px
+$mobile-font-md: 1rem;      // 16px
+$mobile-font-lg: 1.125rem;  // 18px
+$mobile-font-xl: 1.25rem;   // 20px
+$mobile-font-xxl: 1.5rem;   // 24px
+
+// ========== 间距变量 ==========
+
+$spacing-xs: 0.25rem;   // 4px
+$spacing-sm: 0.5rem;    // 8px
+$spacing-md: 1rem;      // 16px
+$spacing-lg: 1.5rem;    // 24px
+$spacing-xl: 2rem;      // 32px
+
+// ========== 圆角变量 ==========
+
+$border-radius-sm: 0.25rem;
+$border-radius-md: 0.5rem;
+$border-radius-lg: 1rem;
+$border-radius-xl: 1.25rem;
+
+// ========== 阴影变量 ==========
+
+$box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$box-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+$box-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+// ========== 安全区域变量 ==========
+
+$safe-area-top: env(safe-area-inset-top);
+$safe-area-bottom: env(safe-area-inset-bottom);
+$safe-area-left: env(safe-area-inset-left);
+$safe-area-right: env(safe-area-inset-right);
+
+// ========== z-index 层级 ==========
+
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;

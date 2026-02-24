@@ -1,0 +1,572 @@
+/**
+ * 移动端样式覆盖文件
+ * 针对 HomePage.vue 的移动端适配优化
+ */
+
+// ========== 基础移动端适配 ==========
+
+// 移动端基础样式
+@media screen and (max-width: 768px) {
+  #app {
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  // 强制覆盖原项目的 CSS 变量
+  .homePage {
+    // 使用 dvh 或 --vh 变量确保正确的高度计算
+    height: 100dvh !important;
+    height: calc(var(--vh, 1vh) * 100) !important;
+    overflow: hidden;
+    
+    // 移动端背景图优化
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
+  }
+}
+
+// ========== 导航栏移动端适配 ==========
+
+@media screen and (max-width: 768px) {
+  .homePage nav {
+    height: 50px !important;
+    width: 100vw !important;
+    
+    .navBtnGroup {
+      button {
+        margin: 0 8px !important;
+        font-size: 14px !important;
+        
+        .el-icon {
+          font-size: 18px !important;
+        }
+      }
+    }
+  }
+}
+
+// 小屏手机导航栏
+@media screen and (max-width: 375px) {
+  .homePage nav {
+    .navBtnGroup {
+      button {
+        margin: 0 4px !important;
+        font-size: 12px !important;
+        
+        .navBtnText {
+          display: none !important;
+        }
+        
+        .el-icon {
+          margin-right: 0 !important;
+        }
+      }
+    }
+  }
+}
+
+// ========== 标题区域移动端适配 ==========
+
+@media screen and (max-width: 768px) {
+  .homePage .titleImgSection {
+    .titleImg {
+      max-width: 90vw !important;
+      max-height: 20vh !important;
+      padding: 10px 0 !important;
+    }
+  }
+}
+
+// ========== 主体区域移动端适配 ==========
+
+@media screen and (max-width: 1100px) {
+  .homePage .bodySection {
+    flex-direction: column !important;
+    height: auto !important;
+    margin-top: 10px !important;
+    gap: 15px;
+    
+    // 隐藏左侧个人奖项面板（改为弹窗形式）
+    .singleRankSection {
+      display: none !important;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .homePage .bodySection {
+    width: 100vw !important;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+}
+
+// ========== 骰子显示区域移动端适配 ==========
+
+@media screen and (max-width: 768px) {
+  .homePage .diceDisplaySection {
+    width: 95vw !important;
+    height: auto !important;
+    aspect-ratio: 16/10;
+    padding: 15px !important;
+    gap: 10px;
+    
+    .diceImgSection {
+      max-width: 28vw !important;
+      max-height: 28vw !important;
+      padding: 5px !important;
+      
+      img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain;
+      }
+    }
+  }
+}
+
+// 小屏手机骰子区域
+@media screen and (max-width: 375px) {
+  .homePage .diceDisplaySection {
+    aspect-ratio: 16/12;
+    
+    .diceImgSection {
+      max-width: 25vw !important;
+      max-height: 25vw !important;
+    }
+  }
+}
+
+// ========== 掷骰按钮区域移动端适配 ==========
+
+@media screen and (max-width: 1100px) {
+  .homePage .rollButtonSection {
+    width: 60vw !important;
+    height: auto !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 10px;
+    
+    > div:first-child {
+      font-size: 14px !important;
+      white-space: nowrap;
+    }
+    
+    .el-button {
+      width: 40vw !important;
+      height: 60px !important;
+      
+      span {
+        font-size: 18px !important;
+        line-height: 1.5 !important;
+        height: auto !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .homePage .rollButtonSection {
+    width: 90vw !important;
+    flex-direction: column !important;
+    
+    > div:first-child {
+      font-size: 16px !important;
+      margin-bottom: 10px;
+    }
+    
+    .el-button {
+      width: 80vw !important;
+      height: 70px !important;
+      
+      span {
+        font-size: 20px !important;
+        flex-direction: row !important;
+        gap: 10px;
+        
+        span {
+          font-size: 20px !important;
+        }
+      }
+    }
+  }
+}
+
+// 小屏手机按钮
+@media screen and (max-width: 375px) {
+  .homePage .rollButtonSection {
+    .el-button {
+      height: 55px !important;
+      
+      span {
+        font-size: 16px !important;
+        
+        span {
+          font-size: 16px !important;
+        }
+      }
+    }
+  }
+}
+
+// ========== 弹窗移动端适配 ==========
+
+// 通用弹窗适配
+@media screen and (max-width: 768px) {
+  .homePage {
+    .aboutLayer,
+    .rulesLayer,
+    .rankLayer,
+    .restartLayer,
+    .prizeResultLayer,
+    .welcomePage {
+      :deep(.el-dialog) {
+        width: 90vw !important;
+        max-width: none !important;
+        margin: 0 auto !important;
+        
+        // 确保弹窗在屏幕中央
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+      }
+    }
+    
+    // 规则弹窗
+    .rulesLayer :deep(.el-dialog) {
+      height: 80vh !important;
+      
+      .ruleSection {
+        width: 100% !important;
+        
+        .ruleIntro {
+          font-size: 13px !important;
+          line-height: 1.6 !important;
+        }
+        
+        .ruleImg {
+          width: 100% !important;
+          
+          // 规则表格优化
+          .el-table {
+            font-size: 12px !important;
+            
+            .cell {
+              line-height: 1.4 !important;
+              height: auto !important;
+              padding: 4px !important;
+            }
+            
+            th .cell {
+              font-size: 13px !important;
+            }
+            
+            // 骰子图片缩小
+            img.diceImg {
+              height: 20px !important;
+              padding-right: 2px !important;
+            }
+          }
+        }
+      }
+    }
+    
+    // 排行榜弹窗
+    .rankLayer :deep(.el-dialog) {
+      height: 70vh !important;
+      
+      .rankSection {
+        height: calc(70vh - 120px) !important;
+        
+        .el-table {
+          font-size: 13px !important;
+        }
+      }
+    }
+    
+    // 重新开始弹窗
+    .restartLayer :deep(.el-dialog) {
+      height: auto !important;
+      min-height: 200px !important;
+      
+      .el-select {
+        width: 70vw !important;
+        
+        .el-select__wrapper {
+          height: 44px !important;
+        }
+      }
+      
+      .restartFooter {
+        width: 120px !important;
+        height: 44px !important;
+        font-size: 16px !important;
+      }
+    }
+    
+    // 结果弹窗
+    .prizeResultLayer :deep(.el-dialog) {
+      height: auto !important;
+      min-height: 250px !important;
+      
+      .prizeResultSection {
+        width: 150px !important;
+        height: 150px !important;
+        
+        img {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+      
+      .el-dialog__footer span {
+        font-size: 24px !important;
+      }
+    }
+    
+    // 欢迎页弹窗
+    .welcomePage :deep(.el-dialog) {
+      width: 95vw !important;
+      height: 85vh !important;
+      top: 50% !important;
+      
+      .welcomeSection {
+        height: calc(85vh - 200px) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        
+        .rootSection,
+        .ruleSection {
+          .title {
+            font-size: 20px !important;
+          }
+          
+          .intro {
+            width: 100% !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+          }
+        }
+        
+        .ruleImg {
+          width: 100% !important;
+        }
+      }
+      
+      .el-dialog__footer {
+        .title {
+          font-size: 20px !important;
+          padding-bottom: 15px !important;
+        }
+        
+        .btn {
+          font-size: 18px !important;
+          line-height: 1.5 !important;
+          margin-bottom: 20px !important;
+          
+          span {
+            padding: 10px 20px !important;
+          }
+        }
+      }
+    }
+    
+    // 关于弹窗
+    .aboutLayer :deep(.el-dialog) {
+      height: auto !important;
+      min-height: 300px !important;
+      
+      .aboutSection {
+        margin-bottom: 30px !important;
+        font-size: 18px !important;
+        flex-wrap: wrap;
+        gap: 10px;
+        
+        .aboutSection_Name {
+          -webkit-text-stroke: 1px rgba(117, 117, 117, 1) !important;
+        }
+      }
+    }
+  }
+}
+
+// ========== Loading 弹窗适配 ==========
+
+@media screen and (max-width: 768px) {
+  .homePage .loadingPage :deep(.el-dialog) {
+    width: 80vw !important;
+    margin: 0 auto !important;
+  }
+  
+  // Loading 样式
+  :deep(.el-loading-spinner) {
+    max-width: 200px !important;
+    min-height: 200px !important;
+    
+    .circular {
+      width: 50px !important;
+      height: 50px !important;
+      margin-bottom: 20px !important;
+    }
+    
+    .el-loading-text {
+      font-size: 16px !important;
+    }
+  }
+}
+
+// ========== 底部版权适配 ==========
+
+@media screen and (max-width: 768px) {
+  .homePage footer {
+    height: 30px !important;
+    
+    span {
+      font-size: 12px !important;
+    }
+  }
+}
+
+// ========== 横屏模式适配 ==========
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .homePage {
+    .titleImgSection {
+      display: none !important; // 横屏隐藏标题
+    }
+    
+    .bodySection {
+      flex-direction: row !important;
+      margin-top: 5px !important;
+      
+      .diceDisplaySection {
+        width: 60vw !important;
+        aspect-ratio: 16/8;
+      }
+      
+      .rollButtonSection {
+        width: 30vw !important;
+        
+        .el-button {
+          width: 25vw !important;
+          height: 50px !important;
+        }
+      }
+    }
+  }
+  
+  // 弹窗在横屏时限制高度
+  .homePage {
+    .rulesLayer,
+    .welcomePage {
+      :deep(.el-dialog) {
+        height: 90vh !important;
+      }
+    }
+  }
+}
+
+// ========== iOS 安全区域适配 ==========
+
+@supports (-webkit-touch-callout: none) {
+  .homePage {
+    // iOS 底部安全区域
+    padding-bottom: env(safe-area-inset-bottom);
+    
+    footer {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+}
+
+// ========== 微信内置浏览器特殊适配 ==========
+
+body.wechat-browser {
+  .homePage {
+    // 微信内置浏览器高度计算修正
+    height: calc(var(--vh, 1vh) * 100) !important;
+  }
+  
+  // 微信 iOS 特殊处理
+  &.ios-device {
+    .homePage {
+      // 避免微信 iOS 的橡皮筋效果影响弹窗
+      :deep(.el-overlay) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+}
+
+// ========== 触摸优化 ==========
+
+@media (pointer: coarse) {
+  .homePage {
+    // 增大触摸区域
+    .el-button,
+    .el-select,
+    .el-dialog__headerbtn {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    // 禁用 hover 效果（触摸设备无效）
+    .el-button:hover {
+      opacity: 1;
+    }
+    
+    // 增大表格行高（便于触摸滚动）
+    .el-table__row {
+      height: 44px;
+    }
+  }
+}
+
+// ========== 高分辨率手机屏幕适配 ==========
+
+@media screen and (min-width: 390px) and (max-width: 430px) {
+  // iPhone 12/13/14 Pro, iPhone 14 Pro Max
+  .homePage {
+    .diceDisplaySection {
+      .diceImgSection {
+        max-width: 26vw !important;
+        max-height: 26vw !important;
+      }
+    }
+  }
+}
+
+// ========== 动画性能优化 ==========
+
+@media screen and (max-width: 768px) {
+  .homePage {
+    // 在移动端简化动画，提升性能
+    * {
+      animation-duration: 0.2s !important;
+      transition-duration: 0.2s !important;
+    }
+    
+    // 使用 GPU 加速
+    .diceDisplaySection,
+    .rollButtonSection .el-button {
+      transform: translateZ(0);
+      will-change: transform;
+    }
+  }
+}
+
+// ========== 打印样式（防止移动端打印问题）==========
+
+@media print {
+  .homePage {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}

@@ -18,6 +18,15 @@
         <el-button link :icon="ElIconSData" @click="getRan()">
           <span class="navBtnText">排行榜</span>
         </el-button>
+        <!-- 移动端显示我的奖项按钮 -->
+        <el-button 
+          link 
+          class="mobile-only-btn"
+          @click="singleRankVisible = true"
+          :disabled="playerNow === -1"
+        >
+          <span class="navBtnText">我的奖项</span>
+        </el-button>
         <el-button link :icon="ElIconRefresh" @click="getRestart()">
           <span class="navBtnText">重开一局</span>
         </el-button>
@@ -225,6 +234,39 @@
       </el-dialog>
     </div>
 
+    <!-- 移动端个人奖项弹窗 -->
+    <div class="singleRankLayer mobile-only">
+      <el-dialog 
+        :title="singleRankData.playerName == '个人奖项' ? singleRankData.playerName : `玩家 ${singleRankData.playerName}`" 
+        v-model="singleRankVisible" 
+        center
+        class="mobileSingleRankDialog"
+      >
+        <el-table
+          :data="singleRankData.prize"
+          class="mobilePrizeSection"
+          empty-text="还未获奖"
+          :show-header="true"
+        >
+          <el-table-column label="奖项" min-width="60%">
+            <template v-slot="scope">
+              <div class="mobilePrizeItem">
+                <img
+                  :src="getDiseImg(scope.row.imgUrl)"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+                <span>{{ getPrizeRealName(scope.row.prizeName) }}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column property="prizeGetNum" label="数量" width="80" align="center">
+          </el-table-column>
+        </el-table>
+      </el-dialog>
+    </div>
+
     <div class="welcomePage">
       <el-dialog
         title="欢迎来到博饼·状元筹!"
@@ -318,10 +360,24 @@ import {
 
 import { ElLoading } from "element-plus";
 
+// 导入移动端适配工具
+import { 
+  isMobile, 
+  isWechatBrowser, 
+  getDeviceType, 
+  setViewportHeight,
+  isIOS 
+} from "../util/mobileAdapter";
+
 export default {
     
   setup() {
     const store = useStore();
+    
+    // 移动端状态检测
+    const isMobileDevice = ref(false);
+    const isWechat = ref(false);
+    const deviceType = ref('desktop');
     
     const prizeResultVisible=ref(false);
     const aboutVisible=ref(false);
@@ -330,7 +386,23 @@ export default {
     const restartVisible=ref(false);
     const welcomeVisible=ref(false);
     const loadingVisible=ref(true);
+    const singleRankVisible=ref(false); // 移动端个人奖项弹窗
     const playerNum=ref("");
+    
+    // 初始化移动端检测
+    const initDeviceDetection = () => {
+      isMobileDevice.value = isMobile();
+      isWechat.value = isWechatBrowser();
+      deviceType.value = getDeviceType();
+      
+      // 为 body 添加设备类型类名
+      document.body.classList.add(`device-${deviceType.value}`);
+      
+      // 如果是移动端，立即设置视口高度
+      if (isMobileDevice.value) {
+        setViewportHeight();
+      }
+    };
 
     const playerNumOptions = readonly([
         { value: "1", label: "1" },
@@ -531,7 +603,7 @@ export default {
       return loading;
     };
 
-    const endLoading = (loading: { setText?: (text: string) => void; removeElLoadingChild?: () => void; close: any; handleAfterLeave?: () => void; vm?: ComponentPublicInstance<{}, {}, {}, {}, {}, {}, {}, {}, false, ComponentOptionsBase<any, any, any, any, any, any, any, any, any, {}, {}, string, {}>, {}, {}>; $el?: HTMLElement; originalPosition?: Ref<string>; originalOverflow?: Ref<string>; visible?: Ref<boolean>; parent?: Ref<LoadingParentElement>; background?: Ref<string>; svg?: Ref<string>; svgViewBox?: Ref<string>; spinner?: Ref<string | boolean>; text?: Ref<string>; fullscreen?: Ref<boolean>; lock?: Ref<boolean>; customClass?: Ref<string>; target?: Ref<HTMLElement>; beforeClose?: Ref<(() => boolean) | undefined> | undefined; closed?: Ref<(() => void) | undefined> | undefined; }) => {
+    const endLoading = (loading: any) => {
       loading.close();
     };
 
@@ -552,12 +624,27 @@ export default {
       return formattedCellValue.slice(0, -2);
     };
 
+    // 获取奖项中文名称
+    const getPrizeRealName = (prizeName: string) => {
+      const index = store.state.prizeName.indexOf(prizeName);
+      return index !== -1 ? store.state.prizeRealName[index] : prizeName;
+    };
+
     onBeforeMount(() => {
       // this.restartVisible = true;
       // this.loadingVisible = true;
+      // 初始化设备检测
+      initDeviceDetection();
     }),
     
     onMounted(() => {
+        // 监听屏幕旋转
+        window.addEventListener('orientationchange', () => {
+          setTimeout(() => {
+            setViewportHeight();
+          }, 100);
+        });
+        
         let localPlayersRankJSON = localStorage.getItem("Bobing_playersRank")
         if (localPlayersRankJSON) {
             let localPlayersRank = JSON.parse(localPlayersRankJSON);
@@ -596,8 +683,12 @@ export default {
         restartVisible,
         welcomeVisible,
         loadingVisible,
+        singleRankVisible,
         playerNum,
         playerNumOptions,
+        isMobileDevice,
+        isWechat,
+        deviceType,
       ruleData,
       ElIconInfo,
       ElIconSData,
@@ -621,6 +712,7 @@ export default {
       startLoading,
       endLoading,
       playerRankDataFormatter,
+      getPrizeRealName,
     };
   },
 };
@@ -2272,6 +2364,158 @@ export default {
     span {
       font-size: calc(var(--heightRate) * 17);
       font-family: "HarmonyOS_Sans_SC_Medium";
+    }
+  }
+
+  // ========== 移动端专用样式 ==========
+  
+  // 移动端专属按钮（默认隐藏）
+  .mobile-only-btn {
+    display: none !important;
+  }
+  
+  // 移动端个人奖项弹窗（默认隐藏）
+  .mobile-only {
+    display: none !important;
+  }
+
+  // 移动端适配（屏幕宽度小于等于 768px）
+  @media screen and (max-width: 768px) {
+    // 显示移动端专属按钮
+    .mobile-only-btn {
+      display: inline-flex !important;
+    }
+    
+    // 显示移动端弹窗
+    .mobile-only {
+      display: block !important;
+    }
+    
+    // 导航栏优化
+    nav {
+      height: 50px;
+      width: 100vw;
+      
+      .navBtnGroup {
+        button {
+          margin: 0 8px;
+          font-size: 14px;
+          
+          .el-icon {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+    
+    // 移动端个人奖项弹窗样式
+    .singleRankLayer {
+      :deep(.el-dialog) {
+        width: 90vw;
+        max-height: 70vh;
+        margin: 0 auto;
+        border-radius: 16px;
+        
+        .el-dialog__header {
+          padding: 15px 20px;
+          
+          .el-dialog__title {
+            font-size: 18px;
+            font-family: "HarmonyOS_Sans_SC_Bold";
+          }
+          
+          .el-dialog__headerbtn {
+            width: 44px;
+            height: 44px;
+            
+            .el-dialog__close {
+              font-size: 20px;
+            }
+          }
+        }
+        
+        .el-dialog__body {
+          padding: 10px 15px;
+          max-height: calc(70vh - 120px);
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+      
+      .mobilePrizeSection {
+        .mobilePrizeItem {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          
+          img {
+            width: 30px;
+            height: 30px;
+          }
+          
+          span {
+            font-size: 14px;
+          }
+        }
+        
+        .el-table__cell {
+          padding: 8px 0;
+        }
+      }
+    }
+  }
+  
+  // 小屏手机适配（宽度小于等于 375px）
+  @media screen and (max-width: 375px) {
+    nav {
+      .navBtnGroup {
+        button {
+          margin: 0 4px;
+          font-size: 12px;
+          padding: 0 8px;
+          
+          .navBtnText {
+            display: none;
+          }
+          
+          .el-icon {
+            margin-right: 0;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+    
+    // 移动端个人奖项弹窗在小屏上的优化
+    .singleRankLayer {
+      :deep(.el-dialog) {
+        width: 95vw;
+        
+        .el-dialog__title {
+          font-size: 16px;
+        }
+      }
+      
+      .mobilePrizeItem {
+        span {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  
+  // 触摸设备优化
+  @media (pointer: coarse) {
+    // 增大触摸区域
+    .navBtnGroup button,
+    .rollButtonSection .el-button {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    // 禁用 hover 效果
+    .navBtnGroup button:hover {
+      background-color: transparent;
     }
   }
 }

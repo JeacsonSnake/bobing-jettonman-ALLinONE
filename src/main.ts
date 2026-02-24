@@ -32,6 +32,9 @@ import 'element-plus/theme-chalk/index.css'
 // import fonts
 import './assets/fonts/index.css'
 
+// 导入移动端适配模块
+import { initMobileAdapter, setSafeAreaInsets } from './util/mobileAdapter'
+
 const app = createApp({
     render: () => h(App)
 })
@@ -61,3 +64,17 @@ app.use(router)
 
 // Mount the app
 app.mount('#app')
+
+// 初始化移动端适配（在 DOM 加载完成后）
+if (typeof window !== 'undefined') {
+    // 等待 DOM 加载完成
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            initMobileAdapter()
+            setSafeAreaInsets()
+        })
+    } else {
+        initMobileAdapter()
+        setSafeAreaInsets()
+    }
+}
