@@ -24,6 +24,7 @@
           class="mobile-only-btn"
           @click="singleRankVisible = true"
           :disabled="playerNow === -1"
+          :icon="ElIconStarFilled"
         >
           <span class="navBtnText">我的奖项</span>
         </el-button>
@@ -356,6 +357,7 @@ import {
   Refresh as ElIconRefresh,
   Tickets as ElIconTickets,
   IceCreamRound as ElIconIceCreamRound,
+  StarFilled as ElIconStarFilled,
 } from "@element-plus/icons-vue";
 
 import { ElLoading } from "element-plus";
@@ -695,6 +697,7 @@ export default {
       ElIconRefresh,
       ElIconTickets,
       ElIconIceCreamRound,
+      ElIconStarFilled,
       rankData,
       singleRankData,
       diceNumArr,

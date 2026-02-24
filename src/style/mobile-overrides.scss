@@ -310,20 +310,76 @@
     // 结果弹窗
     .prizeResultLayer :deep(.el-dialog) {
       height: auto !important;
-      min-height: 250px !important;
+      min-height: 280px !important;
+      padding: 20px 0 !important;
+      // 优化内部组件排布
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: space-around !important;
+      
+      .el-dialog__header {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      
+      .el-dialog__body {
+        padding: 10px 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex: 1 !important;
+      }
       
       .prizeResultSection {
-        width: 150px !important;
-        height: 150px !important;
+        width: 160px !important;
+        height: 160px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
         
         img {
           width: 100% !important;
           height: 100% !important;
+          object-fit: contain !important;
         }
       }
       
-      .el-dialog__footer span {
-        font-size: 24px !important;
+      .el-dialog__footer {
+        padding: 10px 0 0 0 !important;
+        margin: 0 !important;
+        
+        span {
+          // 使用响应式字体大小，参考原设定
+          // 原设定: aspect-ratio < 0.796 时为 calc(var(--heightRate) * 54)
+          font-size: clamp(32px, 10vw, 54px) !important;
+          font-family: "HarmonyOS_Sans_SC_Black", sans-serif !important;
+          color: #de5757 !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          line-height: 1.2 !important;
+          
+          &.poorLuck {
+            color: #757575 !important;
+          }
+        }
+      }
+    }
+    
+    // 小屏手机结果弹窗优化
+    @media screen and (max-width: 375px) {
+      .prizeResultLayer :deep(.el-dialog) {
+        min-height: 260px !important;
+        
+        .prizeResultSection {
+          width: 140px !important;
+          height: 140px !important;
+        }
+        
+        .el-dialog__footer span {
+          font-size: clamp(28px, 9vw, 45px) !important;
+        }
       }
     }
     
