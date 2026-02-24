@@ -2410,17 +2410,30 @@ export default {
         }
       }
     }
-    
-    // 移动端个人奖项弹窗样式
+  }
+  
+  // 移动端个人奖项弹窗样式 - 独立媒体查询确保居中
+  @media screen and (max-width: 768px) {
     .singleRankLayer {
       :deep(.el-dialog) {
         width: 90vw;
-        max-height: 70vh;
-        margin: 0 auto;
+        max-width: 400px;
+        max-height: 60vh;
+        margin: 0 !important;
         border-radius: 16px;
+        // 强制居中定位
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        // 使用 flex 布局确保内部正确排布
+        display: flex !important;
+        flex-direction: column !important;
         
         .el-dialog__header {
+          flex-shrink: 0 !important;
           padding: 15px 20px;
+          margin: 0;
           
           .el-dialog__title {
             font-size: 18px;
@@ -2438,10 +2451,11 @@ export default {
         }
         
         .el-dialog__body {
+          flex: 1 !important;
           padding: 10px 15px;
-          max-height: calc(70vh - 120px);
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
+          max-height: calc(60vh - 120px);
         }
       }
       
@@ -2493,9 +2507,20 @@ export default {
     .singleRankLayer {
       :deep(.el-dialog) {
         width: 95vw;
+        max-width: 380px;
+        max-height: 65vh;
+        // 确保居中
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
         
         .el-dialog__title {
           font-size: 16px;
+        }
+        
+        .el-dialog__body {
+          max-height: calc(65vh - 120px);
         }
       }
       

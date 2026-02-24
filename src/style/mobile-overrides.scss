@@ -1,6 +1,11 @@
 /**
  * 移动端样式覆盖文件
  * 针对 HomePage.vue 的移动端适配优化
+ * 
+ * 优先级策略：
+ * 1. 使用 !important 确保覆盖 PC 端样式
+ * 2. 使用更具体的选择器提高优先级
+ * 3. 移动端样式集中在 @media 查询中
  */
 
 // ========== 基础移动端适配 ==========
@@ -211,75 +216,140 @@
   }
 }
 
-// ========== 弹窗移动端适配 ==========
+// ========== 弹窗移动端适配 - 高优先级覆盖 ==========
 
-// 通用弹窗适配
 @media screen and (max-width: 768px) {
   .homePage {
+    // 通用弹窗基础样式 - 使用更高优先级选择器
     .aboutLayer,
     .rulesLayer,
     .rankLayer,
     .restartLayer,
     .prizeResultLayer,
-    .welcomePage {
+    .welcomePage,
+    .singleRankLayer {
       :deep(.el-dialog) {
         width: 90vw !important;
         max-width: none !important;
         margin: 0 auto !important;
-        
-        // 确保弹窗在屏幕中央
         position: fixed !important;
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
+        max-height: 85vh !important;
       }
     }
     
-    // 规则弹窗
+    // 规则弹窗 - 修复表格高度问题
     .rulesLayer :deep(.el-dialog) {
-      height: 80vh !important;
+      height: auto !important;
+      max-height: 85vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      
+      .el-dialog__header {
+        flex-shrink: 0 !important;
+        padding: 15px 20px !important;
+        
+        .el-dialog__title {
+          font-size: 20px !important;
+          line-height: 1.4 !important;
+        }
+      }
+      
+      .el-dialog__body {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 10px 15px !important;
+        height: auto !important;
+      }
       
       .ruleSection {
         width: 100% !important;
         
         .ruleIntro {
           font-size: 13px !important;
-          line-height: 1.6 !important;
+          line-height: 1.5 !important;
+          display: block !important;
         }
         
         .ruleImg {
           width: 100% !important;
           
-          // 规则表格优化
+          // 规则表格优化 - 修复单元格过高问题
           .el-table {
             font-size: 12px !important;
             
-            .cell {
-              line-height: 1.4 !important;
+            // 强制设置表格行高
+            .el-table__row {
               height: auto !important;
-              padding: 4px !important;
+            }
+            
+            .cell {
+              line-height: 1.3 !important;
+              height: auto !important;
+              min-height: 32px !important;
+              padding: 6px 4px !important;
+              white-space: normal !important;
+              word-break: break-word !important;
             }
             
             th .cell {
               font-size: 13px !important;
+              line-height: 1.3 !important;
+              min-height: 36px !important;
+              padding: 8px 4px !important;
+            }
+            
+            td.el-table__cell {
+              padding: 4px 0 !important;
             }
             
             // 骰子图片缩小
             img.diceImg {
-              height: 20px !important;
+              height: 18px !important;
+              width: auto !important;
               padding-right: 2px !important;
             }
           }
         }
       }
+      
+      .el-dialog__footer {
+        flex-shrink: 0 !important;
+        padding: 10px 20px !important;
+      }
     }
     
-    // 排行榜弹窗
+    // 排行榜弹窗 - 修复 header 过大问题
     .rankLayer :deep(.el-dialog) {
-      height: 70vh !important;
+      height: auto !important;
+      max-height: 80vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      
+      .el-dialog__header {
+        flex-shrink: 0 !important;
+        padding: 15px 20px !important;
+        
+        .el-dialog__title {
+          font-size: 20px !important;
+          line-height: 1.4 !important;
+        }
+      }
+      
+      .el-dialog__body {
+        flex: 1 !important;
+        overflow: hidden !important;
+        padding: 10px 15px !important;
+        height: auto !important;
+      }
       
       .rankSection {
-        height: calc(70vh - 120px) !important;
+        height: 100% !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
         
         .el-table {
           font-size: 13px !important;
@@ -291,6 +361,15 @@
     .restartLayer :deep(.el-dialog) {
       height: auto !important;
       min-height: 200px !important;
+      max-height: 50vh !important;
+      
+      .el-dialog__header {
+        padding: 15px 20px !important;
+        
+        .el-dialog__title {
+          font-size: 18px !important;
+        }
+      }
       
       .el-select {
         width: 70vw !important;
@@ -307,121 +386,157 @@
       }
     }
     
-    // 结果弹窗
-    .prizeResultLayer :deep(.el-dialog) {
-      height: auto !important;
-      min-height: 280px !important;
-      padding: 20px 0 !important;
-      // 优化内部组件排布
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: space-around !important;
-      
-      .el-dialog__header {
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-      
-      .el-dialog__body {
-        padding: 10px 0 !important;
-        margin: 0 !important;
+    // 结果弹窗 - 使用最高优先级修复
+    .prizeResultLayer {
+      :deep(.el-dialog) {
+        height: auto !important;
+        min-height: 300px !important;
+        max-height: 50vh !important;
+        padding: 20px !important;
+        // 优化内部组件排布
         display: flex !important;
-        justify-content: center !important;
+        flex-direction: column !important;
         align-items: center !important;
-        flex: 1 !important;
-      }
-      
-      .prizeResultSection {
-        width: 160px !important;
-        height: 160px !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
+        justify-content: space-around !important;
         
-        img {
-          width: 100% !important;
-          height: 100% !important;
-          object-fit: contain !important;
-        }
-      }
-      
-      .el-dialog__footer {
-        padding: 10px 0 0 0 !important;
-        margin: 0 !important;
-        
-        span {
-          // 使用响应式字体大小，参考原设定
-          // 原设定: aspect-ratio < 0.796 时为 calc(var(--heightRate) * 54)
-          font-size: clamp(32px, 10vw, 54px) !important;
-          font-family: "HarmonyOS_Sans_SC_Black", sans-serif !important;
-          color: #de5757 !important;
+        .el-dialog__header {
+          flex-shrink: 0 !important;
           padding: 0 !important;
           margin: 0 !important;
-          line-height: 1.2 !important;
+          height: 0 !important;
+          min-height: 0 !important;
           
-          &.poorLuck {
-            color: #757575 !important;
+          .el-dialog__headerbtn {
+            position: absolute !important;
+            top: 10px !important;
+            right: 10px !important;
+            width: 36px !important;
+            height: 36px !important;
           }
         }
-      }
-    }
-    
-    // 小屏手机结果弹窗优化
-    @media screen and (max-width: 375px) {
-      .prizeResultLayer :deep(.el-dialog) {
-        min-height: 260px !important;
         
-        .prizeResultSection {
-          width: 140px !important;
-          height: 140px !important;
+        .el-dialog__body {
+          flex: 1 !important;
+          padding: 10px 0 !important;
+          margin: 0 !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          width: 100% !important;
+          height: auto !important;
         }
         
-        .el-dialog__footer span {
-          font-size: clamp(28px, 9vw, 45px) !important;
+        .prizeResultSection {
+          width: 180px !important;
+          height: 180px !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          
+          img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important;
+          }
+        }
+        
+        .el-dialog__footer {
+          flex-shrink: 0 !important;
+          padding: 15px 0 0 0 !important;
+          margin: 0 !important;
+          width: 100% !important;
+          text-align: center !important;
+          
+          span {
+            // 修复字体过小问题 - 使用响应式字体大小
+            // 原设定: aspect-ratio < 0.796 时为 calc(var(--heightRate) * 54)
+            font-size: clamp(36px, 12vw, 54px) !important;
+            font-family: "HarmonyOS_Sans_SC_Black", sans-serif !important;
+            color: #de5757 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
+            display: inline-block !important;
+            
+            &.poorLuck {
+              color: #757575 !important;
+            }
+          }
         }
       }
     }
     
     // 欢迎页弹窗
     .welcomePage :deep(.el-dialog) {
-      width: 95vw !important;
-      height: 85vh !important;
-      top: 50% !important;
+      height: auto !important;
+      max-height: 85vh !important;
       
-      .welcomeSection {
-        height: calc(85vh - 200px) !important;
+      .el-dialog__header {
+        padding: 15px 20px !important;
+        
+        .el-dialog__title {
+          font-size: 20px !important;
+          line-height: 1.4 !important;
+        }
+      }
+      
+      .el-dialog__body {
+        padding: 10px 15px !important;
+        max-height: calc(85vh - 200px) !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
-        
+        height: auto !important;
+      }
+      
+      .welcomeSection {
         .rootSection,
         .ruleSection {
           .title {
-            font-size: 20px !important;
+            font-size: 18px !important;
           }
           
           .intro {
             width: 100% !important;
             font-size: 13px !important;
-            line-height: 1.6 !important;
+            line-height: 1.5 !important;
           }
         }
         
         .ruleImg {
           width: 100% !important;
+          
+          .el-table {
+            .cell {
+              line-height: 1.3 !important;
+              height: auto !important;
+              min-height: 32px !important;
+              padding: 6px 4px !important;
+            }
+            
+            th .cell {
+              font-size: 13px !important;
+              line-height: 1.3 !important;
+            }
+            
+            img.diceImg {
+              height: 18px !important;
+            }
+          }
         }
       }
       
       .el-dialog__footer {
+        padding: 10px 20px 20px !important;
+        
         .title {
-          font-size: 20px !important;
-          padding-bottom: 15px !important;
+          font-size: 18px !important;
+          padding-bottom: 10px !important;
         }
         
         .btn {
-          font-size: 18px !important;
+          font-size: 16px !important;
           line-height: 1.5 !important;
-          margin-bottom: 20px !important;
+          margin-bottom: 0 !important;
           
           span {
             padding: 10px 20px !important;
@@ -433,17 +548,48 @@
     // 关于弹窗
     .aboutLayer :deep(.el-dialog) {
       height: auto !important;
-      min-height: 300px !important;
+      min-height: 250px !important;
+      max-height: 50vh !important;
+      
+      .el-dialog__header {
+        padding: 15px 20px !important;
+        
+        .el-dialog__title {
+          font-size: 20px !important;
+        }
+      }
+      
+      .el-dialog__body {
+        padding: 15px 20px !important;
+        height: auto !important;
+      }
       
       .aboutSection {
-        margin-bottom: 30px !important;
-        font-size: 18px !important;
+        margin-bottom: 20px !important;
+        font-size: 16px !important;
         flex-wrap: wrap;
         gap: 10px;
         
         .aboutSection_Name {
           -webkit-text-stroke: 1px rgba(117, 117, 117, 1) !important;
         }
+      }
+    }
+  }
+  
+  // 小屏手机结果弹窗优化
+  @media screen and (max-width: 375px) {
+    .homePage .prizeResultLayer :deep(.el-dialog) {
+      min-height: 280px !important;
+      padding: 15px !important;
+      
+      .prizeResultSection {
+        width: 150px !important;
+        height: 150px !important;
+      }
+      
+      .el-dialog__footer span {
+        font-size: clamp(32px, 11vw, 45px) !important;
       }
     }
   }
@@ -519,7 +665,7 @@
     .rulesLayer,
     .welcomePage {
       :deep(.el-dialog) {
-        height: 90vh !important;
+        max-height: 90vh !important;
       }
     }
   }
@@ -580,7 +726,8 @@ body.wechat-browser {
     
     // 增大表格行高（便于触摸滚动）
     .el-table__row {
-      height: 44px;
+      height: auto;
+      min-height: 44px;
     }
   }
 }
