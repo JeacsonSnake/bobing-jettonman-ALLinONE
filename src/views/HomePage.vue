@@ -1738,7 +1738,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
       @media (aspect-ratio < calc(2020 / 1080)) {
         max-width: calc(var(--widthRate) * 420);
       }
