@@ -1531,7 +1531,7 @@ export default {
       }
 
       .rankSection {
-        height: inherit;
+        height: auto;
       }
 
       .el-table {
