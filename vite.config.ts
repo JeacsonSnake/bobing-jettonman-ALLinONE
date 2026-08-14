@@ -18,6 +18,9 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
+                // vite 8 (rolldown + sass modern API) 不再从项目根目录解析裸路径，
+                // 通过 loadPaths 指定根目录，使下方 "src/style/..." 可正常导入
+                loadPaths: [path.resolve(import.meta.dirname)],
                 additionalData: `
                     @import "src/style/variables.scss";
                     @import "src/style/mobile-mixins.scss";
@@ -29,7 +32,7 @@ export default defineConfig({
     resolve: {
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
         alias: {
-            "@": path.resolve(__dirname, "./src"),
+            "@": path.resolve(import.meta.dirname, "./src"),
         },
     },
     server: {
@@ -42,8 +45,10 @@ export default defineConfig({
         port: 5173
     },
     optimizeDeps: {
-        esbuildOptions: {
-            target: 'es2015' // Ensures esbuild transpiles to a compatible version
+        rolldownOptions: {
+            transform: {
+                target: 'es2015' // Ensures transpilation to a compatible version
+            }
         }
     },
     build: {
@@ -51,10 +56,11 @@ export default defineConfig({
         minify: 'terser', // Ensure minification is compatible with ES5
         rollupOptions: {
             output: {
-                // 代码分割优化
-                manualChunks: {
-                    'element-plus': ['element-plus'],
-                    'vue-vendor': ['vue', 'vue-router', 'vuex']
+                // 代码分割优化（rolldown 仅支持函数形式的 manualChunks）
+                manualChunks(id) {
+                    if (!id.includes('node_modules')) return;
+                    if (id.includes('element-plus')) return 'element-plus';
+                    if (/[\\/]node_modules[\\/](@vue|vue|vue-router|vuex)[\\/]/.test(id)) return 'vue-vendor';
                 }
             }
         }

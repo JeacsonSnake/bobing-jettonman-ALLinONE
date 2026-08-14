@@ -25,6 +25,7 @@
         "jsxImportSource": "vue",
         "types": ["vite/client"],
         "verbatimModuleSyntax": true,
+        "noEmit": true,
     },
     "include": [
         "src/**/*.ts", 
