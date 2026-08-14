@@ -40,8 +40,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          # 选择要使用的 node 版本
-          node-version: 18
+          # 选择要使用的 node 版本（vite 8 要求 ^20.19.0 || >=22.12.0）
+          node-version: 22
           # 缓存 pnpm 依赖
           cache: pnpm
 
