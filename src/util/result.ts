@@ -1,20 +1,18 @@
 type GameRule = {
-  [key: string]: RegExp;
+    [key: string]: RegExp;
 };
 
 type ReturnObj = {
     [key: string]: string;
 };
 
-const gameRule:GameRule = {
+const gameRule: GameRule = {
     ZhuangYuanChaJinHua: new RegExp('114444'), // 状元插金花(状元)
     LiuBoHong: new RegExp('444444'), // 状元六博红(状元)
     BianDiJing: new RegExp('111111'), // 状元遍地锦(状元)
     LiuBoHei: new RegExp('^(1{6})|(2{6})|(3{6})|(5{6})|(6{6})$'), // 状元六博黑(状元)
     WuBoHong: new RegExp('^44444[5-6]{1}$|^[1-3]{1}44444$'), // 状元五红王(状元)
-    WuBoHei: new RegExp(
-        '(?=^d*((1{5})|(2{5})|(3{5})|(5{5})|(6{5}))d*$)(?=[^4]{6})'
-    ), // 状元五子登科(状元)
+    WuBoHei: new RegExp('(?=^\\d*((1{5})|(2{5})|(3{5})|(5{5})|(6{5}))\\d*$)(?=[^4]{6})'), // 状元五子登科(状元)
     SiDianHong: new RegExp(
         '^4444[5-6]{2}$|^[1-3]{1}4444[5-6]{1}$|^[1-3]{2}4444$'
     ), // 状元四点红(状元)
@@ -37,7 +35,7 @@ const zhuangyuan = [
     'SiDianHong',
 ]
 
-function generateRandomString():string {
+function generateRandomString(): string {
     let randomString = ''
     for (let i = 0; i < 6; i++) {
         const randomNumber = Math.floor(Math.random() * 6) + 1
@@ -46,10 +44,10 @@ function generateRandomString():string {
     return randomString
 }
 
-function getRandomResult():ReturnObj {
+function getRandomResult(): ReturnObj {
 
     let randomString = generateRandomString()
-    let returnObj:ReturnObj= {
+    let returnObj: ReturnObj = {
         resultName: '',
         resultNum: randomString,
     }
