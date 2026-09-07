@@ -771,8 +771,8 @@ export default {
 
   .titleImgSection {
     width: 100vw;
-    height: fit-content;
     height: -moz-fit-content;
+    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1131,8 +1131,8 @@ export default {
 
   .rulesLayer {
     position: fixed;
-    height: fit-content;
     height: -moz-fit-content;
+    height: fit-content;
     z-index: 10;
     :deep(.el-overlay-dialog) {
       height: 120vh;
@@ -1145,8 +1145,8 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       width: calc(var(--widthRate) * 1280);
-      height: fit-content;
       height: -moz-fit-content;
+      height: fit-content;
       border-radius: calc(var(--heightRate) * 20);
       background: rgba(240, 240, 240, 1);
       @media (aspect-ratio < calc(1300 / 1080)) {
@@ -1158,8 +1158,8 @@ export default {
       }
       @media (aspect-ratio < calc(800 / 1080)) {
         width: calc(var(--widthRate) * 1800);
-        height: fit-content;
         height: -moz-fit-content;
+        height: fit-content;
       }
       @media (aspect-ratio < calc(600 / 1080)) {
         top: 42%;
@@ -1220,8 +1220,8 @@ export default {
       padding: 0;
       margin: 0;
       width: calc(var(--widthRate) * 1110);
-      height: fit-content;
       height: -moz-fit-content;
+      height: fit-content;
       border-radius: calc(var(--heightRate) * 20);
       border: 2px solid rgba(77, 71, 71, 1);
       display: flex;
@@ -1265,8 +1265,8 @@ export default {
 
       .ruleImg {
         width: calc(var(--widthRate) * 1053);
-        height: fit-content;
         height: -moz-fit-content;
+        height: fit-content;
         @media (aspect-ratio < calc(1300 / 1080)) {
           width: 98%;
           margin: 0 calc(var(--widthRate) * 20) 0 calc(var(--widthRate) * 20);
@@ -1490,8 +1490,8 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       width: calc(var(--widthRate) * 1280);
-      height: fit-content;
       height: -moz-fit-content;
+      height: fit-content;
       background-color: #f0f0f0;
       border-radius: calc(var(--heightRate) * 20);
       @media (aspect-ratio < calc(860 / 1080)) {
@@ -1832,8 +1832,8 @@ export default {
   }
 
   .welcomePage {
+      height: -moz-fit-content;
     height: fit-content;
-    height: -moz-fit-content;
     padding-bottom: calc(var(--heightRate) * 20);
     :deep(.el-overlay) {
       background-image: url("/image/homepage_background_img.png");
@@ -1842,8 +1842,8 @@ export default {
 
     :deep(.el-dialog) {
       width: calc(var(--widthRate) * 1280);
-      height: fit-content;
       height: -moz-fit-content;
+      height: fit-content;
       margin: 0;
       padding: 0;
       position: absolute;
@@ -1883,8 +1883,8 @@ export default {
     :deep(.el-dialog__header) {
       padding: 0;
       padding-top: calc(var(--heightRate) * 100);
-      height: fit-content;
       height: -moz-fit-content;
+      height: fit-content;
       @media (aspect-ratio < calc(800 / 1080)) {
         padding-top: calc(var(--heightRate) * 60);
       }
@@ -1920,8 +1920,8 @@ export default {
       padding: 0;
       margin: 0;
       width: inherit;
-      height: fit-content;
       height: -moz-fit-content;
+      height: fit-content;
       display: flex;
       justify-content: center;
       padding-top: calc(var(--heightRate) * 66);
@@ -1934,10 +1934,10 @@ export default {
     .welcomeSection {
       padding: 0;
       margin: 0;
-      width: fit-content;
       width: -moz-fit-content;
-      height: fit-content;
+      width: fit-content;
       height: -moz-fit-content;
+      height: fit-content;
 
       display: flex;
       flex-direction: column;
@@ -2007,8 +2007,8 @@ export default {
       //   }
       .ruleImg {
         width: calc(var(--widthRate) * 1053);
-        height: fit-content;
         height: -moz-fit-content;
+        height: fit-content;
         @media (aspect-ratio < calc(1300 / 1080)) {
           width: calc(var(--widthRate) * 1400);
           margin: 0 calc(var(--widthRate) * 20) 0 calc(var(--widthRate) * 20);
@@ -2244,10 +2244,10 @@ export default {
       }
 
       .welcome_btn {
-        width: fit-content;
-        height: fit-content;
         width: -moz-fit-content;
+        width: fit-content;
         height: -moz-fit-content;
+        height: fit-content;
         padding: 0;
         margin-bottom: calc(var(--heightRate) * 60);
         color: #f2f2f2;
