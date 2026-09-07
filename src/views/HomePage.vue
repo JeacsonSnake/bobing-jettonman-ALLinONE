@@ -337,7 +337,7 @@
         <template v-slot:footer>
           <div>
             <div class="title">即刻开始?</div>
-            <el-button class="btn" @click="restartVisible = true">
+            <el-button class="welcome_btn" @click="restartVisible = true">
               开始游戏
             </el-button>
           </div>
@@ -2241,7 +2241,7 @@ export default {
         }
       }
 
-      .btn {
+      .welcome_btn {
         width: fit-content;
         height: fit-content;
         width: -moz-fit-content;
