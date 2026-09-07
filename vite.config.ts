@@ -22,8 +22,8 @@ export default defineConfig({
                 // 通过 loadPaths 指定根目录，使下方 "src/style/..." 可正常导入
                 loadPaths: [path.resolve(import.meta.dirname)],
                 additionalData: `
-                    @import "src/style/variables.scss";
-                    @import "src/style/mobile-mixins.scss";
+                    @use "src/style/variables.scss" as *;
+                    @use "src/style/mobile-mixins.scss" as *;
                 `
             }
         }

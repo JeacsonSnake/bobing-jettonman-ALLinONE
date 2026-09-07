@@ -5,6 +5,8 @@
 </template>
 
 <style lang="scss">
+@use "./style/mobile-overrides.scss";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -30,7 +32,4 @@
     outline: 0;
   }
 }
-
-// 导入移动端样式覆盖
-@import "./style/mobile-overrides.scss";
 </style>

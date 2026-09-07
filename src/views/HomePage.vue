@@ -9,7 +9,7 @@
         :close-on-click-modal="false"
         :close-on-press-escape="false"
       >
-        <img src="../../public/image/title.png" alt="" class="ruleImg" />
+        <img src="/image/title.png" alt="" class="ruleImg" />
       </el-dialog>
     </div>
 
@@ -48,7 +48,7 @@
 
     <div class="mobileSpecificSection">
       <div class="titleImgSection">
-        <img src="../../public/image/title.png" alt="" class="titleImg" />
+        <img src="/image/title.png" alt="" class="titleImg" />
       </div>
       <div class="bodySection">
         <div class="singleRankSection">
@@ -161,7 +161,7 @@
             博饼的规则如下:多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。若投出骰子点数符合多个等级，则以获得的最好等级为准。
             具体参见下表:
           </span>
-          <!-- <img src="../../public/image/rule.png" alt="" class="ruleImg" /> -->
+          <!-- <img src="/image/rule.png" alt="" class="ruleImg" /> -->
           <div class="ruleImg">
             <el-table :data="ruleData" style="width: 100%">
               <el-table-column prop="prize" label="奖项" min-width="15%" />
@@ -191,7 +191,7 @@
             </el-table>
           </div>
           <span class="ruleIntro">
-            注:由于“状元”等级较为稀有，且在“状元”条件下，由于越靠近表格底部的点数掷出概率越小，因此亦有“在已出现状元的情况下，博到越稀有点数者可以顺走前一状元奖品”的进阶规则。玩的开心!
+            注:由于“状元”等级较为稀有，且在“状元”条件下，越靠近表格底部的点数被认为拥有越高的优先级（即使出现概率相同），因此亦有“在已出现状元的情况下（假设状元奖品有且仅有一个），博到越高优先级状元点数者可以顺走前状元现有奖品”的所谓“进阶规则”。玩的开心!
           </span>
         </div>
       </el-dialog>
@@ -294,7 +294,7 @@
                 博饼的规则如下:多人游戏中，选择玩家人数和决定玩家顺序后，点击按钮掷骰子。如果玩家所获得骰子点数与下表中的点数吻合，则判定赢得奖品。不同的点数对应不同等级的奖品，通常而言从次到好共分为“秀才”、“进士”、“探花”、“榜眼”、“状元”五等。若投出骰子点数符合多个等级，则以获得的最好等级为准。
                 具体参见下表:
               </span>
-              <!-- <img src="../../public/image/rule.png" alt="" class="ruleImg" /> -->
+              <!-- <img src="/image/rule.png" alt="" class="ruleImg" /> -->
               <div class="ruleImg">
                 <el-table :data="ruleData" style="width: 100%">
                   <el-table-column prop="prize" label="奖项" min-width="15%" />
@@ -722,14 +722,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../style/variables.scss";
 .homePage {
   font-family: "HarmonyOS_Sans_SC_Medium", Avenir, Helvetica, Arial, sans-serif;
   --heightRate: calc(100vh / #{$base-height});
   --widthRate: calc(100vw / #{$base-width});
   width: 100vw;
   height: 100vh;
-  background-image: url("../../public/image/homepage_background_img.png");
+  background-image: url("/image/homepage_background_img.png");
   background-color: rgba(242, 242, 242, 0.5);
 
   nav {
@@ -886,7 +885,7 @@ export default {
                 }
                 td {
                   &:first-child .cell {
-                    height: calc(var(--heightRate) * 57);
+                    height: calc(var(--heightRate) * 60);
                     width: calc(var(--widthRate) * 185);
                     display: flex;
                     justify-content: center;
@@ -1123,6 +1122,9 @@ export default {
         text-shadow: calc(var(--heightRate) * 3) calc(var(--heightRate) * 2)
           calc(var(--heightRate) * 9) rgba(0, 0, 0, 0.25);
         font-size: calc(var(--heightRate) * 48);
+        :hover {
+          color: #de5757;
+        }
       }
     }
   }
@@ -1834,7 +1836,7 @@ export default {
     height: -moz-fit-content;
     padding-bottom: calc(var(--heightRate) * 20);
     :deep(.el-overlay) {
-      background-image: url("../../public/image/homepage_background_img.png");
+      background-image: url("/image/homepage_background_img.png");
       background-color: rgb(228, 228, 228);
     }
 
@@ -2280,7 +2282,7 @@ export default {
 
   .loadingPage {
     :deep(.el-overlay-dialog) {
-      background-image: url("../../public/image/homepage_background_img.png");
+      background-image: url("/image/homepage_background_img.png");
       background-color: rgb(228, 228, 228);
       display: flex;
       justify-content: center;
